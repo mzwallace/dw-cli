@@ -6,7 +6,9 @@ const zip = require('gulp-zip');
 const watch = require('gulp-watch');
 const dwdav = require('dwdav');
 const git = require('git-rev-sync');
+const https = require('https');
 const request = require('request');
+const exec = require('child_process').exec;
 const {hostname, username, password} = require('./dw.json');
 
 const wdConfig = {
@@ -18,40 +20,55 @@ const wdConfig = {
 	base: 'cartridges'
 };
 
-// request({
-//   method: 'GET',
-//   url: 'https://dev01-us-mzw.demandware.net/on/demandware.servlet/webdav/Sites/Cartridges/',
-//   headers: {
-//     authorization: `Basic ${(new Buffer(`${username}:${password}`)).toString('base64')}`
-//   }
-// }, function (error, response, body) {
-//   if (error) throw new Error(error);
-//
-//   console.log(body);
-// });
+function mkdir(dir = '') {
+	const command = `curl -H "Authorization: Basic ${(new Buffer(`${username}:${password}`)).toString('base64')}" -X MKCOL "https://${hostname}/on/demandware.servlet/webdav/Sites/Cartridges/${dir}"`;
+	return new Promise(resolve => {
+		exec(command, (error, stdout, stderr) => {
+			if (error) {
+				throw new Error(error);
+			}
+			resolve();
+		});
+	});
+}
 
-// var options = {
-// 	method: 'PUT',
-//   url: 'https://dev01-us-mzw.demandware.net/on/demandware.servlet/webdav/Sites/Cartridges/',
-//   headers: {
-// 		authorization: `Basic ${(new Buffer(`${username}:${password}`)).toString('base64')}`
-// 		'content-type': 'multipart/form-data; boundary=---011000010111000001101001'
-// 	 },
-//   formData:
-//    { a_file:
-//       { value: fs.createReadStream(path.join(__dirname, 'package.json')),
-//         options: { filename: { '0': {} }, contentType: null } } } };
-//
-// request(options, function (error, response, body) {
-//   if (error) throw new Error(error);
-//
-//   console.log(body);
-// });
+function mkdirp(dir = '') {
+	let p = Promise.resolve();
+	const folders = path.normalize(dir).split('/');
+	folders.forEach((folder, i) => {
+		let toMake = folders[i];
+		if (i > 0) {
+			toMake = folders.slice(0, i + 1).join('/');
+		}
+		p = p.then(() => mkdir(toMake))
+	});
+	return p;
+}
 
+function writeFile(filePath = '') {
+	const relativePath = path.relative(__dirname, filePath);
+	const dir = path.dirname(relativePath);
+	const command = `curl -T '${filePath}' -H "Authorization: Basic ${(new Buffer(`${username}:${password}`)).toString('base64')}" "https://${hostname}/on/demandware.servlet/webdav/Sites/Cartridges/${dir}/"`;
+	return new Promise(resolve => {
+		exec(command, (error, stdout, stderr) => {
+		  if (error) {
+				throw new Error(error);
+		  }
+			resolve();
+		});
+	});
+}
+
+gulp.task('t', () => {
+	return mkdirp('hi/there/david');
+});
 
 gulp.task('watch', () => {
-	gulp.watch('./cartridges/**').on('change', event => {
-		console.log(event.path);
+	watch('cartridges/**').on('change', (filePath) => {
+		const dir = path.dirname(path.relative(__dirname, filePath));
+		writeFile(filePath)
+			.catch(mkdirp(dir))
+			.then(writeFile(filePath));
 	});
 });
 
