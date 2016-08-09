@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "xo && ava"
+    "test": "ava"
   },
   "repository": {
     "type": "git",
@@ -19,14 +19,17 @@
   "homepage": "https://github.com/mzwallace/dw#readme",
   "devDependencies": {
     "ava": "0.16.0",
+    "babel-eslint": "6.1.2",
     "dwdav": "2.3.0",
     "eslint": "3.2.2",
     "eslint-config-xo": "0.15.3",
+    "eslint-plugin-babel": "3.3.0",
     "git-rev-sync": "1.6.0",
     "gulp": "3.9.1",
     "gulp-watch": "4.3.9",
     "gulp-webdav-sync": "1.0.1",
-    "gulp-zip": "3.2.0"
+    "gulp-zip": "3.2.0",
+    "xml2js": "0.4.17"
   },
   "dependencies": {
     "request": "2.74.0"
