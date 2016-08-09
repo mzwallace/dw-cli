@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "bin": {
+    "dw": "index.js"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -17,15 +20,14 @@
     "url": "https://github.com/mzwallace/dw/issues"
   },
   "homepage": "https://github.com/mzwallace/dw#readme",
-  "devDependencies": {
+  "dependencies": {
+    "request": "2.74.0",
+    "yargs": "^4.8.1",
     "dwdav": "2.3.0",
     "git-rev-sync": "1.6.0",
     "gulp": "3.9.1",
     "gulp-watch": "4.3.9",
     "gulp-webdav-sync": "1.0.1",
     "gulp-zip": "3.2.0"
-  },
-  "dependencies": {
-    "request": "2.74.0"
   }
 }
