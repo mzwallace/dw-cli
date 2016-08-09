@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "xo && ava"
   },
   "repository": {
     "type": "git",
@@ -18,7 +18,10 @@
   },
   "homepage": "https://github.com/mzwallace/dw#readme",
   "devDependencies": {
+    "ava": "0.16.0",
     "dwdav": "2.3.0",
+    "eslint": "3.2.2",
+    "eslint-config-xo": "0.15.3",
     "git-rev-sync": "1.6.0",
     "gulp": "3.9.1",
     "gulp-watch": "4.3.9",
