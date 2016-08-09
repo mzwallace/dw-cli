@@ -2,9 +2,9 @@
   "name": "dw",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "./lib/cli.js",
   "bin": {
-    "dw": "index.js"
+    "dw": "./lib/cli.js"
   },
   "scripts": {
     "test": "ava"
