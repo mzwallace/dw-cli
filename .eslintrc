@@ -1,3 +1,6 @@
 {
-  "extends": "xo/esnext"
+  "extends": "xo/esnext",
+  "rules": {
+    "indent": ["warn", 2]
+  }
 }
