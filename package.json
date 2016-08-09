@@ -7,7 +7,7 @@
     "dw": "./lib/cli.js"
   },
   "scripts": {
-    "test": "ava"
+    "test": "eslint lib/** && ava"
   },
   "repository": {
     "type": "git",

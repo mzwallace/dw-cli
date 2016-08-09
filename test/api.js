@@ -8,6 +8,6 @@ import read from '../lib/read';
 // });
 
 test('read', async t => {
-	const data = await read('cartridges');
-	t.true(data.indexOf('URL Not Found') < 0);
+  const data = await read('cartridges');
+  t.true(data.indexOf('URL Not Found') < 0);
 });
