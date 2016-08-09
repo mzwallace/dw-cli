@@ -1,0 +1,28 @@
+{
+  "name": "dw",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mzwallace/dw.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mzwallace/dw/issues"
+  },
+  "homepage": "https://github.com/mzwallace/dw#readme",
+  "devDependencies": {
+    "dwdav": "2.3.0",
+    "git-rev-sync": "1.6.0",
+    "gulp": "3.9.1",
+    "gulp-watch": "4.3.9",
+    "gulp-webdav-sync": "1.0.1",
+    "gulp-zip": "3.2.0"
+  }
+}
