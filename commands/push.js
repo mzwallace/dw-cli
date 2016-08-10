@@ -1,4 +1,6 @@
 const path = require('path');
+const chalk = require('chalk');
+const ora = require('ora');
 const git = require('git-rev-sync');
 const get = require('lodash.get');
 const debug = require('debug')('push');
@@ -11,6 +13,7 @@ const branch = git.branch();
 
 module.exports = () => {
   const src = 'cartridges';
+  const spinner = ora(`Deploying ${src}`).start();
   zip({
     src,
     dest: path.join(get(process, 'env.TMPDIR', '.'), 'archive.zip'),
@@ -34,10 +37,13 @@ module.exports = () => {
     debug(`Uploaded Zip ${dest}`);
     return unzip({
       filePath: dest
+    }).then(() => {
+      spinner.succeed();
     });
   })
   .catch(err => {
-    console.log(err);
+    spinner.fail();
+    console.log(chalk.red(err));
     throw err;
   });
 };
