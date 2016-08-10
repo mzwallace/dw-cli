@@ -1,25 +1,24 @@
 const path = require('path');
+const git = require('git-rev-sync');
+const get = require('lodash.get');
 const debug = require('debug')('push');
-const mkdirp = require('mkdirp');
 const zip = require('../lib/zip');
 const unzip = require('../lib/unzip');
 const write = require('../lib/write');
 const mkdir = require('../lib/mkdir');
 
-module.exports = opts => {
-  const options = Object.assign({
+const branch = git.branch();
 
-  }, opts);
+module.exports = () => {
   const src = 'cartridges';
-  mkdirp.sync(path.join(process.cwd(), 'tmp'));
   zip({
     src,
-    dest: 'tmp',
+    dest: path.join(get(process, 'env.TMPDIR', '.'), 'archive.zip'),
     root: src
   })
   .then(file => {
     return mkdir({
-      dir: `/${options.env}`
+      dir: `/${branch}`
     })
     .then(() => file)
     .catch(() => file);
@@ -28,7 +27,7 @@ module.exports = opts => {
     debug(`Zipped ${src} to ${file}`);
     return write({
       src: file,
-      dest: `/${options.env}`
+      dest: `/${branch}`
     });
   })
   .then(dest => {
