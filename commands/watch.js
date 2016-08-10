@@ -13,18 +13,16 @@ module.exports = () => {
     atomic: true
   });
 
-  const folder = path.join(process.cwd(), 'cartridges');
+  console.log(chalk.blue(`Watching 'cartridges' for changes`));
 
-  console.log(chalk.blue(`Watching ${folder} for changes`));
-
-  watcher.add(folder);
+  watcher.add(path.join(process.cwd(), 'cartridges'));
 
   // One-liner for current directory, ignores .dotfiles
   watcher.on('change', filePath => {
-    const spinner = ora(`${filePath} changed, uploading`).start();
     const src = path.relative(process.cwd(), filePath);
     const dir = path.dirname(src).replace('cartridges', '');
     const dest = path.join('/', git.branch(), dir);
+    const spinner = ora(`${src} changed, uploading`).start();
     mkdirp(dest).then(() => {
       return write({
         src,
