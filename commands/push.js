@@ -1,23 +1,33 @@
 const path = require('path');
+const debug = require('debug')('push');
 const mkdirp = require('mkdirp');
 const zip = require('../lib/zip');
+const unzip = require('../lib/unzip');
 const write = require('../lib/write');
 
 module.exports = opts => {
   const options = Object.assign({
 
   }, opts);
-  const src = path.join(process.cwd(), 'cartridges');
-  mkdirp.sync(path.join(process.cwd(), '.tmp'));
+  const src = 'cartridges';
+  mkdirp.sync(path.join(process.cwd(), 'tmp'));
   zip({
     src,
-    dest: path.join(process.cwd(), '.tmp')
+    dest: 'tmp',
+    root: src
   })
   .then(file => {
-    return write(file, options);
+    debug(`Zipped ${src} to ${file}`);
+    return write(Object.assign({
+      src: file,
+      dest: `/${options.env}`
+    }, options));
   })
   .then(dest => {
-    console.log(dest);
+    debug(`Uploaded Zip ${dest}`);
+    return unzip(Object.assign({
+      filePath: dest
+    }, options));
   })
   .catch(err => {
     console.log(err);
