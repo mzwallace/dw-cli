@@ -6,16 +6,6 @@ import mkdir from '../lib/mkdir';
 import read from '../lib/read';
 import zip from '../lib/zip';
 import unzip from '../lib/unzip';
-const config = require('./dw.json');
-
-const requestOptions = {
-  baseUrl: 'https://' + config.hostname + '/on/demandware.servlet/webdav/Sites/Cartridges/',
-  auth: {
-    username: config.username,
-    password: config.password
-  },
-  strictSSL: false
-};
 
 test.after.always('cleanup', () => {
   // cleanup zip test
@@ -23,11 +13,12 @@ test.after.always('cleanup', () => {
   fs.unlinkSync(path.join(__dirname, 'fixtures/nested.zip'));
 });
 
-// test('write', async t => {
-//   const data = await write(path.join(__dirname, 'fixtures/testFile'));
-//   console.log(data);
-//   t.true(true);
-// });
+test('write', async t => {
+  const data = await write({
+    src: 'fixtures/testFile'
+  });
+  t.true(data === '/testFile');
+});
 
 // test('read', async t => {
 //   const data = await read('cartridges/test');
@@ -36,8 +27,8 @@ test.after.always('cleanup', () => {
 
 test('zip file', async t => {
   await zip({
-    src: './fixtures/testFile',
-    dest: './fixtures',
+    src: 'fixtures/testFile',
+    dest: 'fixtures',
     name: 'archive.zip'
   });
   t.notThrows(() => {
@@ -47,10 +38,10 @@ test('zip file', async t => {
 
 test('zip folder', async t => {
   await zip({
-    src: './fixtures/nested',
-    dest: './fixtures',
+    src: 'fixtures/nested',
+    dest: 'fixtures',
     name: 'nested.zip',
-    root: './fixtures'
+    root: 'fixtures'
   });
   t.notThrows(() => {
     fs.accessSync(path.join(__dirname, 'fixtures/nested.zip'));
@@ -63,6 +54,6 @@ test('zip folder', async t => {
 //   t.true(data.indexOf('URL Not Found') < 0);
 // });
 
-test('unzip', async t => {
-  t.notThrows(unzip('nested.zip', requestOptions));
-});
+// test('unzip', async t => {
+//   t.notThrows(unzip({filePath: 'fixtures/nested.zip'}));
+// });
