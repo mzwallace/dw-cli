@@ -21,11 +21,11 @@
   },
   "homepage": "https://github.com/mzwallace/dw#readme",
   "dependencies": {
+    "archiver": "1.0.1",
     "dwdav": "2.3.0",
     "git-rev-sync": "1.6.0",
     "request": "2.74.0",
-    "yargs": "^4.8.1",
-    "yazl": "2.4.1"
+    "yargs": "^4.8.1"
   },
   "devDependencies": {
     "ava": "0.16.0",
