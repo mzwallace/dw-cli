@@ -5,6 +5,17 @@ import write from '../lib/write';
 import mkdir from '../lib/mkdir';
 import read from '../lib/read';
 import zip from '../lib/zip';
+import unzip from '../lib/unzip';
+const config = require('./dw.json');
+
+const requestOptions = {
+  baseUrl: 'https://' + config.hostname + '/on/demandware.servlet/webdav/Sites/Cartridges/',
+  auth: {
+    username: config.username,
+    password: config.password
+  },
+  strictSSL: false
+};
 
 test.after.always('cleanup', () => {
   // cleanup zip test
@@ -51,3 +62,7 @@ test('zip folder', async t => {
 //   console.log(data);
 //   t.true(data.indexOf('URL Not Found') < 0);
 // });
+
+test('unzip', async t => {
+  t.notThrows(unzip('nested.zip', requestOptions));
+});
