@@ -1,7 +1,7 @@
-import fs from 'fs';
-import path from 'path';
-import test from 'ava';
-import execa from 'execa';
+// import fs from 'fs';
+// import path from 'path';
+// import test from 'ava';
+// import execa from 'execa';
 // import write from '../lib/write';
 // import mkdir from '../lib/mkdir';
 // import mkdirp from '../lib/mkdirp';
@@ -15,10 +15,10 @@ import execa from 'execa';
 //   fs.unlinkSync(path.join(__dirname, 'fixtures/nested.zip'));
 // });
 
-test('push', async t => {
-  const result = await execa('../lib/cli.js', ['push', 'dev01', '--folder=fixtures']);
-  t.pass(result.stdout === 'Success');
-});
+// test('push', async t => {
+//   const result = await execa('../lib/cli.js', ['push', 'dev01', '--folder=fixtures']);
+//   t.pass(result.stdout === 'Success');
+// });
 
 // test('write', async t => {
 //   const data = await write({
