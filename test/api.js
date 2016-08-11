@@ -22,7 +22,7 @@ test('write', async t => {
   const data = await write({
     src: 'fixtures/testFile'
   });
-  t.true(data === '/testFile');
+  t.is(data, '/testFile');
 });
 
 // test('read', async t => {
