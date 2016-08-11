@@ -1,12 +1,12 @@
 import fs from 'fs';
 import path from 'path';
 import test from 'ava';
-import write from '../lib/write';
-// import mkdir from '../lib/mkdir';
-// import mkdirp from '../lib/mkdirp';
-// import read from '../lib/read';
-import zip from '../lib/zip';
-// import unzip from '../lib/unzip';
+import write from '../../lib/write';
+// import mkdir from '../../lib/mkdir';
+// import mkdirp from '../../lib/mkdirp';
+// import read from '../../lib/read';
+import zip from '../../lib/zip';
+// import unzip from '../../lib/unzip';
 
 test.after.always('cleanup', () => {
   // cleanup zip test

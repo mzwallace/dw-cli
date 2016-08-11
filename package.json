@@ -37,11 +37,19 @@
   },
   "devDependencies": {
     "ava": "0.16.0",
-    "execa": "0.4.0",
     "babel-eslint": "6.1.2",
+    "basic-auth": "1.0.4",
     "eslint": "3.2.2",
     "eslint-config-xo": "0.15.3",
     "eslint-plugin-babel": "3.3.0",
+    "execa": "0.4.0",
+    "express": "4.14.0",
+    "jsDAV": "0.3.4",
     "xml2js": "0.4.17"
+  },
+  "ava": {
+    "files": [
+      "test/specs/*.js"
+    ]
   }
 }
