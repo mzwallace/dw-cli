@@ -5,7 +5,7 @@ const chalk = require('chalk');
 
 const template = `
 {
-  "hostname": ".us.mzw.demandware.net",
+  "hostname": "",
   "username": "",
   "password": "",
 
