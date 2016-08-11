@@ -1,3 +1,4 @@
+const fs = require('fs');
 const path = require('path');
 const chalk = require('chalk');
 const ora = require('ora');
@@ -10,7 +11,12 @@ const mkdir = require('../lib/mkdir');
 const branch = require('../lib/branch');
 
 module.exports = () => {
-  const src = 'cartridges';
+  const src = global.argv.folder;
+  try {
+    fs.accessSync(src);
+  } catch (err) {
+    throw new Error(`${src} is not a valid folder`);
+  }
   const spinner = ora(`Deploying ${src} to ${branch()}`).start();
   zip({
     src,
@@ -37,6 +43,7 @@ module.exports = () => {
       filePath: dest
     }).then(() => {
       spinner.succeed();
+      process.stdout.write(chalk.green('Success'));
     });
   })
   .catch(err => {
