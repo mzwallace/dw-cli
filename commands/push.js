@@ -8,16 +8,16 @@ const zip = require('../lib/zip');
 const unzip = require('../lib/unzip');
 const write = require('../lib/write');
 const mkdir = require('../lib/mkdir');
-const branch = require('../lib/branch');
 
 module.exports = () => {
   const src = global.argv.folder;
+  const branch = global.argv.branch;
   try {
     fs.accessSync(src);
   } catch (err) {
     throw new Error(`${src} is not a valid folder`);
   }
-  const spinner = ora(`Deploying ${src} to ${branch()}`).start();
+  const spinner = ora(`Deploying ${src} to ${branch}`).start();
   zip({
     src,
     dest: path.join(get(process, 'env.TMPDIR', '.'), 'archive.zip'),
@@ -25,7 +25,7 @@ module.exports = () => {
   })
   .then(file => {
     return mkdir({
-      dir: `/${branch()}`
+      dir: `/${branch}`
     })
     .then(() => file)
     .catch(() => file);
@@ -34,7 +34,7 @@ module.exports = () => {
     debug(`Zipped ${src} to ${file}`);
     return write({
       src: file,
-      dest: `/${branch()}`
+      dest: `/${branch}`
     });
   })
   .then(dest => {

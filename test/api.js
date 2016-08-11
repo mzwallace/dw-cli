@@ -1,7 +1,6 @@
 // import fs from 'fs';
 // import path from 'path';
-// import test from 'ava';
-// import execa from 'execa';
+import test from 'ava';
 // import write from '../lib/write';
 // import mkdir from '../lib/mkdir';
 // import mkdirp from '../lib/mkdirp';
@@ -15,17 +14,7 @@
 //   fs.unlinkSync(path.join(__dirname, 'fixtures/nested.zip'));
 // });
 
-// test('push', async t => {
-//   const result = await execa('../lib/cli.js', ['push', 'dev01', '--folder=fixtures']);
-//   t.pass(result.stdout === 'Success');
-// });
-
-// test('write', async t => {
-//   const data = await write({
-//     src: 'fixtures/testFile'
-//   });
-//   t.true(data === '/testFile');
-// });
+test.todo('write');
 
 // test('read', async t => {
 //   const data = await read('cartridges/test');
