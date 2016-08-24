@@ -12,12 +12,15 @@ const mkdir = require('../lib/mkdir');
 module.exports = () => {
   const src = global.argv.folder;
   const branch = global.argv.branch;
+
   try {
     fs.accessSync(src);
   } catch (err) {
     throw new Error(`${src} is not a valid folder`);
   }
+
   const spinner = ora(`Deploying ${src} to ${branch}`).start();
+
   zip({
     src,
     dest: path.join(get(process, 'env.TMPDIR', '.'), 'archive.zip'),
