@@ -1,0 +1,18 @@
+{
+  "hostname": ".region.customer.demandware.net",
+  "username": "defaultuser",
+  "password": "defaultpass",
+
+  "environments": {
+    "dev01": {
+      "username": "dev01user",
+      "password": "dev01pass"
+    },
+
+    "staging": {
+      "certificate": "./staging.crt",
+      "username": "staginguser",
+      "password": "stagingpass"
+    }
+  }
+}
