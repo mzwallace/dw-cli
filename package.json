@@ -1,6 +1,6 @@
 {
-  "name": "dw",
-  "version": "1.0.1",
+  "name": "dw-cli",
+  "version": "0.0.1",
   "description": "",
   "main": "./lib/cli.js",
   "bin": {
@@ -11,15 +11,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mzwallace/dw.git"
+    "url": "git+https://github.com/mzwallace/dw-cli.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/mzwallace/dw/issues"
+    "url": "https://github.com/mzwallace/dw-cli/issues"
   },
-  "homepage": "https://github.com/mzwallace/dw#readme",
+  "homepage": "https://github.com/mzwallace/dw-cli#readme",
   "dependencies": {
     "archiver": "1.0.1",
     "bluebird": "3.4.1",
