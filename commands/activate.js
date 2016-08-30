@@ -2,6 +2,7 @@ const ora = require('ora');
 const chalk = require('chalk');
 const request = require('request');
 const config = require('../lib/config')();
+const branch = require('../lib/branch');
 
 const authenticate = () => {
   let req;
@@ -74,7 +75,7 @@ const activateVersion = ({token, env, codeversion}) => {
   return promise;
 };
 
-module.exports = function ({env, codeversion}) {
+module.exports = function ({env, codeversion = branch()}) {
   const spinner = ora(`Activating ${codeversion} on ${env}`).start();
 
   authenticate()
