@@ -5,9 +5,8 @@ const config = require('../lib/config')();
 const authenticate = require('../lib/authenticate');
 
 const getVersions = ({token, env}) => {
-  let req;
-  const promise = new Promise((resolve, reject) => {
-    req = request.get(`https://${env}${config.hostname}/s/-/dw/data/v16_6/code_versions`, {
+  return new Promise((resolve, reject) => {
+    request.get(`https://${env}${config.hostname}/s/-/dw/data/v16_6/code_versions`, {
       auth: {
         bearer: token
       }
@@ -21,8 +20,6 @@ const getVersions = ({token, env}) => {
       resolve(JSON.parse(body));
     });
   });
-  promise.request = req;
-  return promise;
 };
 
 module.exports = function ({env}) {

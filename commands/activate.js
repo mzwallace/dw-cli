@@ -6,9 +6,8 @@ const authenticate = require('../lib/authenticate');
 const branch = require('../lib/branch');
 
 const activateVersion = ({token, env, codeversion}) => {
-  let req;
-  const promise = new Promise((resolve, reject) => {
-    req = request.patch(`https://${env}${config.hostname}/s/-/dw/data/v16_6/code_versions/${codeversion}`, {
+  return new Promise((resolve, reject) => {
+    request.patch(`https://${env}${config.hostname}/s/-/dw/data/v16_6/code_versions/${codeversion}`, {
       auth: {
         bearer: token
       },
@@ -26,8 +25,6 @@ const activateVersion = ({token, env, codeversion}) => {
       resolve(body);
     });
   });
-  promise.request = req;
-  return promise;
 };
 
 module.exports = function ({env, codeversion = branch()}) {
