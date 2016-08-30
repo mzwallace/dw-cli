@@ -3,8 +3,8 @@
   "username": "defaultuser",
   "password": "defaultpass",
 
-  "client_id": "",
-  "client_password": "",
+  "client_id": "client-id-from-account-dashboard",
+  "client_password": "client-password-from-account-dashboard",
 
   "environments": {
     "dev01": {
