@@ -8,6 +8,7 @@ const zip = require('../lib/zip');
 const unzip = require('../lib/unzip');
 const write = require('../lib/write');
 const mkdir = require('../lib/mkdir');
+const del = require('../lib/delete');
 
 module.exports = () => {
   const src = global.argv.folder;
@@ -47,6 +48,7 @@ module.exports = () => {
     }).then(() => {
       spinner.succeed();
       process.stdout.write(chalk.green('Success'));
+      del(dest);
     });
   })
   .catch(err => {
