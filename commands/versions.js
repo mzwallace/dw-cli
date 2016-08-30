@@ -3,52 +3,50 @@ const chalk = require('chalk');
 const request = require('request');
 const config = require('../lib/config')();
 const authenticate = require('../lib/authenticate');
-const branch = require('../lib/branch');
 
-const activateVersion = ({token, env, codeversion}) => {
+const getVersions = ({token, env}) => {
   let req;
   const promise = new Promise((resolve, reject) => {
-    req = request.patch(`https://${env}${config.hostname}/s/-/dw/data/v16_6/code_versions/${codeversion}`, {
+    req = request.get(`https://${env}${config.hostname}/s/-/dw/data/v16_6/code_versions`, {
       auth: {
         bearer: token
-      },
-      json: true,
-      body: {
-        active: true
       }
     }, (err, res, body) => {
       if (err) {
         return reject(err);
       }
       if (res.statusCode >= 400) {
-        return reject(res.body.fault.message);
+        return reject(new Error(res.body));
       }
-      resolve(body);
+      resolve(JSON.parse(body));
     });
   });
   promise.request = req;
   return promise;
 };
 
-module.exports = function ({env, codeversion = branch()}) {
-  const spinner = ora(`Activating ${codeversion} on ${env}`).start();
+module.exports = function ({env}) {
+  const spinner = ora(`Reading codeversions on ${env}`).start();
 
   authenticate()
     .then(resp => {
       return Promise.resolve(JSON.parse(resp).access_token);
     })
     .then(token => {
-      return activateVersion({
+      return getVersions({
         env,
-        token,
-        codeversion
-      }).then(() => {
+        token
+      }).then(({data}) => {
         spinner.succeed();
-        process.stdout.write(chalk.green('Success'));
+        data.forEach(version => {
+          console.log('\n');
+          console.log(version);
+          console.log('\n');
+        });
       });
     })
     .catch(err => {
       spinner.fail();
-      process.stdout.write(chalk.red(err));
+      process.stdout.write(chalk.red(`${err}\n`));
     });
 };
