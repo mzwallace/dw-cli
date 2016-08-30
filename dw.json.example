@@ -3,6 +3,9 @@
   "username": "defaultuser",
   "password": "defaultpass",
 
+  "client_id": "",
+  "client_password": "",
+
   "environments": {
     "dev01": {
       "username": "dev01user",

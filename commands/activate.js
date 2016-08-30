@@ -9,8 +9,8 @@ const authenticate = () => {
   const promise = new Promise((resolve, reject) => {
     req = request.post('https://account.demandware.com/dw/oauth2/access_token', {
       auth: {
-        username: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
-        password: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
+        username: config.client_id,
+        password: config.client_password
       },
       form: {
         grant_type: 'client_credentials' // eslint-disable-line

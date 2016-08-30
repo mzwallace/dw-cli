@@ -9,6 +9,9 @@ const template = `
   "username": "",
   "password": "",
 
+  "client_id": "",
+  "client_password": "",
+
   "environments": {
     "dev01": {
       "username": "",
