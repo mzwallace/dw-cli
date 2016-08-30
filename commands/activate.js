@@ -75,7 +75,7 @@ const activateVersion = ({token, env, codeversion}) => {
 };
 
 module.exports = function ({env, codeversion}) {
-  const spinner = ora(`Deploying ${codeversion} on ${env}`).start();
+  const spinner = ora(`Activating ${codeversion} on ${env}`).start();
 
   authenticate()
     .then(resp => {
