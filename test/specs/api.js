@@ -4,9 +4,10 @@ import test from 'ava';
 import write from '../../lib/write';
 // import mkdir from '../../lib/mkdir';
 // import mkdirp from '../../lib/mkdirp';
-// import read from '../../lib/read';
-import zip from '../../lib/zip';
+import read from '../../lib/read';
+// import zip from '../../lib/zip';
 // import unzip from '../../lib/unzip';
+import del from '../../lib/delete';
 
 test.after.always('cleanup', () => {
   // cleanup zip test
@@ -18,38 +19,48 @@ test.after.always('cleanup', () => {
   }
 });
 
-test('write', async t => {
-  const data = await write({
+test('delete', async t => {
+  await write({
     src: 'fixtures/testFile'
   });
-  t.is(data, '/testFile');
+  const remote = await read('testFile');
+  t.true(remote.length > 0);
+  await del('testFile');
+  t.throws(read('testFile'));
 });
+
+// test('write', async t => {
+//   const data = await write({
+//     src: 'fixtures/testFile'
+//   });
+//   t.is(data, '/testFile');
+// });
 
 // test('read', async t => {
 //   const data = await read('cartridges/test');
 //   t.true(data.length > 0);
 // });
 
-test('zip file', async t => {
-  await zip({
-    src: 'fixtures/testFile',
-    dest: 'fixtures/archive.zip'
-  });
-  t.notThrows(() => {
-    fs.accessSync(path.join(__dirname, 'fixtures/archive.zip'));
-  });
-});
+// test('zip file', async t => {
+//   await zip({
+//     src: 'fixtures/testFile',
+//     dest: 'fixtures/archive.zip'
+//   });
+//   t.notThrows(() => {
+//     fs.accessSync(path.join(__dirname, 'fixtures/archive.zip'));
+//   });
+// });
 
-test('zip folder', async t => {
-  await zip({
-    src: 'fixtures/nested',
-    dest: 'fixtures/nested.zip',
-    root: 'fixtures'
-  });
-  t.notThrows(() => {
-    fs.accessSync(path.join(__dirname, 'fixtures/nested.zip'));
-  });
-});
+// test('zip folder', async t => {
+//   await zip({
+//     src: 'fixtures/nested',
+//     dest: 'fixtures/nested.zip',
+//     root: 'fixtures'
+//   });
+//   t.notThrows(() => {
+//     fs.accessSync(path.join(__dirname, 'fixtures/nested.zip'));
+//   });
+// });
 
 // test('mkdir', async t => {
 //   const data = await mkdir('test');
