@@ -19,7 +19,7 @@ test.after.always('cleanup', () => {
   }
 });
 
-test('delete', async t => {
+test('delete', async function (t) {
   await write({
     src: 'fixtures/testFile'
   });
@@ -29,19 +29,19 @@ test('delete', async t => {
   t.throws(read('testFile'));
 });
 
-// test('write', async t => {
+// test('write', async function (t) {
 //   const data = await write({
 //     src: 'fixtures/testFile'
 //   });
 //   t.is(data, '/testFile');
 // });
 
-// test('read', async t => {
+// test('read', async function (t) {
 //   const data = await read('cartridges/test');
 //   t.true(data.length > 0);
 // });
 
-// test('zip file', async t => {
+// test('zip file', async function (t) {
 //   await zip({
 //     src: 'fixtures/testFile',
 //     dest: 'fixtures/archive.zip'
@@ -51,7 +51,7 @@ test('delete', async t => {
 //   });
 // });
 
-// test('zip folder', async t => {
+// test('zip folder', async function (t) {
 //   await zip({
 //     src: 'fixtures/nested',
 //     dest: 'fixtures/nested.zip',
@@ -62,18 +62,18 @@ test('delete', async t => {
 //   });
 // });
 
-// test('mkdir', async t => {
+// test('mkdir', async function (t) {
 //   const data = await mkdir('test');
 //   console.log(data);
 //   t.true(data.indexOf('URL Not Found') < 0);
 // });
 
-// test('mkdirp', async t => {
+// test('mkdirp', async function (t) {
 //   const data = await mkdirp('master/nest/folder');
 //   console.log(data);
 //   t.true(data.indexOf('URL Not Found') < 0);
 // });
 
-// test('unzip', async t => {
+// test('unzip', async function (t) {
 //   t.notThrows(unzip({filePath: 'fixtures/nested.zip'}));
 // });

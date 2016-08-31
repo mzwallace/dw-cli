@@ -22,19 +22,19 @@ test.after.always('cleanup', () => {
   }
 });
 
-test('push', async t => {
+test('push', async function (t) {
   const result = await execa('../../lib/cli.js', ['push', 'dev01', '--folder=fixtures', '--branch=dev']);
   t.is(result.stdout, 'Success');
 });
 
-test.serial('init', async t => {
+test.serial('init', async function (t) {
   process.chdir(path.join(__dirname, 'fixtures'));
   const result = await execa('../../../lib/cli.js', ['init']);
   t.is(result.stdout, 'dw.json created');
   process.chdir(__dirname);
 });
 
-test('init exists', async t => {
+test('init exists', async function (t) {
   const result = await execa('../../lib/cli.js', ['init']);
   t.is(result.stdout, 'dw.json already exists');
 });
