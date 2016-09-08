@@ -49,11 +49,13 @@ module.exports = () => {
       spinner.succeed();
       process.stdout.write(chalk.green('Success'));
       del(dest);
+      process.exit();
     });
   })
   .catch(err => {
     spinner.fail();
     console.log(chalk.red(err));
+    process.exit(1);
     throw err;
   });
 };

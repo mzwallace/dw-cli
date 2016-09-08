@@ -42,10 +42,12 @@ module.exports = function ({env, codeversion = branch()}) {
       }).then(() => {
         spinner.succeed();
         process.stdout.write(chalk.green('Success'));
+        process.exit();
       });
     })
     .catch(err => {
       spinner.fail();
       process.stdout.write(chalk.red(err));
+      process.exit(1);
     });
 };

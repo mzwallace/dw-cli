@@ -40,10 +40,12 @@ module.exports = function ({env}) {
           console.log(version);
           console.log('\n');
         });
+        process.exit();
       });
     })
     .catch(err => {
       spinner.fail();
       process.stdout.write(chalk.red(`${err}\n`));
+      process.exit(1);
     });
 };
