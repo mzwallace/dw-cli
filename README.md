@@ -21,7 +21,32 @@ Examples:
   $ dw push dev01   Push code to the dev01 environment
   $ dw watch dev01  Watch for changes and push files to the dev01 environment
 ```
-To use this utility you will need to setup your Open Commerce API Settings.  A Client ID can be created in the Account Center.
+Place a dw.json file with these contents in your projects root directory.  A Client ID and password can be created in the Account Center.
+```
+{
+  "hostname": "-region-customer.demandware.net",
+  "username": "defaultuser",
+  "password": "defaultpass",
+
+  "client_id": "client-id-from-account-dashboard",
+  "client_password": "client-password-from-account-dashboard",
+
+  "environments": {
+    "dev01": {
+      "username": "dev01user",
+      "password": "dev01pass"
+    },
+
+    "staging": {
+      "certificate": "./staging.crt",
+      "username": "staginguser",
+      "password": "stagingpass"
+    }
+  }
+}
+```
+
+To use this utility you will need to setup your Open Commerce API Settings on each instance in question.  A Client ID can be created in the Account Center.
 
 ```
 {
@@ -29,7 +54,7 @@ To use this utility you will need to setup your Open Commerce API Settings.  A C
   "clients":
   [ 
     {
-      "client_id":"your-client-id-here",
+      "client_id":"client-id-from-account-dashboard",
       "resources":
       [
         {
