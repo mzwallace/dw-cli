@@ -46,7 +46,7 @@ Place a dw.json file with these contents in your projects root directory or use 
 }
 ```
 
-To use this utility you will need to setup your Open Commerce API Settings on each instance in question.  A Client ID can be created in the Account Center.
+To use this utility you will need to setup your Open Commerce API Settings (Global not Site) on each instance in question.  A Client ID can be created in the Account Center.
 
 ```
 {
