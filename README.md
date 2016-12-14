@@ -21,7 +21,7 @@ Examples:
   $ dw push dev01   Push code to the dev01 environment
   $ dw watch dev01  Watch for changes and push files to the dev01 environment
 ```
-Place a dw.json file with these contents in your projects root directory.  A Client ID and password can be created in the Account Center.
+Place a dw.json file with these contents in your projects root directory or use `dw init`.  A Client ID and password can be created in the Account Center.
 ```
 {
   "hostname": "-region-customer.demandware.net",
