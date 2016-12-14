@@ -27,7 +27,9 @@ Place a dw.json file with these contents in your projects root directory or use 
   "hostname": "-region-customer.demandware.net",
   "username": "defaultuser",
   "password": "defaultpass",
-
+  
+  "api_verson": "v16_6",
+  
   "client_id": "client-id-from-account-dashboard",
   "client_password": "client-password-from-account-dashboard",
 
