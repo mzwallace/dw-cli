@@ -5,17 +5,25 @@ const chalk = require('chalk');
 
 const template = `
 {
-  "hostname": "",
-  "username": "",
-  "password": "",
+  "hostname": "-region-customer.demandware.net",
+  "username": "defaultuser",
+  "password": "defaultpass",
 
-  "client_id": "",
-  "client_password": "",
+  "api_version": 'v16_6',
+
+  "client_id": "client-id-from-account-dashboard",
+  "client_password": "client-password-from-account-dashboard",
 
   "environments": {
     "dev01": {
-      "username": "",
-      "password": ""
+      "username": "dev01user",
+      "password": "dev01pass"
+    },
+
+    "staging": {
+      "certificate": "./staging.crt",
+      "username": "staginguser",
+      "password": "stagingpass"
     }
   }
 }

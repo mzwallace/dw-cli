@@ -7,7 +7,7 @@ const branch = require('../lib/branch');
 
 const activateVersion = ({token, env, codeversion}) => {
   return new Promise((resolve, reject) => {
-    request.patch(`https://${env}${config.hostname}/s/-/dw/data/v16_6/code_versions/${codeversion}`, {
+    request.patch(`https://${env}${config.hostname}/s/-/dw/data/${config.api_version}/code_versions/${codeversion}`, {
       auth: {
         bearer: token
       },
@@ -41,13 +41,13 @@ module.exports = function ({env, codeversion = branch()}) {
         codeversion
       }).then(() => {
         spinner.succeed();
-        process.stdout.write(chalk.green('Success'));
+        process.stdout.write(chalk.green('Success\n'));
         process.exit();
       });
     })
     .catch(err => {
       spinner.fail();
-      process.stdout.write(chalk.red(err));
+      process.stdout.write(chalk.red(`${err}\n`));
       process.exit(1);
     });
 };

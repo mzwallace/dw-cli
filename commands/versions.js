@@ -6,7 +6,7 @@ const authenticate = require('../lib/authenticate');
 
 const getVersions = ({token, env}) => {
   return new Promise((resolve, reject) => {
-    request.get(`https://${env}${config.hostname}/s/-/dw/data/v16_6/code_versions`, {
+    request.get(`https://${env}${config.hostname}/s/-/dw/data/${config.api_version}/code_versions`, {
       auth: {
         bearer: token
       }

@@ -47,7 +47,7 @@ module.exports = () => {
       filePath: dest
     }).then(() => {
       spinner.succeed();
-      process.stdout.write(chalk.green('Success'));
+      process.stdout.write(chalk.green('Success\n'));
       del(dest);
       process.exit();
     });
