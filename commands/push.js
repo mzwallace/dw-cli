@@ -10,7 +10,7 @@ const write = require('../lib/write');
 const mkdir = require('../lib/mkdir');
 const del = require('../lib/delete');
 
-module.exports = () => {
+module.exports = async () => {
   const src = global.argv.folder;
   const branch = global.argv.branch;
 
@@ -22,40 +22,39 @@ module.exports = () => {
 
   const spinner = ora(`Deploying ${src} to ${branch}`).start();
 
-  zip({
-    src,
-    dest: path.join(get(process, 'env.TMPDIR', '.'), 'archive.zip'),
-    root: src
-  })
-  .then(file => {
-    return mkdir({
+  try {
+    spinner.text = `Zipping ${src}`;
+    const file = await zip({
+      src,
+      dest: path.join(get(process, 'env.TMPDIR', '.'), 'archive.zip'),
+      root: src
+    });
+    spinner.text = `Zipped ${src} to ${file}`;
+
+    spinner.text = 'Creating remote folder';
+    await mkdir({
       dir: `/${branch}`
-    })
-    .then(() => file)
-    .catch(() => file);
-  })
-  .then(file => {
-    debug(`Zipped ${src} to ${file}`);
-    return write({
+    });
+
+    spinner.text = 'Uploading';
+    const dest = await write({
       src: file,
       dest: `/${branch}`
     });
-  })
-  .then(dest => {
-    debug(`Uploaded Zip ${dest}`);
-    return unzip({
-      filePath: dest
-    }).then(() => {
-      spinner.succeed();
-      process.stdout.write(chalk.green('Success\n'));
-      del(dest);
-      process.exit();
-    });
-  })
-  .catch(err => {
+
+    spinner.text = `Uploaded Zip ${dest}`;
+
+    spinner.text = 'Unzipping';
+    await unzip({filePath: dest});
+
+    spinner.succeed();
+    process.stdout.write(chalk.green('Success\n'));
+    del(dest);
+    process.exit();
+  } catch (err) {
     spinner.fail();
     console.log(chalk.red(err));
     process.exit(1);
     throw err;
-  });
+  }
 };
