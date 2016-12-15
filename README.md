@@ -64,6 +64,12 @@ To use this utility you will need to setup your Open Commerce API Settings (Glob
           "methods":["get"],
           "read_attributes":"(**)",
           "write_attributes":"(**)"
+        },
+        {
+          "resource_id":"/code_versions/*",
+          "methods":["get", "patch", "put"],
+          "read_attributes":"(**)",
+          "write_attributes":"(**)"
         }
       ]
     }
