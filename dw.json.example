@@ -3,8 +3,10 @@
   "username": "defaultuser",
   "password": "defaultpass",
 
-  "client_id": "client-id-from-account-dashboard",
-  "client_password": "client-password-from-account-dashboard",
+  "api-version": 'v16_6',
+
+  "client-id": "client-id-from-account-dashboard",
+  "client-password": "client-password-from-account-dashboard",
 
   "environments": {
     "dev01": {

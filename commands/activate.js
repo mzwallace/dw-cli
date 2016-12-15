@@ -1,13 +1,12 @@
 const ora = require('ora');
 const chalk = require('chalk');
 const request = require('request');
-const config = require('../lib/config')();
 const authenticate = require('../lib/authenticate');
 const branch = require('../lib/branch');
 
-const activateVersion = ({token, env, codeversion}) => {
+const activateVersion = ({hostname, token, codeVersion, apiVersion}) => {
   return new Promise((resolve, reject) => {
-    request.patch(`https://${env}${config.hostname}/s/-/dw/data/${config.api_version}/code_versions/${codeversion}`, {
+    request.patch(`https://${hostname}/s/-/dw/data/${apiVersion}/code_versions/${codeVersion}`, {
       auth: {
         bearer: token
       },
@@ -27,13 +26,14 @@ const activateVersion = ({token, env, codeversion}) => {
   });
 };
 
-module.exports = async function ({env, codeversion = branch()}) {
-  const spinner = ora(`Activating ${codeversion} on ${env}`).start();
+module.exports = async argv => {
+  const {hostname, codeVersion = branch(), apiVersion} = argv;
+  const spinner = ora(`Activating ${codeVersion} on ${hostname}`).start();
 
   try {
-    const resp = await authenticate();
+    const resp = await authenticate(argv);
     const token = JSON.parse(resp).access_token;
-    await activateVersion({env, token, codeversion});
+    await activateVersion({hostname, token, codeVersion, apiVersion});
     spinner.succeed();
     process.stdout.write(chalk.green('Success\n'));
     process.exit();

@@ -1,45 +1,41 @@
 const fs = require('fs');
-const path = require('path');
 const chalk = require('chalk');
 const ora = require('ora');
 const get = require('lodash.get');
-const debug = require('debug')('push');
 const zip = require('../lib/zip');
 const unzip = require('../lib/unzip');
 const write = require('../lib/write');
 const mkdir = require('../lib/mkdir');
 const del = require('../lib/delete');
+const log = require('../lib/log');
 
-module.exports = async () => {
-  const src = global.argv.folder;
-  const branch = global.argv.branch;
-
+module.exports = async argv => {
+  const {cartridge, codeVersion} = argv;
   try {
-    fs.accessSync(src);
+    fs.accessSync(cartridge);
   } catch (err) {
-    throw new Error(`${src} is not a valid folder`);
+    throw new Error(`${cartridge} is not a valid folder`);
   }
 
-  const spinner = ora(`Deploying ${src} to ${branch}`).start();
+  const spinner = ora(`Deploying ${cartridge} to ${codeVersion}`).start();
 
   try {
-    spinner.text = `Zipping ${src}`;
+    spinner.text = `Zipping ${cartridge}`;
     const file = await zip({
-      src,
-      dest: path.join(get(process, 'env.TMPDIR', '.'), 'archive.zip'),
-      root: src
+      src: cartridge,
+      dest: get(process, 'env.TMPDIR', '.')
     });
-    spinner.text = `Zipped ${src} to ${file}`;
+    spinner.text = `Zipped ${cartridge} to ${file}`;
 
     spinner.text = 'Creating remote folder';
     await mkdir({
-      dir: `/${branch}`
+      dir: `/${codeVersion}`
     });
 
     spinner.text = 'Uploading';
     const dest = await write({
       src: file,
-      dest: `/${branch}`
+      dest: `/${codeVersion}`
     });
 
     spinner.text = `Uploaded Zip ${dest}`;
@@ -49,11 +45,11 @@ module.exports = async () => {
 
     spinner.succeed();
     process.stdout.write(chalk.green('Success\n'));
-    del(dest);
+    await del(dest);
     process.exit();
   } catch (err) {
     spinner.fail();
-    console.log(chalk.red(err));
+    log.error(err);
     process.exit(1);
     throw err;
   }

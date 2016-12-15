@@ -1,12 +1,11 @@
 const ora = require('ora');
 const chalk = require('chalk');
 const request = require('request');
-const config = require('../lib/config')();
 const authenticate = require('../lib/authenticate');
 
-const getVersions = ({token, env}) => {
+const getVersions = ({token, hostname, apiVersion}) => {
   return new Promise((resolve, reject) => {
-    request.get(`https://${env}${config.hostname}/s/-/dw/data/${config.api_version}/code_versions`, {
+    request.get(`https://${hostname}/s/-/dw/data/${apiVersion}/code_versions`, {
       auth: {
         bearer: token
       }
@@ -22,13 +21,14 @@ const getVersions = ({token, env}) => {
   });
 };
 
-module.exports = async function ({env}) {
-  const spinner = ora(`Reading codeversions on ${env}`).start();
+module.exports = async argv => {
+  const {hostname, apiVersion} = argv;
+  const spinner = ora(`Reading codeversions on ${hostname}`).start();
 
   try {
-    const resp = await authenticate();
+    const resp = await authenticate(argv);
     const token = JSON.parse(resp).access_token;
-    const {data} = await getVersions({env, token});
+    const {data} = await getVersions({hostname, token, apiVersion});
 
     data.forEach(version => {
       console.log('\n');

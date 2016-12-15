@@ -9,10 +9,10 @@ const template = `
   "username": "defaultuser",
   "password": "defaultpass",
 
-  "api_version": 'v16_6',
+  "api-version": 'v16_6',
 
-  "client_id": "client-id-from-account-dashboard",
-  "client_password": "client-password-from-account-dashboard",
+  "client-id": "client-id-from-account-dashboard",
+  "client-password": "client-password-from-account-dashboard",
 
   "environments": {
     "dev01": {
