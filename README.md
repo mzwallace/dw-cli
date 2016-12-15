@@ -1,5 +1,7 @@
 #dw-cli
 
+This project is usable but WIP.
+
 A command line utility for Salesforce Commerce Cloud (Demandware) SIG and PIG (not production) development and deployment.
 
 ```
@@ -76,6 +78,12 @@ To use this utility you will need to setup your Open Commerce API Settings (Glob
         {
           "resource_id":"/code_versions",
           "methods":["get"],
+          "read_attributes":"(**)",
+          "write_attributes":"(**)"
+        },
+        {
+          "resource_id":"/code_versions/*",
+          "methods":["get", "patch", "put"],
           "read_attributes":"(**)",
           "write_attributes":"(**)"
         }
