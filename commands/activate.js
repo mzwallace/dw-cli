@@ -27,27 +27,19 @@ const activateVersion = ({token, env, codeversion}) => {
   });
 };
 
-module.exports = function ({env, codeversion = branch()}) {
+module.exports = async function ({env, codeversion = branch()}) {
   const spinner = ora(`Activating ${codeversion} on ${env}`).start();
 
-  authenticate()
-    .then(resp => {
-      return Promise.resolve(JSON.parse(resp).access_token);
-    })
-    .then(token => {
-      return activateVersion({
-        env,
-        token,
-        codeversion
-      }).then(() => {
-        spinner.succeed();
-        process.stdout.write(chalk.green('Success\n'));
-        process.exit();
-      });
-    })
-    .catch(err => {
-      spinner.fail();
-      process.stdout.write(chalk.red(`${err}\n`));
-      process.exit(1);
-    });
+  try {
+    const resp = await authenticate();
+    const token = JSON.parse(resp).access_token;
+    await activateVersion({env, token, codeversion});
+    spinner.succeed();
+    process.stdout.write(chalk.green('Success\n'));
+    process.exit();
+  } catch (err) {
+    spinner.fail();
+    process.stdout.write(chalk.red(`${err}\n`));
+    process.exit(1);
+  }
 };

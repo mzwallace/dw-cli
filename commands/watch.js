@@ -8,7 +8,7 @@ const branch = require('../lib/branch');
 
 module.exports = () => {
   const watcher = chokidar.watch('dir', {
-    ignored: /[\/\\]\./,
+    ignored: /[/\\]\./,
     persistent: true,
     atomic: true
   });
@@ -18,18 +18,19 @@ module.exports = () => {
   watcher.add(path.join(process.cwd(), 'cartridges'));
 
   // One-liner for current directory, ignores .dotfiles
-  watcher.on('change', filePath => {
+  watcher.on('change', async filePath => {
     const src = path.relative(process.cwd(), filePath);
     const dir = path.dirname(src).replace('cartridges', '');
     const dest = path.join('/', branch(), dir);
     const spinner = ora(`${src} changed, uploading`).start();
-    mkdirp(dest).then(() => {
-      return write({
-        src,
-        dest
-      }).then(() => {
-        spinner.succeed();
-      });
-    });
+    try {
+      await mkdirp(dest);
+      await write({src, dest});
+      spinner.succeed();
+    } catch (err) {
+      spinner.fail();
+      process.stdout.write(chalk.red(`${err}\n`));
+      process.exit(1);
+    }
   });
 };
