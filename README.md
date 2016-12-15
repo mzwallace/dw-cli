@@ -1,5 +1,7 @@
 #dw-cli
 
+This project is usable but WIP.
+
 A command line utility for Salesforce Commerce Cloud (Demandware) SIG and PIG (not production) development and deployment.
 
 ```
