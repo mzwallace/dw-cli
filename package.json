@@ -6,6 +6,9 @@
   "bin": {
     "dw": "./lib/cli.js"
   },
+  "engines": {
+    "node": ">=7.0.0"
+  },
   "scripts": {
     "test": "eslint {lib,commands}/** && ava"
   },
