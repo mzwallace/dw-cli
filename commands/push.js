@@ -10,20 +10,23 @@ const del = require('../lib/delete');
 const log = require('../lib/log');
 
 module.exports = async argv => {
-  const {cartridge, codeVersion} = argv;
+  const {cartridge = 'cartridges', codeVersion} = argv;
   try {
     fs.accessSync(cartridge);
   } catch (err) {
     throw new Error(`${cartridge} is not a valid folder`);
   }
 
-  const spinner = ora(`Deploying ${cartridge} to ${codeVersion}`).start();
+  log.info(`Deploying ${cartridge} to ${codeVersion}\n`);
+
+  const spinner = ora().start();
 
   try {
     spinner.text = `Zipping ${cartridge}`;
     const file = await zip({
       src: cartridge,
-      dest: get(process, 'env.TMPDIR', '.')
+      dest: get(process, 'env.TMPDIR', '.'),
+      inFolder: cartridge !== 'cartridges'
     });
     spinner.text = `Zipped ${cartridge} to ${file}`;
 
