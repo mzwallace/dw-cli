@@ -22,30 +22,23 @@ const getVersions = ({token, env}) => {
   });
 };
 
-module.exports = function ({env}) {
+module.exports = async function ({env}) {
   const spinner = ora(`Reading codeversions on ${env}`).start();
 
-  authenticate()
-    .then(resp => {
-      return Promise.resolve(JSON.parse(resp).access_token);
-    })
-    .then(token => {
-      return getVersions({
-        env,
-        token
-      }).then(({data}) => {
-        spinner.succeed();
-        data.forEach(version => {
-          console.log('\n');
-          console.log(version);
-          console.log('\n');
-        });
-        process.exit();
-      });
-    })
-    .catch(err => {
-      spinner.fail();
-      process.stdout.write(chalk.red(`${err}\n`));
-      process.exit(1);
+  try {
+    const resp = await authenticate();
+    const token = JSON.parse(resp).access_token;
+    const {data} = await getVersions({env, token});
+
+    data.forEach(version => {
+      console.log('\n');
+      console.log(version);
+      console.log('\n');
     });
+    process.exit();
+  } catch (err) {
+    spinner.fail();
+    process.stdout.write(chalk.red(`${err}\n`));
+    process.exit(1);
+  }
 };
