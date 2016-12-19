@@ -7,7 +7,10 @@ const log = require('../lib/log');
 
 module.exports = ({cartridge, codeVersion}) => {
   const watcher = chokidar.watch('dir', {
-    ignored: /[/\\]\./,
+    ignored: [
+      /[/\\]\./,
+      '**/node_modules/**'
+    ],
     persistent: true,
     atomic: true
   });
