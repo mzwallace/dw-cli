@@ -26,7 +26,7 @@ module.exports = async argv => {
     const file = await zip({
       src: cartridge,
       dest: get(process, 'env.TMPDIR', '.'),
-      inFolder: cartridge !== 'cartridges'
+      isSpecificCartridge: cartridge !== 'cartridges'
     });
     spinner.text = `Zipped ${cartridge} to ${file}`;
 
