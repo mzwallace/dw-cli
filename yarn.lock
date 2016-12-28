@@ -67,9 +67,9 @@
   dependencies:
     "@types/node" "*"
 
-"@types/request@^0.0.36":
-  version "0.0.36"
-  resolved "https://registry.yarnpkg.com/@types/request/-/request-0.0.36.tgz#e845870fc5fa372402d9f5c19fccc4ca0a5af543"
+"@types/request@^0.0.37":
+  version "0.0.37"
+  resolved "https://registry.yarnpkg.com/@types/request/-/request-0.0.37.tgz#32e95d9e8210dadde840cf2df8dc44304ddc972c"
   dependencies:
     "@types/form-data" "*"
     "@types/node" "*"
@@ -91,9 +91,9 @@
   version "0.0.32"
   resolved "https://registry.yarnpkg.com/@types/xml2js/-/xml2js-0.0.32.tgz#9f7e98cf0adcca085a35cdead0319b5ac19c9fd9"
 
-"@types/yargs@^6.3.3":
-  version "6.3.3"
-  resolved "https://registry.yarnpkg.com/@types/yargs/-/yargs-6.3.3.tgz#b088bf22c126ab3fa3b110e29318b3f47894c04d"
+"@types/yargs@^6.5.0":
+  version "6.5.0"
+  resolved "https://registry.yarnpkg.com/@types/yargs/-/yargs-6.5.0.tgz#308b17d5ca469f49ef76460baba793cb75657887"
 
 abbrev@1:
   version "1.0.9"
@@ -1060,9 +1060,13 @@ block-stream@*:
   dependencies:
     inherits "~2.0.0"
 
-bluebird@3.4.6, bluebird@^3.0.0, bluebird@^3.4.1:
+bluebird@^3.0.0, bluebird@^3.4.1:
   version "3.4.6"
   resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.4.6.tgz#01da8d821d87813d158967e743d5fe6c62cf8c0f"
+
+bluebird@^3.4.7:
+  version "3.4.7"
+  resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.4.7.tgz#f72d760be09b7f76d08ed8fae98b289a8d05fab3"
 
 boom@2.x.x:
   version "2.10.1"
@@ -1232,9 +1236,9 @@ cli-spinners@^0.1.2:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/cli-spinners/-/cli-spinners-0.1.2.tgz#bb764d88e185fb9e1e6a2a1f19772318f605e31c"
 
-cli-spinners@^0.2.0:
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/cli-spinners/-/cli-spinners-0.2.0.tgz#85078737913b880f6ec9ffe7b65e83ec7776284f"
+cli-spinners@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/cli-spinners/-/cli-spinners-1.0.0.tgz#ef987ed3d48391ac3dab9180b406a742180d6e6a"
 
 cli-truncate@^0.2.0:
   version "0.2.1"
@@ -1419,9 +1423,15 @@ dbox@0.6.4:
   dependencies:
     request "2.9.153"
 
-debug@^2.1.1, debug@^2.2.0, debug@^2.4.4:
+debug@^2.1.1, debug@^2.2.0:
   version "2.4.4"
   resolved "https://registry.yarnpkg.com/debug/-/debug-2.4.4.tgz#c04d17a654e9202464803f096153f70a6f31f4be"
+  dependencies:
+    ms "0.7.2"
+
+debug@^2.5.2:
+  version "2.5.2"
+  resolved "https://registry.yarnpkg.com/debug/-/debug-2.5.2.tgz#50c295a53dbf1657146e0c1b21307275e90d49cb"
   dependencies:
     ms "0.7.2"
 
@@ -2901,13 +2911,13 @@ optionator@^0.8.2:
     type-check "~0.3.2"
     wordwrap "~1.0.0"
 
-ora@0.3.0:
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/ora/-/ora-0.3.0.tgz#367a078ad25cfb096da501115eb5b401e07d7495"
+ora@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/ora/-/ora-0.4.0.tgz#fccb5a82e169ccd27c491bd00cc1924ff7a390bd"
   dependencies:
     chalk "^1.1.1"
     cli-cursor "^1.0.2"
-    cli-spinners "^0.2.0"
+    cli-spinners "^1.0.0"
     log-symbols "^1.0.2"
 
 os-homedir@^1.0.0:
