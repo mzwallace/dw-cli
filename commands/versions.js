@@ -2,6 +2,7 @@ const ora = require('ora');
 const chalk = require('chalk');
 const request = require('request');
 const authenticate = require('../lib/authenticate');
+const log = require('../lib/log');
 
 const getVersions = ({token, hostname, apiVersion}) => {
   return new Promise((resolve, reject) => {
@@ -21,24 +22,26 @@ const getVersions = ({token, hostname, apiVersion}) => {
   });
 };
 
-module.exports = async argv => {
+module.exports = async (argv, info = false) => {
   const {hostname, apiVersion} = argv;
-  const spinner = ora(`Reading codeversions on ${hostname}`).start();
+  if (info) log.info(`Listing codeversions on ${hostname}`);
+  const spinner = ora().start();
 
   try {
     const resp = await authenticate(argv);
     const token = JSON.parse(resp).access_token;
+
+    spinner.text = 'Reading';
     const {data} = await getVersions({hostname, token, apiVersion});
+    spinner.stop();
 
     data.forEach(version => {
-      console.log('\n');
-      console.log(version);
-      console.log('\n');
+      spinner.start();
+      spinner.text = version.id;
+      version.active ? spinner.succeed() : spinner.fail();
     });
-    process.exit();
   } catch (err) {
     spinner.fail();
-    process.stdout.write(chalk.red(`${err}\n`));
-    process.exit(1);
+    log.error(err);
   }
 };

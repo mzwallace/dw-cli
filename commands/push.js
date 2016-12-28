@@ -11,14 +11,15 @@ const log = require('../lib/log');
 
 module.exports = async argv => {
   const {cartridge = 'cartridges', codeVersion} = argv;
+
   try {
     fs.accessSync(cartridge);
   } catch (err) {
-    throw new Error(`${cartridge} is not a valid folder`);
+    log.error(`${cartridge} is not a valid folder`);
+    process.exit(1);
   }
 
-  log.info(`Deploying ${cartridge} to ${codeVersion}\n`);
-
+  log.info(`Deploying ${cartridge} to ${codeVersion}`);
   const spinner = ora().start();
 
   try {
@@ -28,32 +29,30 @@ module.exports = async argv => {
       dest: get(process, 'env.TMPDIR', '.'),
       isSpecificCartridge: cartridge !== 'cartridges'
     });
-    spinner.text = `Zipped ${cartridge} to ${file}`;
+    spinner.succeed();
 
-    spinner.text = 'Creating remote folder';
-    await mkdir({
-      dir: `/${codeVersion}`
-    });
+    spinner.start();
+    spinner.text = 'Creating remote folder'
+    await mkdir({dir: `/${codeVersion}`});
+    spinner.succeed();
 
-    spinner.text = 'Uploading';
-    const dest = await write({
-      src: file,
-      dest: `/${codeVersion}`
-    });
+    spinner.start();
+    spinner.text = `Uploading to ${codeVersion}`;
+    const dest = await write({src: file, dest: `/${codeVersion}`});
+    spinner.succeed();
 
-    spinner.text = `Uploaded Zip ${dest}`;
-
+    spinner.start();
     spinner.text = 'Unzipping';
     await unzip({filePath: dest});
 
-    spinner.succeed();
-    process.stdout.write(chalk.green('Success\n'));
+    spinner.start();
+    spinner.text = `Removing ${dest}`;
     await del(dest);
-    process.exit();
+    spinner.succeed();
+
+    log.success('Success');
   } catch (err) {
     spinner.fail();
     log.error(err);
-    process.exit(1);
-    throw err;
   }
 };

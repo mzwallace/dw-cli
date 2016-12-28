@@ -3,6 +3,7 @@ const chalk = require('chalk');
 const request = require('request');
 const authenticate = require('../lib/authenticate');
 const branch = require('../lib/branch');
+const log = require('../lib/log');
 
 const activateVersion = ({hostname, token, codeVersion, apiVersion}) => {
   return new Promise((resolve, reject) => {
@@ -28,18 +29,21 @@ const activateVersion = ({hostname, token, codeVersion, apiVersion}) => {
 
 module.exports = async argv => {
   const {hostname, codeVersion = branch(), apiVersion} = argv;
-  const spinner = ora(`Activating ${codeVersion} on ${hostname}`).start();
+  log.info(`Activating ${codeVersion} on ${hostname}`);
+  const spinner = ora().start();
 
   try {
     const resp = await authenticate(argv);
     const token = JSON.parse(resp).access_token;
+    spinner.text = 'Activating';
     await activateVersion({hostname, token, codeVersion, apiVersion});
-    spinner.succeed();
-    process.stdout.write(chalk.green('Success\n'));
-    process.exit();
+    spinner.stop();
+
+    await require('./versions')(argv, false);
+
+    log.success('Success');
   } catch (err) {
     spinner.fail();
-    process.stdout.write(chalk.red(`${err}\n`));
-    process.exit(1);
+    log.error(err);
   }
 };

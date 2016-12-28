@@ -2,6 +2,7 @@ const Promise = require('bluebird');
 const fs = Promise.promisifyAll(require('fs'));
 const path = require('path');
 const chalk = require('chalk');
+const log = require('../lib/log');
 
 const template = `
 {
@@ -32,11 +33,9 @@ const template = `
 module.exports = async () => {
   try {
     await fs.statAsync(path.join(process.cwd(), 'dw.json'));
-    process.stdout.write(chalk.red(`${chalk.underline('dw.json')} already exists`));
-    process.exit();
+    log.error(`'dw.json' already exists`);
   } catch (error) {
     await fs.writeFileAsync('dw.json', template.trim(), 'utf8');
-    process.stdout.write(chalk.green(`${chalk.underline('dw.json')} created`));
-    process.exit();
+    log.success(`'dw.json' created`);
   }
 };
