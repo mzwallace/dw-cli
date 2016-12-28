@@ -37,10 +37,8 @@ module.exports = async argv => {
     const token = JSON.parse(resp).access_token;
     spinner.text = 'Activating';
     await activateVersion({hostname, token, codeVersion, apiVersion});
-    spinner.stop();
-
+    spinner.succeed();
     await require('./versions')(argv, false);
-
     log.success('Success');
   } catch (err) {
     spinner.fail();

@@ -33,7 +33,7 @@ module.exports = ({cartridge, codeVersion}) => {
       spinner.suceed();
     } catch (err) {
       spinner.fail();
-      log.error(`${err}`);
+      log.error(err);
       process.exit(1);
     }
   });

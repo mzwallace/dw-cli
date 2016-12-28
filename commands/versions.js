@@ -22,7 +22,7 @@ const getVersions = ({token, hostname, apiVersion}) => {
   });
 };
 
-module.exports = async (argv, info = false) => {
+module.exports = async (argv, info = true) => {
   const {hostname, apiVersion} = argv;
   if (info) log.info(`Listing codeversions on ${hostname}`);
   const spinner = ora().start();
@@ -33,8 +33,9 @@ module.exports = async (argv, info = false) => {
 
     spinner.text = 'Reading';
     const {data} = await getVersions({hostname, token, apiVersion});
-    spinner.stop();
+    spinner.succeed();
 
+    log.plain('Versions');
     data.forEach(version => {
       spinner.start();
       spinner.text = version.id;
