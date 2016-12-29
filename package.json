@@ -12,7 +12,8 @@
   "scripts": {
     "test": "xo && ava",
     "postmerge": "bash bin/post-update-install",
-    "precommit": "xo"
+    "precommit": "xo",
+    "prepush": "xo"
   },
   "repository": {
     "type": "git",
