@@ -8,9 +8,7 @@ const mkdir = require('../lib/mkdir');
 const del = require('../lib/delete');
 const log = require('../lib/log');
 
-module.exports = async argv => {
-  const {cartridge = 'cartridges', codeVersion} = argv;
-
+module.exports = async ({cartridge = 'cartridges', codeVersion}) => {
   try {
     fs.accessSync(cartridge);
   } catch (err) {

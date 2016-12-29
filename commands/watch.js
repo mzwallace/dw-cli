@@ -5,9 +5,9 @@ const write = require('../lib/write');
 const mkdirp = require('../lib/mkdirp');
 const log = require('../lib/log');
 
-module.exports = ({cartridge, codeVersion}) => {
+module.exports = ({cartridge = 'cartridges', codeVersion}) => {
   log.info(`Watching '${cartridge}' for changes`);
-  const spinner = ora('Watching').start();
+  const spinner = ora().start();
 
   try {
     const watcher = chokidar.watch('dir', {
@@ -17,6 +17,8 @@ module.exports = ({cartridge, codeVersion}) => {
     });
 
     watcher.add(path.join(process.cwd(), cartridge));
+
+    spinner.text = 'Watching';
 
     watcher.on('change', async filePath => {
       const src = path.relative(process.cwd(), filePath);
