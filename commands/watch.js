@@ -1,8 +1,6 @@
 const path = require('path');
 const chokidar = require('chokidar');
 const ora = require('ora');
-const includes = require('lodash.includes');
-const pull = require('lodash.pull');
 const write = require('../lib/write');
 const mkdirp = require('../lib/mkdirp');
 const log = require('../lib/log');
@@ -10,7 +8,7 @@ const log = require('../lib/log');
 module.exports = ({cartridge = 'cartridges', codeVersion}) => {
   log.info(`Watching '${cartridge}' for changes`);
   const spinner = ora().start();
-  const uploading = [];
+  const uploading = new Set();
 
   try {
     const watcher = chokidar.watch('dir', {
@@ -27,8 +25,8 @@ module.exports = ({cartridge = 'cartridges', codeVersion}) => {
     watcher.on('change', async filePath => {
       const src = path.relative(process.cwd(), filePath);
 
-      if (!includes(uploading, src)) {
-        uploading.push(src);
+      if (!uploading.has(src)) {
+        uploading.add(src);
         let dir;
         if (cartridge === 'cartridges') {
           dir = path.dirname(src).replace(path.dirname(cartridge), '').replace('cartridges/', '');
@@ -56,7 +54,7 @@ module.exports = ({cartridge = 'cartridges', codeVersion}) => {
           spinner.start();
         }
 
-        pull(uploading, src);
+        uploading.delete(src);
       }
     });
   } catch (err) {
