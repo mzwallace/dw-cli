@@ -2759,6 +2759,10 @@ lodash.get@4.4.2:
   version "4.4.2"
   resolved "https://registry.yarnpkg.com/lodash.get/-/lodash.get-4.4.2.tgz#2d177f652fa31e939b4438d5341499dfa3825e99"
 
+lodash.includes@^4.3.0:
+  version "4.3.0"
+  resolved "https://registry.yarnpkg.com/lodash.includes/-/lodash.includes-4.3.0.tgz#60bb98a87cb923c68ca1e51325483314849f553f"
+
 lodash.isequal@^4.4.0:
   version "4.4.0"
   resolved "https://registry.yarnpkg.com/lodash.isequal/-/lodash.isequal-4.4.0.tgz#6295768e98e14dc15ce8d362ef6340db82852031"
@@ -2770,6 +2774,10 @@ lodash.kebabcase@^4.0.1:
 lodash.pickby@^4.6.0:
   version "4.6.0"
   resolved "https://registry.yarnpkg.com/lodash.pickby/-/lodash.pickby-4.6.0.tgz#7dea21d8c18d7703a27c704c15d3b84a67e33aff"
+
+lodash.pull@^4.1.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/lodash.pull/-/lodash.pull-4.1.0.tgz#60060cc6bd625b4d4567ec27dc45cd1be9eec012"
 
 lodash.snakecase@^4.0.1:
   version "4.1.1"
@@ -4305,7 +4313,7 @@ xo-init@^0.4.0:
     the-argv "^1.0.0"
     write-pkg "^2.0.0"
 
-xo@^0.17.1:
+xo@0.17.1:
   version "0.17.1"
   resolved "https://registry.yarnpkg.com/xo/-/xo-0.17.1.tgz#de65bc8120474fa76104f8a80b3b792d88c50ef6"
   dependencies:
