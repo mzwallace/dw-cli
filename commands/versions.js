@@ -1,5 +1,4 @@
 const ora = require('ora');
-const chalk = require('chalk');
 const request = require('request');
 const authenticate = require('../lib/authenticate');
 const log = require('../lib/log');
@@ -24,7 +23,9 @@ const getVersions = ({token, hostname, apiVersion}) => {
 
 module.exports = async (argv, info = true) => {
   const {hostname, apiVersion} = argv;
-  if (info) log.info(`Listing codeversions on ${hostname}`);
+  if (info) {
+    log.info(`Listing codeversions on ${hostname}`);
+  }
   const spinner = ora().start();
 
   try {
@@ -39,7 +40,11 @@ module.exports = async (argv, info = true) => {
     data.forEach(version => {
       spinner.start();
       spinner.text = version.id;
-      version.active ? spinner.succeed() : spinner.fail();
+      if (version.active) {
+        spinner.succeed();
+      } else {
+        spinner.fail();
+      }
     });
   } catch (err) {
     spinner.fail();

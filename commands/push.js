@@ -1,5 +1,4 @@
 const fs = require('fs');
-const chalk = require('chalk');
 const ora = require('ora');
 const get = require('lodash.get');
 const zip = require('../lib/zip');
@@ -32,7 +31,7 @@ module.exports = async argv => {
     spinner.succeed();
 
     spinner.start();
-    spinner.text = 'Creating remote folder'
+    spinner.text = 'Creating remote folder';
     await mkdir({dir: `/${codeVersion}`});
     spinner.succeed();
 

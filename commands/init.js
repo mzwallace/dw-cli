@@ -1,8 +1,9 @@
-const Promise = require('bluebird');
-const fs = Promise.promisifyAll(require('fs'));
 const path = require('path');
-const chalk = require('chalk');
+const fs = require('fs');
+const Promise = require('bluebird');
 const log = require('../lib/log');
+
+const fsAsync = Promise.promisifyAll(fs);
 
 const template = `
 {
@@ -32,10 +33,10 @@ const template = `
 
 module.exports = async () => {
   try {
-    await fs.statAsync(path.join(process.cwd(), 'dw.json'));
+    await fsAsync.statAsync(path.join(process.cwd(), 'dw.json'));
     log.error(`'dw.json' already exists`);
-  } catch (error) {
-    await fs.writeFileAsync('dw.json', template.trim(), 'utf8');
+  } catch (err) {
+    await fsAsync.writeFileAsync('dw.json', template.trim(), 'utf8');
     log.success(`'dw.json' created`);
   }
 };

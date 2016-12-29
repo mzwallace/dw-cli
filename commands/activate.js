@@ -1,5 +1,4 @@
 const ora = require('ora');
-const chalk = require('chalk');
 const request = require('request');
 const authenticate = require('../lib/authenticate');
 const branch = require('../lib/branch');

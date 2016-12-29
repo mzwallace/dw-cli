@@ -1,10 +1,9 @@
 const path = require('path');
-const chalk = require('chalk');
 const chokidar = require('chokidar');
+const ora = require('ora');
 const write = require('../lib/write');
 const mkdirp = require('../lib/mkdirp');
 const log = require('../lib/log');
-const ora = require('ora');
 
 module.exports = ({cartridge, codeVersion}) => {
   log.info(`Watching '${cartridge}' for changes`);

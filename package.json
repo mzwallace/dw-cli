@@ -10,8 +10,9 @@
     "node": ">=7.0.0"
   },
   "scripts": {
-    "test": "eslint {lib,commands}/** && ava",
-    "postmerge": "bash bin/post-update-install"
+    "test": "xo && ava",
+    "postmerge": "bash bin/post-update-install",
+    "precommit": "xo"
   },
   "repository": {
     "type": "git",
@@ -29,7 +30,7 @@
     "bluebird": "^3.4.7",
     "chalk": "1.1.3",
     "chokidar": "1.6.1",
-    "debug": "^2.5.2",
+    "debug": "^2.6.0",
     "dwdav": "^2.4.1",
     "lodash.defaults": "4.2.0",
     "lodash.get": "4.4.2",
@@ -63,11 +64,24 @@
     "express": "4.14.0",
     "husky": "^0.12.0",
     "jsDAV": "0.3.4",
-    "xml2js": "0.4.17"
+    "xml2js": "0.4.17",
+    "xo": "0.17.1"
   },
   "ava": {
     "files": [
       "test/specs/*.js"
     ]
+  },
+  "xo": {
+    "space": true,
+    "esnext": true,
+    "ignores": [
+      "test/**"
+    ],
+    "rules": {
+      "no-use-extend-native/no-use-extend-native": 0,
+      "unicorn/no-process-exit": 0,
+      "import/no-dynamic-require": 0
+    }
   }
 }
