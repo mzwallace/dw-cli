@@ -22,7 +22,12 @@ module.exports = ({cartridge = 'cartridges', codeVersion}) => {
 
     watcher.on('change', async filePath => {
       const src = path.relative(process.cwd(), filePath);
-      const dir = path.dirname(src).replace(path.dirname(cartridge), '');
+      let dir;
+      if (cartridge === 'cartridges') {
+        dir = path.dirname(src).replace(path.dirname(cartridge), '').replace('cartridges/', '');
+      } else {
+        dir = path.dirname(src).replace(path.dirname(cartridge), '');
+      }
       const dest = path.join('/', codeVersion, dir);
 
       spinner.text = `${src} changed`;
