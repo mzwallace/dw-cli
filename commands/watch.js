@@ -8,7 +8,7 @@ const ora = require('ora');
 
 module.exports = ({cartridge, codeVersion}) => {
   log.info(`Watching '${cartridge}' for changes`);
-  const spinner = ora().start();
+  const spinner = ora('Watching').start();
 
   const watcher = chokidar.watch('dir', {
     ignored: [/[/\\]\./, '**/node_modules/**'],
@@ -23,18 +23,22 @@ module.exports = ({cartridge, codeVersion}) => {
     const dir = path.dirname(src).replace(path.dirname(cartridge), '');
     const dest = path.join('/', codeVersion, dir);
 
-    spinner.start()
-    spinner.text = `${src} changed, uploading`;
+    spinner.text = `${src} changed`;
+    spinner.stopAndPersist();
+    spinner.text = 'Watching';
+    spinner.start();
 
     try {
       await mkdirp(dest);
       await write({src, dest});
       spinner.text = `${src} uploaded`;
-      spinner.suceed();
+      spinner.succeed();
+      spinner.text = 'Watching';
+      spinner.start();
     } catch (err) {
       spinner.fail();
+      spinner.start();
       log.error(err);
-      process.exit(1);
     }
   });
 };
