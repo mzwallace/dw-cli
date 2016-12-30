@@ -14,9 +14,9 @@
   dependencies:
     "@types/express" "*"
 
-"@types/bluebird@^3.0.36":
-  version "3.0.36"
-  resolved "https://registry.yarnpkg.com/@types/bluebird/-/bluebird-3.0.36.tgz#b804ddd1b1a082cf3e2137dfa7b5287f437c29b7"
+"@types/bluebird@^3.0.37":
+  version "3.0.37"
+  resolved "https://registry.yarnpkg.com/@types/bluebird/-/bluebird-3.0.37.tgz#2e76b394aa9bea40d04241a31c0887a260283388"
 
 "@types/chalk@0.4.31":
   version "0.4.31"
@@ -67,9 +67,9 @@
   dependencies:
     "@types/node" "*"
 
-"@types/request@^0.0.37":
-  version "0.0.37"
-  resolved "https://registry.yarnpkg.com/@types/request/-/request-0.0.37.tgz#32e95d9e8210dadde840cf2df8dc44304ddc972c"
+"@types/request@^0.0.38":
+  version "0.0.38"
+  resolved "https://registry.yarnpkg.com/@types/request/-/request-0.0.38.tgz#e6905e63272ef190d9d095f38429d3f5a3f523aa"
   dependencies:
     "@types/form-data" "*"
     "@types/node" "*"
@@ -2771,17 +2771,13 @@ lodash.upperfirst@^4.2.0:
   version "4.3.1"
   resolved "https://registry.yarnpkg.com/lodash.upperfirst/-/lodash.upperfirst-4.3.1.tgz#1365edf431480481ef0d1c68957a5ed99d49f7ce"
 
-lodash@4.17.3:
+lodash@4.17.3, lodash@^4.0.0, lodash@^4.13.1, lodash@^4.14.0, lodash@^4.2.0, lodash@^4.3.0, lodash@^4.8.0:
   version "4.17.3"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.3.tgz#557ed7d2a9438cac5fd5a43043ca60cb455e01f7"
 
 lodash@^3.10.0:
   version "3.10.1"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-3.10.1.tgz#5bf45e8e49ba4189e17d482789dfd15bd140b7b6"
-
-lodash@^4.0.0, lodash@^4.13.1, lodash@^4.14.0, lodash@^4.2.0, lodash@^4.3.0, lodash@^4.8.0:
-  version "4.16.4"
-  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.16.4.tgz#01ce306b9bad1319f2a5528674f88297aeb70127"
 
 log-symbols@^1.0.2:
   version "1.0.2"
