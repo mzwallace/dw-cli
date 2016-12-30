@@ -19,20 +19,20 @@ module.exports = ({cartridge = 'cartridges', codeVersion}) => {
     });
 
     watcher.add(path.join(process.cwd(), cartridge));
-
     spinner.text = 'Watching';
-
     watcher.on('change', async filePath => {
       const src = path.relative(process.cwd(), filePath);
 
       if (!uploading.has(src)) {
         uploading.add(src);
         let dir;
+
         if (cartridge === 'cartridges') {
           dir = path.dirname(src).replace(path.dirname(cartridge), '').replace('cartridges/', '');
         } else {
           dir = path.dirname(src).replace(path.dirname(cartridge), '');
         }
+
         const dest = path.join('/', codeVersion, dir);
 
         spinner.text = `${src} changed`;
@@ -41,8 +41,8 @@ module.exports = ({cartridge = 'cartridges', codeVersion}) => {
         spinner.start();
 
         try {
-          await mkdirp(dest);
-          await write({src, dest});
+          await mkdirp(`Cartridges/${dest}`);
+          await write({src, dest: `Cartridges/${dest}`});
           spinner.text = `${src} uploaded`;
           spinner.succeed();
           spinner.text = 'Watching';

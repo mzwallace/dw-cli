@@ -1,6 +1,6 @@
 const fs = require('fs');
 const ora = require('ora');
-const get = require('lodash.get');
+const get = require('lodash').get;
 const zip = require('../lib/zip');
 const unzip = require('../lib/unzip');
 const write = require('../lib/write');
@@ -17,9 +17,10 @@ module.exports = async ({cartridge = 'cartridges', codeVersion}) => {
   }
 
   log.info(`Deploying ${cartridge} to ${codeVersion}`);
-  const spinner = ora().start();
+  const spinner = ora();
 
   try {
+    spinner.start();
     spinner.text = `Zipping ${cartridge}`;
     const file = await zip({
       src: cartridge,
@@ -30,12 +31,12 @@ module.exports = async ({cartridge = 'cartridges', codeVersion}) => {
 
     spinner.start();
     spinner.text = 'Creating remote folder';
-    await mkdir({dir: `/${codeVersion}`});
+    await mkdir({dir: `Cartridges/${codeVersion}`});
     spinner.succeed();
 
     spinner.start();
     spinner.text = `Uploading to ${codeVersion}`;
-    const dest = await write({src: file, dest: `/${codeVersion}`});
+    const dest = await write({src: file, dest: `Cartridges/${codeVersion}`});
     spinner.succeed();
 
     spinner.start();
