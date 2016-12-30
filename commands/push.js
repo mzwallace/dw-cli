@@ -1,6 +1,6 @@
 const fs = require('fs');
 const ora = require('ora');
-const get = require('lodash').get;
+const {get} = require('lodash');
 const zip = require('../lib/zip');
 const unzip = require('../lib/unzip');
 const write = require('../lib/write');
