@@ -11,3 +11,5 @@ if hash yarn 2>/dev/null; then
 else
   check_run package.json "npm install"
 fi
+
+exit 0
