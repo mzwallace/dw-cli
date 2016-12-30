@@ -40,22 +40,23 @@ Examples:
 Place a dw.json file with these contents in your projects root directory or use `dw init`.  A Client ID and password can be created in the Account Center.
 ```
 {
-  "hostname": "-region-customer.demandware.net",
   "username": "defaultuser",
   "password": "defaultpass",
 
-  "api_verson": "v16_6",
+  "apiVersion": 'v16_6',
 
-  "client_id": "client-id-from-account-dashboard",
-  "client_password": "client-password-from-account-dashboard",
+  "clientId": "client-id-from-account-dashboard",
+  "clientPassword": "client-password-from-account-dashboard",
 
   "environments": {
     "dev01": {
+      "hostname": "dev01.hostname.com",
       "username": "dev01user",
       "password": "dev01pass"
     },
 
     "staging": {
+      "hostname": "staging.hostname.com",
       "certificate": "./staging.crt",
       "username": "staginguser",
       "password": "stagingpass"

@@ -5,31 +5,7 @@ const log = require('../lib/log');
 
 const fsAsync = Promise.promisifyAll(fs);
 
-const template = `
-{
-  "hostname": "-region-customer.demandware.net",
-  "username": "defaultuser",
-  "password": "defaultpass",
-
-  "apiVersion": 'v16_6',
-
-  "clientId": "client-id-from-account-dashboard",
-  "clientPassword": "client-password-from-account-dashboard",
-
-  "environments": {
-    "dev01": {
-      "username": "dev01user",
-      "password": "dev01pass"
-    },
-
-    "staging": {
-      "certificate": "./staging.crt",
-      "username": "staginguser",
-      "password": "stagingpass"
-    }
-  }
-}
-`;
+const template = fs.readFileSync(path.join(__dirname, '../dw.json.example'));
 
 module.exports = async () => {
   try {
