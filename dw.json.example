@@ -2,7 +2,7 @@
   "username": "defaultuser",
   "password": "defaultpass",
 
-  "apiVersion": 'v16_6',
+  "apiVersion": "v16_6",
 
   "clientId": "client-id-from-account-dashboard",
   "clientPassword": "client-password-from-account-dashboard",
