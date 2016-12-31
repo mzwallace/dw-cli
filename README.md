@@ -31,7 +31,7 @@ Examples:
 ```
 ## Examples
 
-Push and watch assume the 'code version' is the branch git branch.
+Push and watch assume the 'code version' is the git branch of the cwd.
 
 ```
 user@computer:~/Sites/site$ dw push dev01
