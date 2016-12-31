@@ -8,34 +8,26 @@ A command line utility for Salesforce Commerce Cloud (Demandware) SIG and PIG (n
 Usage: $ <command>
 
 Commands:
-  push <sandbox>                     Push cartridges to an environment (Assunes
-                                     "cartridges" folder in cwd)
-  watch <sandbox> <cartridge>        Push file changes to an environment
-  versions <sandbox>                 List codeversions in an environment
   activate <sandbox> <code-version>  Activate code on an environment
   init                               Create a dw.json file
+  log <sandbox>                      Stream log files from an environment
+  push <sandbox>                     Push all cartridges to an environment
+  versions <sandbox>                 List codeversions in an environment
+  watch <sandbox>                    Push file changes to an environment
 
 Options:
-  --username         Sandbox username
-  --password         Sandbox password
-  --hostname         Sandbox hostname
-  --sandbox          Sandbox
-  --code-version     Code version to deploy to               [default: "master"]
-  --cartridge        Path to single cartridge
-  --cartridges       Path to all cartridges
-  --api-version      Demandware API version                   [default: "v16_6"]
-  --client-id        Demandware API client_id
-  --client-password  Demandware API client_password
-  --help, -h         Show help                                         [boolean]
-  --version, -v      Show version number                               [boolean]
+  --username, -u   Username for environment
+  --password, -p   Password for environment
+  --hostname, -h   Hostname for environment
+  --cartridge, -c  Path to single cartridge
+  --help           Show help                                           [boolean]
+  --version        Show version number                                 [boolean]
 
 Examples:
-  $ dw push dev01                          Push all cartridges to the dev01
-                                           sandbox
-  $ dw push dev01 --cartridge app_mz_core  Push a single cartridge to the dev01
-                                           sandbox
-  $ dw watch dev01 app_mz_core             Watch for changes and push files to
-                                           the dev01 environment
+  $ dw activate dev01 develop
+  $ dw push dev01              Push all cartridges to the dev01 sandbox
+  $ dw push dev01 -c app_core  Push a single cartridge to the dev01 sandbox
+  $ dw watch dev01             Push changes to the dev01 environment
 ```
 ## Examples
 ```
@@ -67,7 +59,7 @@ user@computer:~/Sites/site$ dw watch dev01
 ⠙ Watching
 ```
 ```
-jgreen@jBook:~/Sites/mzwallace/mz-demandware$ dw log dev08
+user@computer:~/Sites/site$ dw log dev08
 [23:23:28] Streaming log files
 customerror [2016-12-30 18:49:49.212 GMT] ERROR PipelineCallServlet|12129246|Sites-Site|Product-HitTile|PipelineCall|Gl5mgZN_FjcBOi1siIw8AAPAMkRF7fycxl5GKt-wIdKVBUMYxGFRD1k-EtRw7gCSoVy0GgkT_Mw4Xju3W6a4Gg== custom.ProductImageSO.ds   Image doesn't exist: "default/images/hi-res/2111319/1.jpg". Product ID: "Black BE
 error 	at org.apache.tomcat.util.buf.ByteChunk.append(ByteChunk.java:366)
