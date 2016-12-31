@@ -30,6 +30,9 @@ Examples:
   $ dw watch dev01             Push changes to the dev01 environment
 ```
 ## Examples
+
+Push and watch assume the 'code version' is the branch git branch.
+
 ```
 user@computer:~/Sites/site$ dw push dev01
 [23:21:06] Deploying cartridges to current-branch-name
