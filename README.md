@@ -1,4 +1,4 @@
-#dw-cli
+# dw-cli
 
 This project is usable but WIP.
 
@@ -37,6 +37,36 @@ Examples:
   $ dw watch dev01 app_mz_core             Watch for changes and push files to
                                            the dev01 environment
 ```
+## Examples
+```
+user@computer:~/Sites/site$ dw push dev01
+[23:21:06] Deploying cartridges to current-branch-name
+✔ Zipping cartridges
+✔ Creating remote folder
+✔ Uploading to MZ-755
+✔ Removing /Cartridges/current-branch-name/archive.zip
+[23:21:42] Success
+user@computer:~/Sites/site$ dw activate dev01 current-branch-name
+[23:22:00] Activating MZ-755 on dev01-us-brand.demandware.net
+✔ Activating
+✔ Reading
+Versions
+✖ another-branch
+✔ current-branch-name
+✖ develop
+✖ version1
+[23:22:04] Success
+user@computer:~/Sites/site$ dw watch dev01
+[23:22:25] Watching 'cartridges' for changes
+  cartridges/app_controllers/cartridge/scripts/app.js changed
+✔ cartridges/app_controllers/cartridge/scripts/app.js uploaded
+  cartridges/app_controllers/cartridge/scripts/guard.js changed
+✔ cartridges/app_controllers/cartridge/scripts/guard.js uploaded
+  cartridges/app_controllers/cartridge/scripts/models/CartModel.js changed
+✔ cartridges/app_controllers/cartridge/scripts/models/CartModel.js uploaded
+⠙ Watching
+```
+## Setup
 Place a dw.json file with these contents in your projects root directory or use `dw init`.  A Client ID and password can be created in the Account Center.
 ```
 {
