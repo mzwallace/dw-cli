@@ -66,6 +66,32 @@ user@computer:~/Sites/site$ dw watch dev01
 ✔ cartridges/app_controllers/cartridge/scripts/models/CartModel.js uploaded
 ⠙ Watching
 ```
+```
+jgreen@jBook:~/Sites/mzwallace/mz-demandware$ dw log dev08
+[23:23:28] Streaming log files
+customerror [2016-12-30 18:49:49.212 GMT] ERROR PipelineCallServlet|12129246|Sites-Site|Product-HitTile|PipelineCall|Gl5mgZN_FjcBOi1siIw8AAPAMkRF7fycxl5GKt-wIdKVBUMYxGFRD1k-EtRw7gCSoVy0GgkT_Mw4Xju3W6a4Gg== custom.ProductImageSO.ds   Image doesn't exist: "default/images/hi-res/2111319/1.jpg". Product ID: "Black BE
+error 	at org.apache.tomcat.util.buf.ByteChunk.append(ByteChunk.java:366)
+error 	at org.apache.coyote.http11.InternalOutputBuffer$OutputStreamOutputBuffer.doWrite(InternalOutputBuffer.java:240)
+error 	at org.apache.coyote.http11.filters.IdentityOutputFilter.doWrite(IdentityOutputFilter.java:84)
+error 	at org.apache.coyote.http11.AbstractOutputBuffer.doWrite(AbstractOutputBuffer.java:192)
+error 	at org.apache.coyote.Response.doWrite(Response.java:499)
+error 	at org.apache.catalina.connector.OutputBuffer.realWriteBytes(OutputBuffer.java:402)
+error 	... 42 more
+wwd [02:15:01.610] DEBUG Completed DR backup.
+wwd [02:45:01.604] DEBUG Starting DR backup.
+wwd [02:45:01.611] DEBUG Completed DR backup.
+syslog [2016-12-31 04:22:03.465 GMT] User system activates code version 'current-branch-name'.
+syslog [2016-12-31 04:22:03.920 GMT] Code version 'current-branch-name' activated.
+syslog [2016-12-31 04:22:03.920 GMT] User system clears pipeline page cache of root
+analyticsengine [2016-12-31 02:02:01.592 GMT] Splitter only runs on production instance
+analyticsengine [2016-12-31 02:32:01.595 GMT] Base directory is: /remote/bbhd/bbhd_s08/sharedata/adl
+api [2016-12-30 20:07:51.158 GMT] PipelineDictionary usage violation: WARN: deprecated getAlias() PIPELET: com.demandware.pipelet.common.Assign
+api [2016-12-30 21:18:40.095 GMT] PipelineDictionary usage violation: WARN: deprecated getAliasKey() PIPELET: com.demandware.component.foundation.pipelet.common.DispatchFormAction
+sysevent [2016-12-31 04:22:03.485 GMT] Using '/remote/bbhd/bbhd_s08/sharedata/cartridges/current-branch-name/bm_paypal/cartridge' as main cartridge directory for 'bm_paypal'.
+sysevent [2016-12-31 04:22:03.486 GMT] Using '/remote/bbhd/bbhd_s08/sharedata/cartridges/current-branch-name/int_cybersource/cartridge' as main cartridge directory for 'int_cybersource'.
+jobs [2016-12-31 04:23:01.597 GMT] Created Job configuration for domain [system]. Job type [1]. Job Configuration [, de4ba8565c1ee2d1998142d8bc]
+jobs [2016-12-31 04:23:01.598 GMT] Created Job configuration for Schedule [RealTimeQuotaAlert, 5243faf4c73317f2ac12e375df]
+```
 ## Setup
 Place a dw.json file with these contents in your projects root directory or use `dw init`.  A Client ID and password can be created in the Account Center.
 ```
