@@ -62,7 +62,7 @@ user@computer:~/Sites/site$ dw watch dev01
 ⠙ Watching
 ```
 ```
-user@computer:~/Sites/site$ dw log dev08
+user@computer:~/Sites/site$ dw log staging
 [23:23:28] Streaming log files
 customerror [2016-12-30 18:49:49.212 GMT] ERROR PipelineCallServlet|12129246|Sites-Site|Product-HitTile|PipelineCall|Gl5mgZN_FjcBOi1siIw8AAPAMkRF7fycxl5GKt-wIdKVBUMYxGFRD1k-EtRw7gCSoVy0GgkT_Mw4Xju3W6a4Gg== custom.ProductImageSO.ds   Image doesn't exist: "default/images/hi-res/2111319/1.jpg". Product ID: "Black BE
 error 	at org.apache.tomcat.util.buf.ByteChunk.append(ByteChunk.java:366)
