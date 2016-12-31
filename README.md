@@ -104,10 +104,7 @@ Place a dw.json file with these contents in your projects root directory or use 
     },
 
     "staging": {
-      "hostname": "staging.hostname.com",
-      "certificate": "./staging.crt",
-      "username": "staginguser",
-      "password": "stagingpass"
+      "hostname": "staging.hostname.com"
     }
   }
 }
