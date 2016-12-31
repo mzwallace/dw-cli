@@ -39,7 +39,7 @@ user@computer:~/Sites/site$ dw push dev01
 ✔ Removing /Cartridges/current-branch-name/archive.zip
 [23:21:42] Success
 user@computer:~/Sites/site$ dw activate dev01 current-branch-name
-[23:22:00] Activating MZ-755 on dev01-us-brand.demandware.net
+[23:22:00] Activating current-branch-name on dev01-us-brand.demandware.net
 ✔ Activating
 ✔ Reading
 Versions
