@@ -13,14 +13,13 @@ module.exports = ({cartridge = 'cartridges', codeVersion}) => {
   try {
     const watcher = chokidar.watch('dir', {
       ignored: [/[/\\]\./, '**/node_modules/**'],
+      ignoreInitial: true,
       persistent: true,
       usePolling: true,
       atomic: true
     });
 
-    watcher.add(path.join(process.cwd(), cartridge));
-    spinner.text = 'Watching';
-    watcher.on('change', async filePath => {
+    const upload = async filePath => {
       const src = path.relative(process.cwd(), filePath);
 
       if (!uploading.has(src)) {
@@ -56,7 +55,12 @@ module.exports = ({cartridge = 'cartridges', codeVersion}) => {
 
         uploading.delete(src);
       }
-    });
+    };
+
+    watcher.add(path.join(process.cwd(), cartridge));
+    spinner.text = 'Watching';
+    watcher.on('change', upload);
+    watcher.on('add', upload);
   } catch (err) {
     log.error(err);
   }

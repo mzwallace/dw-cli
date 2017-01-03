@@ -16,9 +16,9 @@
   version "0.4.31"
   resolved "https://registry.yarnpkg.com/@types/chalk/-/chalk-0.4.31.tgz#a31d74241a6b1edbb973cf36d97a2896834a51f9"
 
-"@types/chokidar@^1.4.30":
-  version "1.4.30"
-  resolved "https://registry.yarnpkg.com/@types/chokidar/-/chokidar-1.4.30.tgz#a915b294102af7309b16cf96878d9f0a6fb1dda4"
+"@types/chokidar@^1.4.31":
+  version "1.4.31"
+  resolved "https://registry.yarnpkg.com/@types/chokidar/-/chokidar-1.4.31.tgz#d4891791f429896eefa701aea5cec1fceececf83"
   dependencies:
     "@types/node" "*"
 
@@ -42,9 +42,9 @@
   dependencies:
     "@types/node" "*"
 
-"@types/request@^0.0.38":
-  version "0.0.38"
-  resolved "https://registry.yarnpkg.com/@types/request/-/request-0.0.38.tgz#e6905e63272ef190d9d095f38429d3f5a3f523aa"
+"@types/request@^0.0.39":
+  version "0.0.39"
+  resolved "https://registry.yarnpkg.com/@types/request/-/request-0.0.39.tgz#168b96cf4253c5d54d403f746f82ee7aed47ce2c"
   dependencies:
     "@types/form-data" "*"
     "@types/node" "*"
@@ -2489,9 +2489,13 @@ lodash.upperfirst@^4.2.0:
   version "4.3.1"
   resolved "https://registry.yarnpkg.com/lodash.upperfirst/-/lodash.upperfirst-4.3.1.tgz#1365edf431480481ef0d1c68957a5ed99d49f7ce"
 
-lodash@4.17.3, lodash@^4.0.0, lodash@^4.13.1, lodash@^4.14.0, lodash@^4.2.0, lodash@^4.3.0, lodash@^4.8.0:
+lodash@^4.0.0, lodash@^4.13.1, lodash@^4.14.0, lodash@^4.2.0, lodash@^4.3.0, lodash@^4.8.0:
   version "4.17.3"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.3.tgz#557ed7d2a9438cac5fd5a43043ca60cb455e01f7"
+
+lodash@^4.17.4:
+  version "4.17.4"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.4.tgz#78203a4d1c328ae1d86dca6460e369b57f4055ae"
 
 log-symbols@^1.0.2:
   version "1.0.2"
