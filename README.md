@@ -88,7 +88,13 @@ jobs [2016-12-31 04:23:01.597 GMT] Created Job configuration for domain [system]
 jobs [2016-12-31 04:23:01.598 GMT] Created Job configuration for Schedule [RealTimeQuotaAlert, 5243faf4c73317f2ac12e375df]
 ```
 ## Setup
-Place a dw.json file with these contents in your projects root directory or use `dw init`.  A Client ID and password can be created in the Account Center.
+Place a dw.json file with these contents in your projects root directory or use `dw init`.  A Client ID and password can be created in the Account Center.  
+
+### Staging
+For staging, if you are using an irregular hostname, you can fill that into 'hostname'.  
+
+### Two-factor Auth
+If two-factor auth is configured on staging, the special hostname required for webdav can be filled into 'webdav' as well as key, cert, and ca &emdash; these are all generated using the staging cert given to you from support.  The process of creating the user key and pem from the staging cert is outlined in the support documentation.
 ```
 {
   "username": "defaultuser",
@@ -107,10 +113,11 @@ Place a dw.json file with these contents in your projects root directory or use 
     },
 
     "staging": {
-      "hostname": "cert.staging.us.brand.demandware.net",
+      "hostname": "stage.hostname.com",
+      "webdav": "cert.staging.us.brand.demandware.net",
       "key": "./user.key",
       "cert": "./user.pem",
-      "ca": "./ca.pem"
+      "ca": "./staging.cert"
     }
   }
 }
