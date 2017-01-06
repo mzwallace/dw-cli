@@ -94,10 +94,10 @@ jobs [2016-12-31 04:23:01.598 GMT] Created Job configuration for Schedule [RealT
 ## Setup
 Place a dw.json file with these contents in your projects root directory or use `dw init`.  A Client ID and password can be created in the Account Center.  
 
-### Staging
+#### Staging
 For staging, if you are using an irregular hostname, you can fill that into 'hostname'.  
 
-### Two-factor Auth
+#### Two-factor Auth
 If two-factor auth is configured on staging, the special hostname required for webdav can be filled into 'webdav' as well as key, cert, and ca &emdash; these are all generated using the staging cert given to you from support.  The process of creating the user key and pem from the staging cert is outlined in the support documentation.
 ```
 {
@@ -126,7 +126,7 @@ If two-factor auth is configured on staging, the special hostname required for w
   }
 }
 ```
-
+#### Versions and Activate commands
 To get access to 'versions' and 'activate', you will need to setup your Open Commerce API Settings (Global not Site) on each instance.  A Client ID can be created in the Account Center.
 
 ```
