@@ -41,6 +41,8 @@ user@computer:~/Sites/site$ dw push dev01
 ✔ Uploading to MZ-755
 ✔ Removing /Cartridges/current-branch-name/archive.zip
 [23:21:42] Success
+```
+```
 user@computer:~/Sites/site$ dw activate dev01 current-branch-name
 [23:22:00] Activating current-branch-name on dev01-us-brand.demandware.net
 ✔ Activating
@@ -51,6 +53,8 @@ Versions
 ✖ develop
 ✖ version1
 [23:22:04] Success
+```
+```
 user@computer:~/Sites/site$ dw watch dev01
 [23:22:25] Watching 'cartridges' for changes
   cartridges/app_controllers/cartridge/scripts/app.js changed
@@ -123,7 +127,7 @@ If two-factor auth is configured on staging, the special hostname required for w
 }
 ```
 
-To use this utility you will need to setup your Open Commerce API Settings (Global not Site) on each instance in question.  A Client ID can be created in the Account Center.
+To get access to 'versions' and 'activate', you will need to setup your Open Commerce API Settings (Global not Site) on each instance.  A Client ID can be created in the Account Center.
 
 ```
 {
