@@ -2,7 +2,7 @@
 
 This project is usable but WIP.
 
-A command line utility for Salesforce Commerce Cloud (Demandware) SIG and PIG (not production) development and deployment.
+A command line utility for Salesforce Commerce Cloud (Demandware) SIG and PIG (no webdav on production) development and deployment.
 
 ```
 Usage: $ <command>
@@ -107,7 +107,10 @@ Place a dw.json file with these contents in your projects root directory or use 
     },
 
     "staging": {
-      "hostname": "staging.hostname.com"
+      "hostname": "cert.staging.us.brand.demandware.net",
+      "key": "./user.key",
+      "cert": "./user.pem",
+      "ca": "./ca.pem"
     }
   }
 }
