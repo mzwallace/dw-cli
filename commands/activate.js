@@ -37,7 +37,7 @@ module.exports = async argv => {
     spinner.text = 'Activating';
     await activateVersion({hostname, token, codeVersion, apiVersion});
     spinner.succeed();
-    await require('./versions')(argv, false);
+    // await require('./versions')(argv, false);
     log.success('Success');
   } catch (err) {
     spinner.fail();

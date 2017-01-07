@@ -4,12 +4,10 @@ const log = require('../lib/log');
 const read = require('../lib/read');
 const find = require('../lib/find');
 
-module.exports = async () => {
-  log.info(`Streaming log files`);
-  // const spinner = ora().start();
+module.exports = async ({webdav}) => {
+  log.info(`Streaming log files from ${webdav}`);
 
   try {
-    // spinner.text = `Streaming`;
     let files = await find('Logs');
 
     // only log files

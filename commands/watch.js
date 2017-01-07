@@ -5,9 +5,10 @@ const write = require('../lib/write');
 const mkdirp = require('../lib/mkdirp');
 const log = require('../lib/log');
 
-module.exports = ({cartridge = 'cartridges', codeVersion}) => {
-  log.info(`Watching '${cartridge}' for changes`);
-  const spinner = ora().start();
+module.exports = ({cartridge = 'cartridges', codeVersion, webdav}) => {
+  log.info(`Pushing changes to ${webdav}`);
+  const text = `Watching '${cartridge}'`;
+  const spinner = ora(text).start();
   const uploading = new Set();
 
   try {
@@ -19,46 +20,41 @@ module.exports = ({cartridge = 'cartridges', codeVersion}) => {
       atomic: true
     });
 
+    watcher.add(path.join(process.cwd(), cartridge));
+
     const upload = async filePath => {
       const src = path.relative(process.cwd(), filePath);
 
       if (!uploading.has(src)) {
         uploading.add(src);
-        let dir;
-
-        if (cartridge === 'cartridges') {
-          dir = path.dirname(src).replace(path.dirname(cartridge), '').replace('cartridges/', '');
-        } else {
-          dir = path.dirname(src).replace(path.dirname(cartridge), '');
-        }
-
-        const dest = path.join('/', codeVersion, dir);
-
         spinner.text = `${src} changed`;
         spinner.stopAndPersist();
-        spinner.text = 'Watching';
+        spinner.text = text;
         spinner.start();
 
+        let dir = path.dirname(src).replace(path.dirname(cartridge), '');
+
+        if (cartridge === 'cartridges') {
+          dir = dir.replace('cartridges/', '');
+        }
+
         try {
-          await mkdirp(`Cartridges/${dest}`);
-          await write({src, dest: `Cartridges/${dest}`});
-          spinner.text = `${src} uploaded`;
+          const dest = `Cartridges${path.join('/', codeVersion, dir)}`;
+          await mkdirp(dest);
+          await write({src, dest});
+          spinner.text = `${src} pushed to ${dest}`;
           spinner.succeed();
-          spinner.text = 'Watching';
-          spinner.start();
         } catch (err) {
           spinner.text = err.message;
           spinner.fail();
-          spinner.text = 'Watching';
-          spinner.start();
         }
 
+        spinner.text = text;
+        spinner.start();
         uploading.delete(src);
       }
     };
 
-    watcher.add(path.join(process.cwd(), cartridge));
-    spinner.text = 'Watching';
     watcher.on('change', upload);
     watcher.on('add', upload);
   } catch (err) {

@@ -46,6 +46,8 @@ module.exports = async (argv, info = true) => {
         spinner.fail();
       }
     });
+
+    log.success('Success');
   } catch (err) {
     spinner.fail();
     log.error(err);
