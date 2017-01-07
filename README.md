@@ -100,9 +100,9 @@ jobs [2016-12-31 04:23:01.598 GMT] Created Job configuration for Schedule [RealT
 ## Setup
 Place a dw.json file in your projects root directory or use `dw init`.
 #### The way config works
-* Regular config comes first.
-* Then if instance config exists in the config file it overrides regular config when using a particular instance in your arguments.
-* Command line arguments always override the config file.
+* Regular file config comes first.
+* If instance config exists in the file it overrides regular config when using a particular instance in your command.
+* Command line arguments override the config file.
 #### Sandbox Dev Example
 Just doing dev on a single sandbox?
 ```
