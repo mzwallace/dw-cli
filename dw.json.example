@@ -1,4 +1,5 @@
 {
+  "hostname": "-region-brand.demandware.net",
   "username": "defaultuser",
   "password": "defaultpass",
 
@@ -8,17 +9,12 @@
   "clientPassword": "client-password-from-account-dashboard",
 
   "environments": {
-    "dev01": {
-      "hostname": "dev01.hostname.com",
-      "username": "dev01user",
-      "password": "dev01pass"
-    },
-
     "staging": {
-      "hostname": "staging.hostname.com",
-      "certificate": "./staging.crt",
-      "username": "staginguser",
-      "password": "stagingpass"
+      "hostname": "stage.hostname.com",
+      "webdav": "cert.staging.region.brand.demandware.net",
+      "key": "./user.key",
+      "cert": "./user.pem",
+      "ca": "./staging.cert"
     }
   }
 }
