@@ -1,36 +1,36 @@
 # dw-cli
-
 This project is usable but WIP.
 
 A command line utility for Salesforce Commerce Cloud (Demandware) SIG and PIG (no webdav on production) development and deployment.
-
 ```
-Usage: dw <command> [args] --option
+Usage: dw <command> <instance> --options
 
 Commands:
   init                                Create a dw.json file
   versions <instance>                 List code versions on an instance
-  activate <instance> <code-version>  Activate code version on an instance
-  push <instance>                     Push all cartridges to an instance
+  activate <instance> [code-version]  Activate code version on an instance
+  push <instance>                     Push cartridges to an instance
   watch <instance>                    Push changes to an instance
   log <instance>                      Stream log files from an instance
 
 Options:
-  --username, -u   Username for instance
-  --password, -p   Password for instance
-  --hostname, -h   Hostname for instance
-  --cartridge, -c  Path to single cartridge
-  --help           Show help                                           [boolean]
-  --version        Show version number                                 [boolean]
+  --username, -u      Username for instance
+  --password, -p      Password for instance
+  --hostname, -h      Hostname for instance
+  --cartridges, -c    Path to cartridges
+  --code-version, -v  Code Version
+  --api-version       Demandware API Version
+  --client-id         Demandware API Client ID
+  --client-password   Demandware API Client Password
+  --help              Show help                                        [boolean]
+  --version           Show version number                              [boolean]
 
 Examples:
-  $ dw versions dev01           List code versions on the dev01 instance
-  $ dw activate dev01 version1  Activate version1 on the dev01 instance
-  $ dw push dev01               Push all cartridges to the dev01 instance
-  $ dw push dev01 -c app_core   Push a single cartridge to the dev01 instance
-  $ dw watch dev01              Push changes to the dev01 instance
-  $ dw watch dev01 -c app_core  Push cartridge changes to the dev01 instance
-  $ dw log dev01                Stream log files from the dev01 instance
+  dw versions dev01  List code versions on the dev01 instance
+  dw activate dev01  Activate code version on the dev01 instance
+  dw push dev01      Push cartridges to the dev01 instance
+  dw watch dev01     Push changes to the dev01 instance
+  dw log dev01       Stream log files from the dev01 instance
 ```
 ## Examples
 
