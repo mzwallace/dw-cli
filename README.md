@@ -35,10 +35,11 @@ Push and watch assume the 'code version' is the git branch of the cwd.
 
 ```
 user@computer:~/Sites/site$ dw push dev01
-[23:21:06] Deploying cartridges to current-branch-name on dev01-region-brand.demandware.net
-✔ Zipping cartridges
-✔ Creating remote folder
-✔ Uploading to current-branch-name
+[23:21:06] Pushing current-branch-name to dev01-region-brand.demandware.net
+✔ Zipping 'cartridges'
+✔ Creating remote folder /Cartridges/current-branch-name
+✔ Uploading archive.zip to current-branch-name
+✔ Unzipping /Cartridges/current-branch-name/archive.zip
 ✔ Removing /Cartridges/current-branch-name/archive.zip
 [23:21:42] Success
 ```
@@ -46,28 +47,30 @@ user@computer:~/Sites/site$ dw push dev01
 user@computer:~/Sites/site$ dw activate dev01 current-branch-name
 [23:22:00] Activating current-branch-name on dev01-region-brand.demandware.net
 ✔ Activating
-✔ Reading
-Versions
-✖ another-branch
-✔ current-branch-name
-✖ develop
-✖ version1
 [23:22:04] Success
 ```
 ```
+user@computer:~/Sites/site$ dw versions dev01
+[23:22:06] Listing codeversions on dev01-region-brand.demandware.net
+✔ Reading
+Versions
+✔ current-branch-name
+✖ master
+✖ develop
+[23:22:08] Success
+```
+```
 user@computer:~/Sites/site$ dw watch dev01
-[23:22:25] Watching 'cartridges' for changes
-  cartridges/app_controllers/cartridge/scripts/app.js changed
-✔ cartridges/app_controllers/cartridge/scripts/app.js uploaded
-  cartridges/app_controllers/cartridge/scripts/guard.js changed
-✔ cartridges/app_controllers/cartridge/scripts/guard.js uploaded
-  cartridges/app_controllers/cartridge/scripts/models/CartModel.js changed
-✔ cartridges/app_controllers/cartridge/scripts/models/CartModel.js uploaded
-⠙ Watching
+[23:22:25] Pushing current-branch-name changes to dev01-region-brand.demandware.net
+  cartridges/app_controllers/README.md changed
+✔ cartridges/app_controllers/README.md pushed to Cartridges/current-branch-name/app_controllers
+  cartridges/app_controllers/cartridge/controllers/Home.js changed
+✔ cartridges/app_controllers/cartridge/controllers/Home.js pushed to Cartridges/current-branch-name/app_controllers/cartridge/controllers
+⠙ Watching 'cartridges'
 ```
 ```
 user@computer:~/Sites/site$ dw log dev01
-[23:23:28] Streaming log files
+[23:23:28] Streaming log files from dev01-region-brand.demandware.net
 customerror [2016-12-30 18:49:49.212 GMT] ERROR PipelineCallServlet|12129246|Sites-Site|Product-HitTile|PipelineCall|Gl5mgZN_FjcBOi1siIw8AAPAMkRF7fycxl5GKt-wIdKVBUMYxGFRD1k-EtRw7gCSoVy0GgkT_Mw4Xju3W6a4Gg== custom.ProductImageSO.ds   Image doesn't exist: "default/images/hi-res/2111319/1.jpg". Product ID: "Black BE
 error 	at org.apache.tomcat.util.buf.ByteChunk.append(ByteChunk.java:366)
 error 	at org.apache.coyote.http11.InternalOutputBuffer$OutputStreamOutputBuffer.doWrite(InternalOutputBuffer.java:240)
