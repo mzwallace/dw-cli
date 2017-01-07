@@ -35,16 +35,16 @@ Push and watch assume the 'code version' is the git branch of the cwd.
 
 ```
 user@computer:~/Sites/site$ dw push dev01
-[23:21:06] Deploying cartridges to current-branch-name
+[23:21:06] Deploying cartridges to current-branch-name on dev01-region-brand.demandware.net
 ✔ Zipping cartridges
 ✔ Creating remote folder
-✔ Uploading to MZ-755
+✔ Uploading to current-branch-name
 ✔ Removing /Cartridges/current-branch-name/archive.zip
 [23:21:42] Success
 ```
 ```
 user@computer:~/Sites/site$ dw activate dev01 current-branch-name
-[23:22:00] Activating current-branch-name on dev01-us-brand.demandware.net
+[23:22:00] Activating current-branch-name on dev01-region-brand.demandware.net
 ✔ Activating
 ✔ Reading
 Versions
@@ -66,7 +66,7 @@ user@computer:~/Sites/site$ dw watch dev01
 ⠙ Watching
 ```
 ```
-user@computer:~/Sites/site$ dw log staging
+user@computer:~/Sites/site$ dw log dev01
 [23:23:28] Streaming log files
 customerror [2016-12-30 18:49:49.212 GMT] ERROR PipelineCallServlet|12129246|Sites-Site|Product-HitTile|PipelineCall|Gl5mgZN_FjcBOi1siIw8AAPAMkRF7fycxl5GKt-wIdKVBUMYxGFRD1k-EtRw7gCSoVy0GgkT_Mw4Xju3W6a4Gg== custom.ProductImageSO.ds   Image doesn't exist: "default/images/hi-res/2111319/1.jpg". Product ID: "Black BE
 error 	at org.apache.tomcat.util.buf.ByteChunk.append(ByteChunk.java:366)

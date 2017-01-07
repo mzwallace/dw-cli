@@ -8,7 +8,7 @@ const mkdir = require('../lib/mkdir');
 const del = require('../lib/delete');
 const log = require('../lib/log');
 
-module.exports = async ({cartridge = 'cartridges', codeVersion}) => {
+module.exports = async ({cartridge = 'cartridges', codeVersion, hostname}) => {
   try {
     fs.accessSync(cartridge);
   } catch (err) {
@@ -16,7 +16,7 @@ module.exports = async ({cartridge = 'cartridges', codeVersion}) => {
     process.exit(1);
   }
 
-  log.info(`Deploying ${cartridge} to ${codeVersion}`);
+  log.info(`Deploying ${cartridge} to ${codeVersion} on ${hostname}`);
   const spinner = ora();
 
   try {
