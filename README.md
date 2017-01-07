@@ -92,15 +92,10 @@ jobs [2016-12-31 04:23:01.597 GMT] Created Job configuration for domain [system]
 jobs [2016-12-31 04:23:01.598 GMT] Created Job configuration for Schedule [RealTimeQuotaAlert, 5243faf4c73317f2ac12e375df]
 ```
 ## Setup
-Place a dw.json file with these contents in your projects root directory or use `dw init`.  A Client ID and password can be created in the Account Center.  
-
-#### Staging
-For staging, if you are using an irregular hostname, you can fill that into 'hostname'.  
-
-#### Two-factor Auth
-If two-factor auth is configured on staging, the special hostname required for webdav can be filled into 'webdav' as well as key, cert, and ca &emdash; these are all generated using the staging cert given to you from support.  The process of creating the user key and pem from the staging cert is outlined in the support documentation.
+Place a dw.json file with these contents in your projects root directory or use `dw init`.
 ```
 {
+  "hostname": "-region-brand.demandware.net",
   "username": "defaultuser",
   "password": "defaultpass",
 
@@ -110,10 +105,8 @@ If two-factor auth is configured on staging, the special hostname required for w
   "clientPassword": "client-password-from-account-dashboard",
 
   "environments": {
-    "dev01": {
-      "hostname": "dev01.hostname.com",
-      "username": "dev01user",
-      "password": "dev01pass"
+    "dev02": {
+      "password": "differentpass"
     },
 
     "staging": {
@@ -126,8 +119,17 @@ If two-factor auth is configured on staging, the special hostname required for w
   }
 }
 ```
+#### Sandbox Instances
+For sandbox instances, I try to keep all of mine consistent as far as usernames and passwords go, so that is why we have the global default 'hostname' postfix, 'username', and 'password' config fields.  When you type in something like `dw push dev01`, the 'hostname' will converted to 'dev01-region-brand.demandware.net'.  If you need to override any settings per instance, you can do that in environments, as seen above with a scenario where the dev02 sandbox instance has a different password than the rest (yay strict af demandware password policy).
+
+#### Staging
+For staging, if you are using a custom hostname, you can fill that into 'hostname'.
+
+###### Two-factor Auth and Webdav
+If two-factor auth is configured on staging, the special hostname required for webdav can be filled into 'webdav' as well as key, cert, and ca — these are all generated using the staging cert given to you from support.  The process of creating the user key and pem from the staging cert is outlined in the support documentation.
+
 #### Versions and Activate commands
-To get access to 'versions' and 'activate', you will need to setup your Open Commerce API Settings (Global not Site) on each instance.  A Client ID can be created in the Account Center.
+To get access to 'versions' and 'activate', you will need to setup your Open Commerce API Settings (Global, not Site) on each instance.  A Client ID and Client Password can be created in the Account Center (account.demandware.com).
 
 ```
 {
