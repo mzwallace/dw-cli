@@ -49,7 +49,7 @@ module.exports = async ({cartridge = 'cartridges', codeVersion, webdav}) => {
 
     spinner.start();
     spinner.text = `Removing ${file}`;
-    await del(dest);
+    await del(file);
     spinner.succeed();
 
     log.success('Success');
