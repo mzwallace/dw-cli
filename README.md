@@ -98,7 +98,7 @@ jobs [2016-12-31 04:23:01.597 GMT] Created Job configuration for domain [system]
 jobs [2016-12-31 04:23:01.598 GMT] Created Job configuration for Schedule [RealTimeQuotaAlert, 5243faf4c73317f2ac12e375df]
 ```
 ## Setup
-Place a dw.json file in your projects root directory or use `dw init`.
+Place a dw.json file in your project root directory or use `dw init`.
 #### The way config works
 * Regular file config comes first.
 * If instance config exists in the file it overrides regular config when using a particular instance in your command.
