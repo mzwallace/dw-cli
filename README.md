@@ -5,29 +5,32 @@ This project is usable but WIP.
 A command line utility for Salesforce Commerce Cloud (Demandware) SIG and PIG (no webdav on production) development and deployment.
 
 ```
-Usage: $ <command>
+Usage: dw <command> [args] --option
 
 Commands:
-  activate <sandbox> <code-version>  Activate code on an environment
-  init                               Create a dw.json file
-  log <sandbox>                      Stream log files from an environment
-  push <sandbox>                     Push all cartridges to an environment
-  versions <sandbox>                 List codeversions in an environment
-  watch <sandbox>                    Push file changes to an environment
+  init                                Create a dw.json file
+  versions <instance>                 List code versions on an instance
+  activate <instance> <code-version>  Activate code version on an instance
+  push <instance>                     Push all cartridges to an instance
+  watch <instance>                    Push changes to an instance
+  log <instance>                      Stream log files from an instance
 
 Options:
-  --username, -u   Username for environment
-  --password, -p   Password for environment
-  --hostname, -h   Hostname for environment
+  --username, -u   Username for instance
+  --password, -p   Password for instance
+  --hostname, -h   Hostname for instance
   --cartridge, -c  Path to single cartridge
   --help           Show help                                           [boolean]
   --version        Show version number                                 [boolean]
 
 Examples:
-  $ dw activate dev01 develop
-  $ dw push dev01              Push all cartridges to the dev01 sandbox
-  $ dw push dev01 -c app_core  Push a single cartridge to the dev01 sandbox
-  $ dw watch dev01             Push changes to the dev01 environment
+  $ dw versions dev01           List code versions on the dev01 instance
+  $ dw activate dev01 version1  Activate version1 on the dev01 instance
+  $ dw push dev01               Push all cartridges to the dev01 instance
+  $ dw push dev01 -c app_core   Push a single cartridge to the dev01 instance
+  $ dw watch dev01              Push changes to the dev01 instance
+  $ dw watch dev01 -c app_core  Push cartridge changes to the dev01 instance
+  $ dw log dev01                Stream log files from the dev01 instance
 ```
 ## Examples
 

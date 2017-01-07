@@ -8,7 +8,7 @@
   "clientId": "client-id-from-account-dashboard",
   "clientPassword": "client-password-from-account-dashboard",
 
-  "environments": {
+  "instances": {
     "staging": {
       "hostname": "stage.hostname.com",
       "webdav": "cert.staging.region.brand.demandware.net",

@@ -24,7 +24,7 @@ const getVersions = ({token, hostname, apiVersion}) => {
 module.exports = async (argv, info = true) => {
   const {hostname, apiVersion} = argv;
   if (info) {
-    log.info(`Listing codeversions on ${hostname}`);
+    log.info(`Listing code versions on ${hostname}`);
   }
   const spinner = ora().start();
 
