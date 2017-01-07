@@ -98,15 +98,32 @@ jobs [2016-12-31 04:23:01.597 GMT] Created Job configuration for domain [system]
 jobs [2016-12-31 04:23:01.598 GMT] Created Job configuration for Schedule [RealTimeQuotaAlert, 5243faf4c73317f2ac12e375df]
 ```
 ## Setup
-Place a dw.json file with these contents in your projects root directory or use `dw init`.
+Place a dw.json file in your projects root directory or use `dw init`.
+#### The way config works
+* Regular config comes first.
+* Then if instance config exists in the config file it overrides regular config when using a particular instance in your arguments.
+* Command line arguments always override the config file.
+#### Sandbox Dev Example
+Just doing dev on a single sandbox?
 ```
 {
   "hostname": "-region-brand.demandware.net",
-  "username": "defaultuser",
-  "password": "defaultpass",
-
+  "username": "default-user",
+  "password": "default-pass",
   "apiVersion": 'v16_6',
-
+  "clientId": "client-id-from-account-dashboard",
+  "clientPassword": "client-password-from-account-dashboard",
+}
+```
+#### Another Example 
+Doing dev on several sandboxes and a staging instance with two-factor auth?
+```
+{
+  "hostname": "-region-brand.demandware.net",
+  "username": "default-user",
+  "password": "default-pass",
+  
+  "apiVersion": 'v16_6',
   "clientId": "client-id-from-account-dashboard",
   "clientPassword": "client-password-from-account-dashboard",
 
@@ -118,6 +135,29 @@ Place a dw.json file with these contents in your projects root directory or use 
     "staging": {
       "hostname": "stage.hostname.com",
       "webdav": "cert.staging.us.brand.demandware.net",
+      "key": "./user.key",
+      "cert": "./user.pem",
+      "ca": "./staging.cert"
+    }
+  }
+}
+```
+#### All Config Example
+```
+{
+  "hostname": "-region-brand.demandware.net",
+  "username": "default-user",
+  "password": "default-pass",
+  "cartridges": "cartridges-root-folder",
+  "apiVersion": "v16_6",
+  "codeVersion": 'version1',
+  "clientId": "client-id-from-account-dashboard",
+  "clientPassword": "client-password-from-account-dashboard",
+
+  "instances": {
+    "staging": {
+      "hostname": "stage.hostname.com",
+      "webdav": "cert.staging.region.brand.demandware.net",
       "key": "./user.key",
       "cert": "./user.pem",
       "ca": "./staging.cert"
