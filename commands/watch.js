@@ -6,7 +6,7 @@ const mkdirp = require('../lib/mkdirp');
 const log = require('../lib/log');
 
 module.exports = ({cartridge = 'cartridges', codeVersion, webdav}) => {
-  log.info(`Pushing changes to ${webdav}`);
+  log.info(`Pushing ${codeVersion} changes to ${webdav}`);
   const text = `Watching '${cartridge}'`;
   const spinner = ora(text).start();
   const uploading = new Set();

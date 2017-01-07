@@ -12,17 +12,20 @@ module.exports = async ({cartridge = 'cartridges', codeVersion, webdav}) => {
   try {
     fs.accessSync(cartridge);
   } catch (err) {
-    log.error(`${cartridge} is not a valid folder`);
+    log.error(`'${cartridge}' is not a valid folder`);
     process.exit(1);
   }
 
-  log.info(`Deploying ${cartridge} to ${codeVersion} on ${webdav}`);
+  log.info(`Pushing ${codeVersion} to ${webdav}`);
   const spinner = ora();
+  const dest = `/Cartridges/${codeVersion}`;
 
   try {
+    let file;
+
     spinner.start();
-    spinner.text = `Zipping ${cartridge}`;
-    const file = await zip({
+    spinner.text = `Zipping '${cartridge}'`;
+    file = await zip({
       src: cartridge,
       dest: get(process, 'env.TMPDIR', '.'),
       isSpecificCartridge: cartridge !== 'cartridges'
@@ -30,21 +33,22 @@ module.exports = async ({cartridge = 'cartridges', codeVersion, webdav}) => {
     spinner.succeed();
 
     spinner.start();
-    spinner.text = 'Creating remote folder';
-    await mkdir({dir: `Cartridges/${codeVersion}`});
+    spinner.text = `Creating remote folder ${dest}`;
+    await mkdir({dir: dest});
     spinner.succeed();
 
     spinner.start();
-    spinner.text = `Uploading to ${codeVersion}`;
-    const dest = await write({src: file, dest: `Cartridges/${codeVersion}`});
+    spinner.text = `Uploading archive.zip to ${dest}`;
+    file = await write({src: file, dest});
     spinner.succeed();
 
     spinner.start();
-    spinner.text = 'Unzipping';
-    await unzip({filePath: dest});
+    spinner.text = `Unzipping ${file}`;
+    await unzip({filePath: file});
+    spinner.succeed();
 
     spinner.start();
-    spinner.text = `Removing ${dest}`;
+    spinner.text = `Removing ${file}`;
     await del(dest);
     spinner.succeed();
 
