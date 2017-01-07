@@ -56,10 +56,11 @@ user@computer:~/Sites/site$ dw activate dev01 current-branch-name
 user@computer:~/Sites/site$ dw versions dev01
 [23:22:06] Listing codeversions on dev01-region-brand.demandware.net
 ✔ Reading
-Versions
+-------------------
 ✔ current-branch-name
 ✖ master
 ✖ develop
+-------------------
 [23:22:08] Success
 ```
 ```
@@ -103,26 +104,27 @@ Place a dw.json file in your project root directory or use `dw init`.
 * Regular file config comes first.
 * If instance config exists in the file it overrides regular config when using a particular instance in your command.
 * Command line arguments override the config file.
+
 #### Sandbox Dev Example
-Just doing dev on a single sandbox?
+Working on a single sandbox and your cartidges are in a 'cartridges' folder in the project root?
 ```
 {
   "hostname": "-region-brand.demandware.net",
   "username": "default-user",
   "password": "default-pass",
+  "cartridges": "cartridges",
   "apiVersion": 'v16_6',
   "clientId": "client-id-from-account-dashboard",
   "clientPassword": "client-password-from-account-dashboard",
 }
 ```
 #### Another Example 
-Doing dev on several sandboxes and a staging instance with two-factor auth?
+Working on several sandboxes and a staging instance with two-factor auth?
 ```
 {
   "hostname": "-region-brand.demandware.net",
   "username": "default-user",
   "password": "default-pass",
-  
   "apiVersion": 'v16_6',
   "clientId": "client-id-from-account-dashboard",
   "clientPassword": "client-password-from-account-dashboard",
@@ -142,7 +144,7 @@ Doing dev on several sandboxes and a staging instance with two-factor auth?
   }
 }
 ```
-#### All Config Example
+#### All Possible Config Options
 ```
 {
   "hostname": "-region-brand.demandware.net",
@@ -153,20 +155,14 @@ Doing dev on several sandboxes and a staging instance with two-factor auth?
   "codeVersion": 'version1',
   "clientId": "client-id-from-account-dashboard",
   "clientPassword": "client-password-from-account-dashboard",
-
-  "instances": {
-    "staging": {
-      "hostname": "stage.hostname.com",
-      "webdav": "cert.staging.region.brand.demandware.net",
-      "key": "./user.key",
-      "cert": "./user.pem",
-      "ca": "./staging.cert"
-    }
-  }
+  "webdav": "cert.staging.region.brand.demandware.net",
+  "key": "./user.key",
+  "cert": "./user.pem",
+  "ca": "./staging.cert"
 }
 ```
 #### Sandbox Instances
-For sandbox instances, I try to keep all of mine consistent as far as usernames and passwords go, so that is why we have the global default 'hostname' postfix, 'username', and 'password' config fields.  When you type in something like `dw push dev01`, the 'hostname' will converted to 'dev01-region-brand.demandware.net'.  If you need to override any settings per instance, you can do that in environments, as seen above with a scenario where the dev02 sandbox instance has a different password than the rest (yay strict af demandware password policy).
+For sandbox instances, I try to keep all of mine consistent as far as usernames and passwords go, so that is why we have the global default 'hostname' postfix, 'username', and 'password' config fields.  When you type in something like `dw push dev01`, the 'hostname' will converted to 'dev01-region-brand.demandware.net'.  If you need to override any settings per instance, you can do that in 'instances', as seen above with a scenario where the dev02 sandbox instance has a different password than the rest (yay strict af demandware password policy).
 
 #### Staging
 For staging, if you are using a custom hostname, you can fill that into 'hostname'.
