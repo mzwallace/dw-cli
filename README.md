@@ -167,7 +167,7 @@ For sandbox instances, I try to keep all of mine consistent as far as usernames 
 #### Staging
 For staging, if you are using a custom hostname, you can fill that into 'hostname'.
 
-###### Two-factor Auth and Webdav
+###### Two-factor Auth and WebDAV
 If two-factor auth is configured on staging, the special hostname required for webdav can be filled into 'webdav' as well as key, cert, and ca — these are all generated using the staging cert given to you from support.  The process of creating the user key and pem from the staging cert is outlined in the support documentation.
 
 #### Versions and Activate commands
