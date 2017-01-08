@@ -19,7 +19,7 @@ Options:
   --username, -u   Username for instance
   --password, -p   Password for instance
   --hostname, -h   Hostname for instance
-  --cartridge, -c  Path to single cartridge
+  --cartridges, -c Path to single cartridge
   --help           Show help                                           [boolean]
   --version        Show version number                                 [boolean]
 
@@ -27,9 +27,7 @@ Examples:
   $ dw versions dev01           List code versions on the dev01 instance
   $ dw activate dev01 version1  Activate version1 on the dev01 instance
   $ dw push dev01               Push all cartridges to the dev01 instance
-  $ dw push dev01 -c app_core   Push a single cartridge to the dev01 instance
   $ dw watch dev01              Push changes to the dev01 instance
-  $ dw watch dev01 -c app_core  Push cartridge changes to the dev01 instance
   $ dw log dev01                Stream log files from the dev01 instance
 ```
 ## Examples

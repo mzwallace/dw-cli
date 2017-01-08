@@ -1,42 +1,18 @@
 const ora = require('ora');
-const request = require('request');
-const authenticate = require('../lib/authenticate');
+const api = require('../lib/api');
 const log = require('../lib/log');
 
-const getVersions = ({token, hostname, apiVersion}) => {
-  return new Promise((resolve, reject) => {
-    request.get(`https://${hostname}/s/-/dw/data/${apiVersion}/code_versions`, {
-      auth: {
-        bearer: token
-      }
-    }, (err, res, body) => {
-      if (err) {
-        return reject(err);
-      }
-      if (res.statusCode >= 400) {
-        return reject(new Error(res.body));
-      }
-      resolve(JSON.parse(body));
-    });
-  });
-};
-
-module.exports = async (argv, info = true) => {
-  const {hostname, apiVersion} = argv;
-  if (info) {
-    log.info(`Listing code versions on ${hostname}`);
-  }
+module.exports = async ({clientId, clientPassword, hostname, apiVersion}) => {
+  log.info(`Reading code versions on ${hostname}`);
   const spinner = ora().start();
 
   try {
-    const resp = await authenticate(argv);
-    const token = JSON.parse(resp).access_token;
-
     spinner.text = 'Reading';
-    const {data} = await getVersions({hostname, token, apiVersion});
+    const method = 'get';
+    const endpoint = `https://${hostname}/s/-/dw/data/${apiVersion}/code_versions`;
+    const {data} = await api({clientId, clientPassword, method, endpoint});
     spinner.succeed();
-
-    log.plain('Versions');
+    log.plain('-------------------');
     data.forEach(version => {
       spinner.start();
       spinner.text = version.id;
@@ -46,7 +22,7 @@ module.exports = async (argv, info = true) => {
         spinner.fail();
       }
     });
-
+    log.plain('-------------------');
     log.success('Success');
   } catch (err) {
     spinner.fail();

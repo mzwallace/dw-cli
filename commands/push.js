@@ -8,11 +8,11 @@ const mkdir = require('../lib/mkdir');
 const del = require('../lib/delete');
 const log = require('../lib/log');
 
-module.exports = async ({cartridge = 'cartridges', codeVersion, webdav}) => {
+module.exports = async ({cartridges, codeVersion, webdav, request}) => {
   try {
-    fs.accessSync(cartridge);
+    fs.accessSync(cartridges);
   } catch (err) {
-    log.error(`'${cartridge}' is not a valid folder`);
+    log.error(`'${cartridges}' is not a valid folder`);
     process.exit(1);
   }
 
@@ -24,32 +24,28 @@ module.exports = async ({cartridge = 'cartridges', codeVersion, webdav}) => {
     let file;
 
     spinner.start();
-    spinner.text = `Zipping '${cartridge}'`;
-    file = await zip({
-      src: cartridge,
-      dest: get(process, 'env.TMPDIR', '.'),
-      isSpecificCartridge: cartridge !== 'cartridges'
-    });
+    spinner.text = `Zipping '${cartridges}'`;
+    file = await zip(cartridges, get(process, 'env.TMPDIR', '.'));
     spinner.succeed();
 
     spinner.start();
     spinner.text = `Creating remote folder ${dest}`;
-    await mkdir({dir: dest});
+    await mkdir(dest, request);
     spinner.succeed();
 
     spinner.start();
     spinner.text = `Uploading archive.zip to ${dest}`;
-    file = await write({src: file, dest});
+    file = await write(file, dest, request);
     spinner.succeed();
 
     spinner.start();
     spinner.text = `Unzipping ${file}`;
-    await unzip({filePath: file});
+    await unzip(file, request);
     spinner.succeed();
 
     spinner.start();
     spinner.text = `Removing ${file}`;
-    await del(file);
+    await del(file, request);
     spinner.succeed();
 
     log.success('Success');

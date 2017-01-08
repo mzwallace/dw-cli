@@ -1,10 +1,10 @@
 {
   "hostname": "-region-brand.demandware.net",
-  "username": "defaultuser",
-  "password": "defaultpass",
-
+  "username": "default-user",
+  "password": "default-pass",
+  "cartridges": "cartridges-root-folder",
   "apiVersion": "v16_6",
-
+  "codeVersion": 'version1',
   "clientId": "client-id-from-account-dashboard",
   "clientPassword": "client-password-from-account-dashboard",
 

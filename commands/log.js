@@ -5,9 +5,8 @@ const read = require('../lib/read');
 const find = require('../lib/find');
 
 module.exports = async ({webdav}) => {
-  log.info(`Streaming log files from ${webdav}`);
-
   try {
+    log.info(`Streaming log files from ${webdav}`);
     let files = await find('Logs');
 
     // only log files

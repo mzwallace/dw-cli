@@ -5,13 +5,13 @@ const write = require('../lib/write');
 const mkdirp = require('../lib/mkdirp');
 const log = require('../lib/log');
 
-module.exports = ({cartridge = 'cartridges', codeVersion, webdav}) => {
-  log.info(`Pushing ${codeVersion} changes to ${webdav}`);
-  const text = `Watching '${cartridge}'`;
-  const spinner = ora(text).start();
-  const uploading = new Set();
-
+module.exports = ({cartridges, codeVersion, webdav, request}) => {
   try {
+    log.info(`Pushing ${codeVersion} changes to ${webdav}`);
+    const text = `Watching '${cartridges}'`;
+    const spinner = ora(text).start();
+    const uploading = new Set();
+
     const watcher = chokidar.watch('dir', {
       ignored: [/[/\\]\./, '**/node_modules/**'],
       ignoreInitial: true,
@@ -20,10 +20,10 @@ module.exports = ({cartridge = 'cartridges', codeVersion, webdav}) => {
       atomic: true
     });
 
-    watcher.add(path.join(process.cwd(), cartridge));
+    watcher.add(path.join(process.cwd(), cartridges));
 
-    const upload = async filePath => {
-      const src = path.relative(process.cwd(), filePath);
+    const upload = async file => {
+      const src = path.relative(process.cwd(), file);
 
       if (!uploading.has(src)) {
         uploading.add(src);
@@ -32,16 +32,11 @@ module.exports = ({cartridge = 'cartridges', codeVersion, webdav}) => {
         spinner.text = text;
         spinner.start();
 
-        let dir = path.dirname(src).replace(path.dirname(cartridge), '');
-
-        if (cartridge === 'cartridges') {
-          dir = dir.replace('cartridges/', '');
-        }
-
         try {
-          const dest = `Cartridges${path.join('/', codeVersion, dir)}`;
-          await mkdirp(dest);
-          await write({src, dest});
+          const dir = path.dirname(src).replace(path.normalize(cartridges), '');
+          const dest = path.join('/', 'Cartridges', codeVersion, dir);
+          await mkdirp(dest, request);
+          await write(src, dest, request);
           spinner.text = `${src} pushed to ${dest}`;
           spinner.succeed();
         } catch (err) {
