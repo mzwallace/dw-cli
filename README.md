@@ -1,38 +1,40 @@
 # dw-cli
-
 This project is usable but WIP.
 
 A command line utility for Salesforce Commerce Cloud (Demandware) SIG and PIG (no webdav on production) development and deployment.
-
 ```
-Usage: dw <command> [args] --option
+Usage: dw <command> <instance> --options
 
 Commands:
   init                                Create a dw.json file
   versions <instance>                 List code versions on an instance
-  activate <instance> <code-version>  Activate code version on an instance
-  push <instance>                     Push all cartridges to an instance
+  activate <instance> [code-version]  Activate code version on an instance
+  push <instance>                     Push cartridges to an instance
   watch <instance>                    Push changes to an instance
   log <instance>                      Stream log files from an instance
 
 Options:
-  --username, -u   Username for instance
-  --password, -p   Password for instance
-  --hostname, -h   Hostname for instance
-  --cartridges, -c Path to single cartridge
-  --help           Show help                                           [boolean]
-  --version        Show version number                                 [boolean]
+  --username, -u      Username for instance
+  --password, -p      Password for instance
+  --hostname, -h      Hostname for instance
+  --cartridges, -c    Path to cartridges
+  --code-version, -v  Code Version
+  --api-version       Demandware API Version
+  --client-id         Demandware API Client ID
+  --client-password   Demandware API Client Password
+  --help              Show help                                        [boolean]
+  --version           Show version number                              [boolean]
 
 Examples:
-  $ dw versions dev01           List code versions on the dev01 instance
-  $ dw activate dev01 version1  Activate version1 on the dev01 instance
-  $ dw push dev01               Push all cartridges to the dev01 instance
-  $ dw watch dev01              Push changes to the dev01 instance
-  $ dw log dev01                Stream log files from the dev01 instance
+  dw versions dev01  List code versions on the dev01 instance
+  dw activate dev01  Activate code version on the dev01 instance
+  dw push dev01      Push cartridges to the dev01 instance
+  dw watch dev01     Push changes to the dev01 instance
+  dw log dev01       Stream log files from the dev01 instance
 ```
 ## Examples
 
-Push and watch assume the 'code version' is the git branch of the cwd.
+Push, watch, and activate assume the 'code version' is the git branch of the cwd unless overriden in the config file or command line.
 
 ```
 user@computer:~/Sites/site$ dw push dev01
@@ -54,10 +56,11 @@ user@computer:~/Sites/site$ dw activate dev01 current-branch-name
 user@computer:~/Sites/site$ dw versions dev01
 [23:22:06] Listing codeversions on dev01-region-brand.demandware.net
 ✔ Reading
-Versions
+-------------------
 ✔ current-branch-name
 ✖ master
 ✖ develop
+-------------------
 [23:22:08] Success
 ```
 ```
@@ -96,15 +99,33 @@ jobs [2016-12-31 04:23:01.597 GMT] Created Job configuration for domain [system]
 jobs [2016-12-31 04:23:01.598 GMT] Created Job configuration for Schedule [RealTimeQuotaAlert, 5243faf4c73317f2ac12e375df]
 ```
 ## Setup
-Place a dw.json file with these contents in your projects root directory or use `dw init`.
+Place a dw.json file in your project root directory or use `dw init`.
+#### The way config works
+* Regular file config comes first.
+* If instance config exists in the file it overrides regular config when using a particular instance in your command.
+* Command line arguments override the config file.
+
+#### Sandbox Dev Example
+Working on a single sandbox and your cartidges are in a 'cartridges' folder in the project root?
 ```
 {
   "hostname": "-region-brand.demandware.net",
-  "username": "defaultuser",
-  "password": "defaultpass",
-
+  "username": "default-user",
+  "password": "default-pass",
+  "cartridges": "cartridges",
   "apiVersion": 'v16_6',
-
+  "clientId": "client-id-from-account-dashboard",
+  "clientPassword": "client-password-from-account-dashboard",
+}
+```
+#### Another Example
+Working on several sandboxes and a staging instance with two-factor auth?
+```
+{
+  "hostname": "-region-brand.demandware.net",
+  "username": "default-user",
+  "password": "default-pass",
+  "apiVersion": 'v16_6',
   "clientId": "client-id-from-account-dashboard",
   "clientPassword": "client-password-from-account-dashboard",
 
@@ -123,8 +144,25 @@ Place a dw.json file with these contents in your projects root directory or use 
   }
 }
 ```
+#### All Possible Config Options
+```
+{
+  "hostname": "-region-brand.demandware.net",
+  "username": "default-user",
+  "password": "default-pass",
+  "cartridges": "cartridges-root-folder",
+  "apiVersion": "v16_6",
+  "codeVersion": 'version1',
+  "clientId": "client-id-from-account-dashboard",
+  "clientPassword": "client-password-from-account-dashboard",
+  "webdav": "cert.staging.region.brand.demandware.net",
+  "key": "./user.key",
+  "cert": "./user.pem",
+  "ca": "./staging.cert"
+}
+```
 #### Sandbox Instances
-For sandbox instances, I try to keep all of mine consistent as far as usernames and passwords go, so that is why we have the global default 'hostname' postfix, 'username', and 'password' config fields.  When you type in something like `dw push dev01`, the 'hostname' will converted to 'dev01-region-brand.demandware.net'.  If you need to override any settings per instance, you can do that in environments, as seen above with a scenario where the dev02 sandbox instance has a different password than the rest (yay strict af demandware password policy).
+For sandbox instances, I try to keep all of mine consistent as far as usernames and passwords go, so that is why we have the global default 'hostname' postfix, 'username', and 'password' config fields.  When you type in something like `dw push dev01`, the 'hostname' will converted to 'dev01-region-brand.demandware.net'.  If you need to override any settings per instance, you can do that in 'instances', as seen above with a scenario where the dev02 sandbox instance has a different password than the rest (yay strict af demandware password policy).
 
 #### Staging
 For staging, if you are using a custom hostname, you can fill that into 'hostname'.
