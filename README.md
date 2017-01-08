@@ -54,7 +54,7 @@ user@computer:~/Sites/site$ dw activate dev01 current-branch-name
 ```
 ```
 user@computer:~/Sites/site$ dw versions dev01
-[23:22:06] Listing codeversions on dev01-region-brand.demandware.net
+[23:22:06] Reading codeversions on dev01-region-brand.demandware.net
 ✔ Reading
 -------------------
 ✔ current-branch-name
