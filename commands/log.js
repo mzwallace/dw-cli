@@ -4,10 +4,10 @@ const log = require('../lib/log');
 const read = require('../lib/read');
 const find = require('../lib/find');
 
-module.exports = async ({webdav}) => {
+module.exports = async ({webdav, request}) => {
   try {
     log.info(`Streaming log files from ${webdav}`);
-    let files = await find('Logs');
+    let files = await find('Logs', request);
 
     // only log files
     files = files.filter(file => file.displayname.includes('.log'));
@@ -25,7 +25,7 @@ module.exports = async ({webdav}) => {
     // every 1 second tail from the environment
     setInterval(() => {
       forEach(groups, (file, name) => {
-        read(`Logs/${file.displayname}`).then(body => {
+        read(`Logs/${file.displayname}`, request).then(body => {
           const lines = body.split('\n').slice(-10);
 
           forEach(lines, line => {
