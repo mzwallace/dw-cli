@@ -9,8 +9,11 @@ Commands:
   init                                Create a dw.json file
   versions <instance>                 List code versions on an instance
   activate <instance> [code-version]  Activate code version on an instance
-  push <instance>                     Push cartridges to an instance
+  push <instance>                     Push code version to an instance
+  remove <instance>                   Remove code version from an instance
   watch <instance>                    Push changes to an instance
+  clean <instance>                    Remove all inactive code versions from an
+                                      instance
   log <instance>                      Stream log files from an instance
 
 Options:
@@ -28,13 +31,15 @@ Options:
 Examples:
   dw versions dev01  List code versions on the dev01 instance
   dw activate dev01  Activate code version on the dev01 instance
-  dw push dev01      Push cartridges to the dev01 instance
+  dw push dev01      Push code version to the dev01 instance
+  dw remove dev01    Remove code version from the dev01 instance
   dw watch dev01     Push changes to the dev01 instance
+  dw clean dev01     Remove all inactive code versions from the dev01 instance
   dw log dev01       Stream log files from the dev01 instance
 ```
 ## Examples
 
-Push, watch, and activate assume the 'code version' is the git branch of the cwd unless overriden in the config file or command line.
+Push, watch, and activate assume the 'code version' is the git branch of the cwd unless overridden in the config file or command line.
 
 ```
 user@computer:~/Sites/site$ dw push dev01
@@ -54,7 +59,7 @@ user@computer:~/Sites/site$ dw activate dev01 current-branch-name
 ```
 ```
 user@computer:~/Sites/site$ dw versions dev01
-[23:22:06] Reading codeversions on dev01-region-brand.demandware.net
+[23:22:06] Reading code versions on dev01-region-brand.demandware.net
 ✔ Reading
 -------------------
 ✔ current-branch-name
