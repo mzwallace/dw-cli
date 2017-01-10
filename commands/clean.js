@@ -17,7 +17,7 @@ module.exports = async ({clientId, clientPassword, hostname, apiVersion, webdav,
     const endpoint = `https://${hostname}/s/-/dw/data/${apiVersion}/code_versions`;
     const {data} = await api({clientId, clientPassword, method, endpoint});
     spinner.succeed();
-
+    log.plain('-------------------');
     spinner.text = 'Removing';
     spinner.start();
     Promise.map(data, async version => {
@@ -30,6 +30,7 @@ module.exports = async ({clientId, clientPassword, hostname, apiVersion, webdav,
       }
     }).then(() => {
       spinner.stop();
+      log.plain('-------------------');
       log.success('Success');
     });
   } catch (err) {
