@@ -1,4 +1,3 @@
-const fs = require('fs');
 const ora = require('ora');
 const del = require('../lib/delete');
 const log = require('../lib/log');
@@ -8,8 +7,6 @@ module.exports = async ({codeVersion, webdav, request}) => {
   const spinner = ora();
 
   try {
-    let file;
-
     spinner.start();
     spinner.text = `Removing`;
     await del(`/Cartridges/${codeVersion}`, request);

@@ -1,4 +1,3 @@
-const fs = require('fs');
 const ora = require('ora');
 const Promise = require('bluebird');
 const del = require('../lib/delete');
@@ -10,8 +9,6 @@ module.exports = async ({clientId, clientPassword, hostname, apiVersion, webdav,
   const spinner = ora();
 
   try {
-    let file;
-
     spinner.text = 'Reading';
     const method = 'get';
     const endpoint = `https://${hostname}/s/-/dw/data/${apiVersion}/code_versions`;
@@ -21,7 +18,7 @@ module.exports = async ({clientId, clientPassword, hostname, apiVersion, webdav,
     spinner.text = 'Removing';
     spinner.start();
     Promise.map(data, async version => {
-      if ( ! version.active) {
+      if (!version.active) {
         await del(`/Cartridges/${version.id}`, request);
         spinner.text = `Removed ${version.id}`;
         spinner.succeed();
