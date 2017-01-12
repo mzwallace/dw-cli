@@ -35,7 +35,7 @@ module.exports = async ({webdav, request, logPollInterval, logMessageLength, log
               if (logMessageLength) {
                 message = message.slice(0, logMessageLength * 2);
               }
-              if ( ! logMessageFilter || (logMessageFilter && new RegExp(logMessageFilter).test(message))) {
+              if (!logMessageFilter || (logMessageFilter && new RegExp(logMessageFilter).test(message))) {
                 log.plain(message, 'blue');
               }
             }
