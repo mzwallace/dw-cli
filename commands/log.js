@@ -1,4 +1,5 @@
-const {groupBy, sortBy, forEach} = require('lodash');
+const debug = require('debug')('log');
+const {groupBy, sortBy, forEach, map} = require('lodash');
 const chalk = require('chalk');
 const log = require('../lib/log');
 const read = require('../lib/read');
@@ -23,26 +24,37 @@ module.exports = async ({webdav, request, logPollInterval, logMessageLength, log
     });
 
     // every 1 second tail from the environment
-    setInterval(() => {
-      forEach(groups, (file, name) => {
-        read(`Logs/${file.displayname}`, request).then(body => {
-          const lines = body.split('\n'); // .slice(-10);
+    const doIt = async () => {
+      debug('Doing it');
+      const promises = map(groups, async (file, name) => {
+        const body = await read(`Logs/${file.displayname}`, request);
+        debug(`Read ${file.displayname}`);
+        return {body, name};
+      });
 
-          forEach(lines, line => {
-            if (line && logs[name].indexOf(line) === -1) {
-              logs[name].push(line);
-              let message = `${chalk.white(name)} ${line}`;
-              if (logMessageLength) {
-                message = message.slice(0, logMessageLength * 2);
-              }
-              if (!logMessageFilter || (logMessageFilter && new RegExp(logMessageFilter).test(message))) {
-                log.plain(message, 'blue');
-              }
+      const results = await Promise.all(promises);
+
+      forEach(results, ({body, name}) => {
+        const lines = body.split('\n').slice(-10);
+
+        forEach(lines, line => {
+          if (line && logs[name].indexOf(line) === -1) {
+            logs[name].push(line);
+            let message = `${chalk.white(name)} ${line}`;
+            if (logMessageLength) {
+              message = message.slice(0, logMessageLength * 2);
             }
-          });
+            if (!logMessageFilter || (logMessageFilter && new RegExp(logMessageFilter).test(message))) {
+              log.plain(message, 'blue');
+            }
+          }
         });
       });
-    }, logPollInterval * 1000);
+
+      setTimeout(doIt, logPollInterval * 1000);
+    };
+
+    doIt();
   } catch (err) {
     log.error(err);
   }
