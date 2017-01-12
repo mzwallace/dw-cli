@@ -17,16 +17,19 @@ Commands:
   log <instance>                      Stream log files from an instance
 
 Options:
-  --username, -u      Username for instance
-  --password, -p      Password for instance
-  --hostname, -h      Hostname for instance
-  --cartridges, -c    Path to cartridges
-  --code-version, -v  Code Version
-  --api-version       Demandware API Version
-  --client-id         Demandware API Client ID
-  --client-password   Demandware API Client Password
-  --help              Show help                                        [boolean]
-  --version           Show version number                              [boolean]
+  --username, -u        Username for instance
+  --password, -p        Password for instance
+  --hostname, -h        Hostname for instance
+  --cartridges, -c      Path to cartridges
+  --code-version, -v    Code Version
+  --api-version         Demandware API Version
+  --client-id           Demandware API Client ID
+  --client-password     Demandware API Client Password
+  --log-poll-interval   Polling interval for log (Seconds)          [default: 1]
+  --log-message-length  Length to truncate a log message         [default: null]
+  --log-message-filter  Filter a log message by text             [default: null]
+  --help                Show help                                      [boolean]
+  --version             Show version number                            [boolean]
 
 Examples:
   dw versions dev01  List code versions on the dev01 instance
