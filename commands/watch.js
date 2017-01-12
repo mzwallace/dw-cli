@@ -17,7 +17,6 @@ module.exports = ({cartridges, codeVersion, webdav, request, silent = false}) =>
       ignored: [/[/\\]\./, '**/node_modules/**'],
       ignoreInitial: true,
       persistent: true,
-      usePolling: true,
       atomic: true
     });
 
