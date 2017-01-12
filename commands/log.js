@@ -26,7 +26,7 @@ module.exports = async ({webdav, request, logPollInterval, logMessageLength, log
     setInterval(() => {
       forEach(groups, (file, name) => {
         read(`Logs/${file.displayname}`, request).then(body => {
-          const lines = body.split('\n').slice(-10);
+          const lines = body.split('\n'); // .slice(-10);
 
           forEach(lines, line => {
             if (line && logs[name].indexOf(line) === -1) {
