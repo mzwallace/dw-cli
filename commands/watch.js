@@ -1,6 +1,7 @@
 const path = require('path');
 const chokidar = require('chokidar');
 const ora = require('ora');
+const notifier = require('node-notifier');
 const write = require('../lib/write');
 const mkdirp = require('../lib/mkdirp');
 const log = require('../lib/log');
@@ -27,6 +28,10 @@ module.exports = ({cartridges, codeVersion, webdav, request}) => {
 
       if (!uploading.has(src)) {
         uploading.add(src);
+        notifier.notify({
+          title: 'File Changed',
+          message: src
+        });
         spinner.text = `${src} changed`;
         spinner.stopAndPersist();
         spinner.text = text;
@@ -37,6 +42,10 @@ module.exports = ({cartridges, codeVersion, webdav, request}) => {
           const dest = path.join('/', 'Cartridges', codeVersion, dir);
           await mkdirp(dest, request);
           await write(src, dest, request);
+          notifier.notify({
+            title: 'File Uploaded',
+            message: dest
+          });
           spinner.text = `${src} pushed to ${dest}`;
           spinner.succeed();
         } catch (err) {

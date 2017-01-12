@@ -1,6 +1,7 @@
 const fs = require('fs');
 const ora = require('ora');
 const {get} = require('lodash');
+const notifier = require('node-notifier');
 const zip = require('../lib/zip');
 const unzip = require('../lib/unzip');
 const write = require('../lib/write');
@@ -49,6 +50,10 @@ module.exports = async ({cartridges, codeVersion, webdav, request}) => {
     spinner.succeed();
 
     log.success('Success');
+    notifier.notify({
+      title: 'Push',
+      message: 'Success'
+    });
   } catch (err) {
     spinner.fail();
     log.error(err);
