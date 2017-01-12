@@ -4,7 +4,7 @@ const log = require('../lib/log');
 const read = require('../lib/read');
 const find = require('../lib/find');
 
-module.exports = async ({webdav, request, logPollInterval, logMessageLength}) => {
+module.exports = async ({webdav, request, logPollInterval, logMessageLength, logMessageFilter}) => {
   try {
     log.info(`Streaming log files from ${webdav}`);
     let files = await find('Logs', request);
@@ -32,8 +32,13 @@ module.exports = async ({webdav, request, logPollInterval, logMessageLength}) =>
             if (line && logs[name].indexOf(line) === -1) {
               logs[name].push(line);
               let message = `${chalk.white(name)} ${line}`;
-              if (logMessageLength) message = message.slice(0, logMessageLength * 2);
-              log.plain(message, 'blue');
+              if (logMessageLength) {
+                message = message.slice(0, logMessageLength * 2);
+              }
+
+              if ( ! logMessageFilter || (logMessageFilter && new RegExp(logMessageFilter).test(message))) {
+                log.plain(message, 'blue');
+              }
             }
           });
         });
