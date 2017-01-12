@@ -33,7 +33,7 @@
     "chokidar": "1.6.1",
     "debug": "^2.6.0",
     "lodash": "^4.17.4",
-    "ora": "^0.4.0",
+    "ora": "^0.4.1",
     "request": "^2.79.0",
     "xml2js": "0.4.17",
     "yargs": "^6.5.0"
@@ -50,7 +50,7 @@
     "@types/yargs": "^6.5.0",
     "ava": "^0.17.0",
     "babel-eslint": "^7.1.1",
-    "eslint": "^3.12.2",
+    "eslint": "^3.13.1",
     "eslint-config-xo": "0.17.0",
     "eslint-plugin-babel": "^4.0.0",
     "husky": "^0.12.0",
