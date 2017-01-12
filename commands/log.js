@@ -32,7 +32,6 @@ module.exports = async ({webdav, request, logPollInterval, logMessageLength}) =>
             if (line && logs[name].indexOf(line) === -1) {
               logs[name].push(line);
               let message = `${chalk.white(name)} ${line}`;
-
               if (logMessageLength) message = message.slice(0, logMessageLength * 2);
               log.plain(message, 'blue');
             }
