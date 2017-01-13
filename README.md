@@ -1,9 +1,7 @@
 # dw-cli
-This project is usable but WIP.
-
 A command line utility for Salesforce Commerce Cloud (Demandware) SIG and PIG (no webdav on production) development and deployment.
 ```
-Usage: dw <command> <instance> --options
+Usage: dw <command> <instance> [options] --switches
 
 Commands:
   init                                Create a dw.json file
