@@ -3,8 +3,9 @@ const debug = require('debug')('log');
 const groupBy = require('lodash/groupBy');
 const sortBy = require('lodash/sortBy');
 const forEach = require('lodash/forEach');
-const includes = require('lodash/includes');
 const map = require('lodash/map');
+const compact = require('lodash/compact');
+const includes = require('lodash/includes');
 const chalk = require('chalk');
 const log = require('../lib/log');
 const read = require('../lib/read');
@@ -50,11 +51,11 @@ module.exports = async ({webdav, request, logPollInterval, logMessageLength, log
 
       const results = await Promise.all(promises);
 
-      forEach(results, ({body, name}) => {
+      forEach(compact(results), ({body, name}) => {
         const lines = body.split('\n').slice(-10);
 
         forEach(lines, line => {
-          if (line && !includes(logs, name)) {
+          if (line && !includes(logs[name], line)) {
             logs[name].push(line);
             let message = `${chalk.white(name)} ${line}`;
             if (logMessageLength) {
