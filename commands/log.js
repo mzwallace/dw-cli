@@ -1,7 +1,9 @@
+const stream = require('stream');
 const debug = require('debug')('log');
 const groupBy = require('lodash/groupBy');
 const sortBy = require('lodash/sortBy');
 const forEach = require('lodash/forEach');
+const includes = require('lodash/includes');
 const map = require('lodash/map');
 const chalk = require('chalk');
 const log = require('../lib/log');
@@ -26,8 +28,15 @@ module.exports = async ({webdav, request, logPollInterval, logMessageLength, log
       groups[name] = sortBy(files, file => new Date(file.getlastmodified)).reverse()[0];
     });
 
+    const logStream = new stream.Readable();
+    logStream._read = () => {};
+
+    logStream.on('data', message => {
+      log.plain(message, 'blue');
+    });
+
     // every 1 second tail from the environment
-    const doIt = async () => {
+    const tail = async () => {
       debug('Doing it');
       const promises = map(groups, async (file, name) => {
         const body = await read(`Logs/${file.displayname}`, request);
@@ -41,23 +50,23 @@ module.exports = async ({webdav, request, logPollInterval, logMessageLength, log
         const lines = body.split('\n').slice(-10);
 
         forEach(lines, line => {
-          if (line && logs[name].indexOf(line) === -1) {
+          if (line && !includes(logs, name)) {
             logs[name].push(line);
             let message = `${chalk.white(name)} ${line}`;
             if (logMessageLength) {
               message = message.slice(0, logMessageLength * 2);
             }
             if (!logMessageFilter || (logMessageFilter && new RegExp(logMessageFilter).test(message))) {
-              log.plain(message, 'blue');
+              logStream.push(message);
             }
           }
         });
       });
 
-      setTimeout(doIt, logPollInterval * 1000);
+      setTimeout(tail, logPollInterval * 1000);
     };
 
-    doIt();
+    tail();
   } catch (err) {
     log.error(err);
   }
