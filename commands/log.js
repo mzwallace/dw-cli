@@ -21,8 +21,12 @@ module.exports = async ({webdav, request, options}) => {
 
     // group by log type
     const groups = groupBy(files, ({displayname}) => displayname.split('-blade')[0]);
-    const logs = [];
 
+    if (options.levelFilter.length) {
+      groups = groups.filter((group, name) => options.levelFilter.includes(name));
+    }
+
+    const logs = [];
     // sort files by last modified, setup logs
     forEach(groups, (files, name) => {
       logs[name] = [];
