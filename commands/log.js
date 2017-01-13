@@ -3,7 +3,9 @@ const debug = require('debug')('log');
 const groupBy = require('lodash/groupBy');
 const sortBy = require('lodash/sortBy');
 const forEach = require('lodash/forEach');
+const pickBy = require('lodash/pickBy');
 const map = require('lodash/map');
+const truncate = require('lodash/truncate');
 const compact = require('lodash/compact');
 const includes = require('lodash/includes');
 const chalk = require('chalk');
@@ -20,10 +22,10 @@ module.exports = async ({webdav, request, options}) => {
     files = files.filter(({displayname}) => displayname.includes('.log'));
 
     // group by log type
-    const groups = groupBy(files, ({displayname}) => displayname.split('-blade')[0]);
+    let groups = groupBy(files, ({displayname}) => displayname.split('-blade')[0]);
 
     if (options.levelFilter.length) {
-      groups = groups.filter((group, name) => options.levelFilter.includes(name));
+      groups = pickBy(groups, (group, name) => options.levelFilter.includes(name));
     }
 
     const logs = [];
@@ -61,12 +63,11 @@ module.exports = async ({webdav, request, options}) => {
         forEach(lines, line => {
           if (line && !includes(logs[name], line)) {
             logs[name].push(line);
-            let message = `${chalk.white(name)} ${line}`;
-            if (options.messageLength) {
-              message = message.slice(0, options.messageLength * 2);
-            }
-            if (!options.messageFilter || (options.messageFilter && new RegExp(options.messageFilter).test(message))) {
-              logStream.push(message);
+            if (!options.messageFilter || (options.messageFilter && new RegExp(options.messageFilter).test(line))) {
+              if (options.messageLength) {
+                line = truncate(line.trim(), {length: options.messageLength, separator: ''});
+              }
+              logStream.push(`${chalk.white(name)} ${line}`);
             }
           }
         });
