@@ -11,9 +11,7 @@ const log = require('../lib/log');
 const read = require('../lib/read');
 const find = require('../lib/find');
 
-module.exports = async yargs => {
-  const {webdav, request, options} = yargs;
-  const {pollInterval, messageLength, messageFilter, numberLines} = options;
+module.exports = async ({webdav, request, options}) => {
   try {
     log.info(`Streaming log files from ${webdav}`);
     let files = await find('Logs', request);
@@ -54,23 +52,23 @@ module.exports = async yargs => {
       const results = await Promise.all(promises);
 
       forEach(compact(results), ({body, name}) => {
-        const lines = body.split('\n').slice(-numberLines);
+        const lines = body.split('\n').slice(-options.numberLines);
 
         forEach(lines, line => {
           if (line && !includes(logs[name], line)) {
             logs[name].push(line);
             let message = `${chalk.white(name)} ${line}`;
-            if (messageLength) {
-              message = message.slice(0, messageLength * 2);
+            if (options.messageLength) {
+              message = message.slice(0, options.messageLength * 2);
             }
-            if (!messageFilter || (messageFilter && new RegExp(messageFilter).test(message))) {
+            if (!options.messageFilter || (options.messageFilter && new RegExp(options.messageFilter).test(message))) {
               logStream.push(message);
             }
           }
         });
       });
 
-      setTimeout(tail, pollInterval * 1000);
+      setTimeout(tail, options.pollInterval * 1000);
     };
 
     tail();
