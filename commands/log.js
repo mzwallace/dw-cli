@@ -1,5 +1,8 @@
 const debug = require('debug')('log');
-const {groupBy, sortBy, forEach, map} = require('lodash');
+const groupBy = require('lodash/groupBy');
+const sortBy = require('lodash/sortBy');
+const forEach = require('lodash/forEach');
+const map = require('lodash/map');
 const chalk = require('chalk');
 const log = require('../lib/log');
 const read = require('../lib/read');

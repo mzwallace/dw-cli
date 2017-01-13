@@ -1,6 +1,6 @@
 const fs = require('fs');
 const ora = require('ora');
-const {get} = require('lodash');
+const get = require('lodash/get');
 const notifier = require('node-notifier');
 const zip = require('../lib/zip');
 const unzip = require('../lib/unzip');
