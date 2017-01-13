@@ -34,9 +34,8 @@ Examples:
   dw log dev01             Stream log files from the dev01
 ```
 ## Examples
-
 Activate, push, remove, and watch assume the 'code version' is the git branch of the cwd unless it is declared in the command arguments.
-
+#### dw push
 ```
 user@computer:~/Sites/site$ dw push dev01
 [23:21:06] Pushing current-branch-name to dev01-region-brand.demandware.net
@@ -47,12 +46,14 @@ user@computer:~/Sites/site$ dw push dev01
 ✔ Removing /Cartridges/current-branch-name/archive.zip
 [23:21:42] Success 30.142s
 ```
+#### dw activate
 ```
 user@computer:~/Sites/site$ dw activate dev01 current-branch-name
 [23:22:00] Activating current-branch-name on dev01-region-brand.demandware.net
 ✔ Activating
 [23:22:04] Success 0.976s
 ```
+#### dw versions
 ```
 user@computer:~/Sites/site$ dw versions dev01
 [23:22:06] Reading code versions on dev01-region-brand.demandware.net
@@ -64,12 +65,14 @@ user@computer:~/Sites/site$ dw versions dev01
 -------------------
 [23:22:08] Success 0.754s
 ```
+#### dw remove
 ```
 user@computer:~/Sites/site$ dw remove dev01 version1
 [16:40:51] Removing develop from dev01-region-brand.demandware.net
 ✔ Removing
 [16:40:57] Success 5.762s
 ```
+#### dw clean
 ```
 user@computer:~/Sites/site$ dw clean dev01
 [16:42:05] Cleaning up dev01-region-brand.demandware.net
@@ -81,6 +84,7 @@ user@computer:~/Sites/site$ dw clean dev01
 -------------------
 [16:42:06] Success 1.025s
 ```
+#### dw watch
 ```
 user@computer:~/Sites/site$ dw watch dev01
 [23:22:25] Pushing current-branch-name changes to dev01-region-brand.demandware.net
@@ -90,6 +94,7 @@ user@computer:~/Sites/site$ dw watch dev01
 ✔ cartridges/app_controllers/cartridge/controllers/Home.js pushed to Cartridges/current-branch-name/app_controllers/cartridge/controllers
 ⠙ Watching 'cartridges' [Ctrl-C to Cancel]
 ```
+#### dw log
 ```
 user@computer:~/Sites/site$ dw log help
 dw log <instance>
@@ -128,8 +133,7 @@ sysevent [2016-12-31 04:22:03.486 GMT] Using '/remote/bbhd/bbhd_s08/sharedata/ca
 jobs [2016-12-31 04:23:01.597 GMT] Created Job configuration for domain [system]. Job type [1]. Job Configuration [, de4ba8565c1ee2d1998142d8bc]
 jobs [2016-12-31 04:23:01.598 GMT] Created Job configuration for Schedule [RealTimeQuotaAlert, 5243faf4c73317f2ac12e375df]
 ⠙ Streaming [Ctrl-C to Cancel]
-```
-```
+
 user@computer:~/Sites/site$ dw log dev01 --level-filter error,warn --message-filter '42|402' --message-length 100 --poll-interval 1 --number-lines 100
 [16:15:34] Streaming log files from dev01-region-brand.demandware.net
 error at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:423)
@@ -150,14 +154,12 @@ warn [2017-01-13 11:15:01.474 GMT] WARN wwd-pool.2 com.demandware.wwd.dr.DRBacku
 warn [2017-01-13 11:56:01.467 GMT] WARN JobThread|14022147|Export Analytics Configuration|ExportAnalytics
 ⠙ Streaming [Ctrl-C to Cancel]
 ```
-
 ## Setup
 Place a dw.json file in your project root directory or use `dw init`.
 #### The way config works
 * Regular file config comes first.
 * If instance config exists in the file it overrides regular config when using a particular instance in your command.
 * Command line arguments override the config file.
-
 #### Sandbox Dev Example
 Working on a single sandbox and your cartidges are in a 'cartridges' folder in the project root?
 ```
@@ -215,13 +217,10 @@ Working on several sandboxes and a staging instance with two-factor auth?
 ```
 #### Sandbox Instances
 For sandbox instances, I try to keep all of mine consistent as far as usernames and passwords go, so that is why we have the global default 'hostname' postfix, 'username', and 'password' config fields.  When you type in something like `dw push dev01`, the 'hostname' will converted to 'dev01-region-brand.demandware.net'.  If you need to override any settings per instance, you can do that in 'instances', as seen above with a scenario where the dev02 sandbox instance has a different password than the rest (yay strict af demandware password policy).
-
 #### Staging
 For staging, if you are using a custom hostname, you can fill that into 'hostname'.
-
 ###### Two-factor Auth and WebDAV
 If two-factor auth is configured on staging, the special hostname required for webdav can be filled into 'webdav' as well as key, cert, and ca — these are all generated using the staging cert given to you from support.  The process of creating the user key and pem from the staging cert is outlined in the support documentation.
-
 #### Versions and Activate commands
 To get access to 'versions' and 'activate', you will need to setup your Open Commerce API Settings (Global, not Site) on each instance.  A Client ID and Client Password can be created in the Account Center (account.demandware.com).
 
