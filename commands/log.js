@@ -16,10 +16,10 @@ module.exports = async ({webdav, request, logPollInterval, logMessageLength, log
     let files = await find('Logs', request);
 
     // only log files
-    files = files.filter(file => file.displayname.includes('.log'));
+    files = files.filter(({displayname}) => displayname.includes('.log'));
 
     // group by log type
-    const groups = groupBy(files, file => file.displayname.split('-blade')[0]);
+    const groups = groupBy(files, ({displayname}) => displayname.split('-blade')[0]);
     const logs = [];
 
     // sort files by last modified, setup logs
