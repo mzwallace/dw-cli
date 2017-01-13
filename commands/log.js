@@ -38,10 +38,14 @@ module.exports = async ({webdav, request, logPollInterval, logMessageLength, log
     // every 1 second tail from the environment
     const tail = async () => {
       debug('Doing it');
-      const promises = map(groups, async (file, name) => {
-        const body = await read(`Logs/${file.displayname}`, request);
-        debug(`Read ${file.displayname}`);
-        return {body, name};
+      const promises = map(groups, async ({displayname}, name) => {
+        try {
+          const body = await read(`Logs/${displayname}`, request);
+          debug(`Read ${displayname}`);
+          return {body, name};
+        } catch (err) {
+          log.error(err);
+        }
       });
 
       const results = await Promise.all(promises);
