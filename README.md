@@ -99,9 +99,9 @@ dw log <instance>
 Options:
   --help            Show help                                     [boolean]
   --version         Show version number                           [boolean]
-  --poll-interval   Polling interval for log (Seconds)         [default: 1]
-  --number-lines    Number of lines to print on each tail     [default: 10]
-  --level-filter    Error level to filter by                [default: null]
+  --poll-interval   Polling interval for log (Seconds)         [default: 2]
+  --number-lines    Number of lines to print on each tail   [default: null]
+  --level-filter    Error level to filter by                  [default: []]
   --message-length  Length to truncate a log message        [default: null]
   --message-filter  Filter a log message by text            [default: null]
 
@@ -186,7 +186,7 @@ Working on several sandboxes and a staging instance with two-factor auth?
 
   "environments": {
     "dev02": {
-      "password": "differentpass"
+      "password": "different-pass"
     },
 
     "staging": {
@@ -207,7 +207,6 @@ Working on several sandboxes and a staging instance with two-factor auth?
   "password": "default-pass",
   "cartridges": "cartridges-root-folder",
   "apiVersion": "v16_6",
-  "codeVersion": 'version1',
   "clientId": "client-id-from-account-dashboard",
   "clientPassword": "client-password-from-account-dashboard",
   "webdav": "cert.staging.region.brand.demandware.net",
