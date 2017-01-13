@@ -1,4 +1,3 @@
-const stream = require('stream');
 const debug = require('debug')('log');
 const groupBy = require('lodash/groupBy');
 const sortBy = require('lodash/sortBy');
@@ -16,7 +15,7 @@ const find = require('../lib/find');
 module.exports = async ({webdav, request, options}) => {
   const text = `Streaming [Ctrl-C to Cancel]`;
   const spinner = ora(text).start();
-  const output = (fn) => {
+  const output = fn => {
     spinner.stop();
     fn();
     spinner.text = text;
@@ -69,7 +68,7 @@ module.exports = async ({webdav, request, options}) => {
               if (options.messageLength) {
                 line = truncate(line.trim(), {length: options.messageLength, omission: ''});
               }
-              output(() => log.plain(`${chalk.white(name)} ${line}`, 'blue'))
+              output(() => log.plain(`${chalk.white(name)} ${line}`, 'blue'));
             }
           }
         });
