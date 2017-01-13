@@ -9,40 +9,35 @@ Commands:
   init                                Create a dw.json file
   versions <instance>                 List code versions on an instance
   activate <instance> [code-version]  Activate code version on an instance
-  push <instance>                     Push code version to an instance
-  remove <instance>                   Remove code version from an instance
-  watch <instance>                    Push changes to an instance
-  clean <instance>                    Remove all inactive code versions from an
-                                      instance
+  push <instance> [code-version]      Push code version to an instance
+  remove <instance> [code-version]    Remove code version from an instance
+  watch <instance> [code-version]     Push changes to an instance
+  clean <instance>                    Remove inactive code versions on instance
   log <instance>                      Stream log files from an instance
 
 Options:
-  --username, -u        Username for instance
-  --password, -p        Password for instance
-  --hostname, -h        Hostname for instance
-  --cartridges, -c      Path to cartridges
-  --code-version, -v    Code Version
-  --api-version         Demandware API Version
-  --client-id           Demandware API Client ID
-  --client-password     Demandware API Client Password
-  --log-poll-interval   Polling interval for log (Seconds)          [default: 1]
-  --log-message-length  Length to truncate a log message         [default: null]
-  --log-message-filter  Filter a log message by text             [default: null]
-  --help                Show help                                      [boolean]
-  --version             Show version number                            [boolean]
+  --username, -u     Username for instance
+  --password, -p     Password for instance
+  --hostname, -h     Hostname for instance
+  --cartridges, -c   Path to cartridges
+  --api-version      Demandware API Version
+  --client-id        Demandware API Client ID
+  --client-password  Demandware API Client Password
+  --help             Show help                                         [boolean]
+  --version          Show version number                               [boolean]
 
 Examples:
-  dw versions dev01  List code versions on the dev01 instance
-  dw activate dev01  Activate code version on the dev01 instance
-  dw push dev01      Push code version to the dev01 instance
-  dw remove dev01    Remove code version from the dev01 instance
-  dw watch dev01     Push changes to the dev01 instance
-  dw clean dev01     Remove all inactive code versions from the dev01 instance
-  dw log dev01       Stream log files from the dev01 instance
+  dw versions dev01        List code versions on dev01
+  dw activate dev01        Activate branch name as code version on dev01
+  dw push dev01 version1   Push version1 to dev01
+  dw remove dev01          Remove branch name as code version from dev01
+  dw watch dev01 version1  Push changes in cwd to version1 on dev01
+  dw clean dev01           Remove all inactive code versions on dev01
+  dw log dev01             Stream log files from the dev01
 ```
 ## Examples
 
-Push, watch, and activate assume the 'code version' is the git branch of the cwd unless overridden in the config file or command line.
+Activate, push, remove, and watch assume the 'code version' is the git branch of the cwd unless it is declared in the command arguments.
 
 ```
 user@computer:~/Sites/site$ dw push dev01
@@ -52,13 +47,13 @@ user@computer:~/Sites/site$ dw push dev01
 ✔ Uploading archive.zip to current-branch-name
 ✔ Unzipping /Cartridges/current-branch-name/archive.zip
 ✔ Removing /Cartridges/current-branch-name/archive.zip
-[23:21:42] Success
+[23:21:42] Success 30.142s
 ```
 ```
 user@computer:~/Sites/site$ dw activate dev01 current-branch-name
 [23:22:00] Activating current-branch-name on dev01-region-brand.demandware.net
 ✔ Activating
-[23:22:04] Success
+[23:22:04] Success 0.976s
 ```
 ```
 user@computer:~/Sites/site$ dw versions dev01
@@ -69,7 +64,24 @@ user@computer:~/Sites/site$ dw versions dev01
 ✖ master
 ✖ develop
 -------------------
-[23:22:08] Success
+[23:22:08] Success 0.754s
+```
+```
+user@computer:~/Sites/site$ dw remove dev01 version1
+[16:40:51] Removing develop from dev01-region-brand.demandware.net
+✔ Removing
+[16:40:57] Success 5.762s
+```
+```
+user@computer:~/Sites/site$ dw clean dev01
+[16:42:05] Cleaning up dev01-region-brand.demandware.net
+✔ Reading
+-------------------
+✔ Removed version2
+✔ Removed version1
+✔ Removed version3
+-------------------
+[16:42:06] Success 1.025s
 ```
 ```
 user@computer:~/Sites/site$ dw watch dev01
@@ -78,9 +90,21 @@ user@computer:~/Sites/site$ dw watch dev01
 ✔ cartridges/app_controllers/README.md pushed to Cartridges/current-branch-name/app_controllers
   cartridges/app_controllers/cartridge/controllers/Home.js changed
 ✔ cartridges/app_controllers/cartridge/controllers/Home.js pushed to Cartridges/current-branch-name/app_controllers/cartridge/controllers
-⠙ Watching 'cartridges'
+⠙ Watching 'cartridges' [Ctrl-C to Cancel]
 ```
 ```
+user@computer:~/Sites/site$ dw log help
+dw log <instance>
+
+Options:
+  --help            Show help                                     [boolean]
+  --version         Show version number                           [boolean]
+  --poll-interval   Polling interval for log (Seconds)         [default: 1]
+  --number-lines    Number of lines to print on each tail     [default: 10]
+  --level-filter    Error level to filter by                [default: null]
+  --message-length  Length to truncate a log message        [default: null]
+  --message-filter  Filter a log message by text            [default: null]
+
 user@computer:~/Sites/site$ dw log dev01
 [23:23:28] Streaming log files from dev01-region-brand.demandware.net
 customerror [2016-12-30 18:49:49.212 GMT] ERROR PipelineCallServlet|12129246|Sites-Site|Product-HitTile|PipelineCall|Gl5mgZN_FjcBOi1siIw8AAPAMkRF7fycxl5GKt-wIdKVBUMYxGFRD1k-EtRw7gCSoVy0GgkT_Mw4Xju3W6a4Gg== custom.ProductImageSO.ds   Image doesn't exist: "default/images/hi-res/2111319/1.jpg". Product ID: "Black BE
@@ -106,6 +130,27 @@ sysevent [2016-12-31 04:22:03.486 GMT] Using '/remote/bbhd/bbhd_s08/sharedata/ca
 jobs [2016-12-31 04:23:01.597 GMT] Created Job configuration for domain [system]. Job type [1]. Job Configuration [, de4ba8565c1ee2d1998142d8bc]
 jobs [2016-12-31 04:23:01.598 GMT] Created Job configuration for Schedule [RealTimeQuotaAlert, 5243faf4c73317f2ac12e375df]
 ```
+```
+user@computer:~/Sites/site$ dw log dev01 --level-filter error,warn --message-filter '42|402' --message-length 100 --poll-interval 1 --number-lines 100
+[16:15:34] Streaming log files from dev01-region-brand.demandware.net
+error at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:423)
+error at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+error at org.apache.catalina.connector.OutputBuffer.realWriteBytes(OutputBuffer.java:402)
+error ... 42 more
+error at org.apache.catalina.connector.OutputBuffer.write(OutputBuffer.java:420)
+warn [2017-01-13 07:56:01.464 GMT] WARN JobThread|14022147|Export Analytics Configuration|ExportAnalytics
+warn [2017-01-13 08:15:01.623 GMT] WARN wwd-pool.2 com.demandware.wwd.dr.DRBackupMgr  system JOB 4eb780bd
+warn [2017-01-13 08:56:01.490 GMT] WARN JobThread|24209416|Export Analytics Configuration|ExportAnalytics
+warn [2017-01-13 09:15:01.475 GMT] WARN wwd-pool.0 com.demandware.wwd.dr.DRBackupMgr  system JOB 4eb780bd
+warn [2017-01-13 09:45:01.482 GMT] WARN wwd-pool.2 com.demandware.wwd.dr.DRBackupMgr  system JOB 4eb780bd
+warn [2017-01-13 10:15:01.477 GMT] WARN wwd-pool.0 com.demandware.wwd.dr.DRBackupMgr  system JOB 4eb780bd
+warn [2017-01-13 10:45:01.494 GMT] WARN wwd-pool.1 com.demandware.wwd.dr.DRBackupMgr  system JOB 4eb780bd
+warn [2017-01-13 10:45:01.495 GMT] WARN wwd-pool.2 com.demandware.wwd.dr.DRBackupMgr  system JOB 4eb780bd
+warn [2017-01-13 10:56:01.467 GMT] WARN JobThread|24209416|Export Analytics Configuration|ExportAnalytics
+warn [2017-01-13 11:15:01.474 GMT] WARN wwd-pool.2 com.demandware.wwd.dr.DRBackupMgr  system JOB 4eb780bd
+warn [2017-01-13 11:56:01.467 GMT] WARN JobThread|14022147|Export Analytics Configuration|ExportAnalytics
+```
+
 ## Setup
 Place a dw.json file in your project root directory or use `dw init`.
 #### The way config works
