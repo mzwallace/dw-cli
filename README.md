@@ -106,7 +106,7 @@ Options:
   --number-lines    Number of lines to print on each tail   [default: null]
   --level-filter    Error level to filter by                  [default: []]
   --message-length  Length to truncate a log message        [default: null]
-  --message-filter  Filter a log message by text            [default: null]
+  --message-filter  Filter a log message by regexp          [default: null]
 
 user@computer:~/Sites/site$ dw log dev01
 [23:23:28] Streaming log files from dev01-region-brand.demandware.net
