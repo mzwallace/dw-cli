@@ -1,5 +1,5 @@
 # dw-cli
-A command line utility for Salesforce Commerce Cloud (Demandware) SIG and PIG (no webdav on production) development and deployment.
+A command line utility for Salesforce Commerce Cloud (Demandware) SIG and PIG development.
 ```
 Usage: dw <command> <instance> [options] --switches
 
