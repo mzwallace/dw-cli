@@ -129,6 +129,7 @@ sysevent [2016-12-31 04:22:03.485 GMT] Using '/remote/bbhd/bbhd_s08/sharedata/ca
 sysevent [2016-12-31 04:22:03.486 GMT] Using '/remote/bbhd/bbhd_s08/sharedata/cartridges/current-branch-name/int_cybersource/cartridge' as main cartridge directory for 'int_cybersource'.
 jobs [2016-12-31 04:23:01.597 GMT] Created Job configuration for domain [system]. Job type [1]. Job Configuration [, de4ba8565c1ee2d1998142d8bc]
 jobs [2016-12-31 04:23:01.598 GMT] Created Job configuration for Schedule [RealTimeQuotaAlert, 5243faf4c73317f2ac12e375df]
+⠙ Streaming [Ctrl-C to Cancel]
 ```
 ```
 user@computer:~/Sites/site$ dw log dev01 --level-filter error,warn --message-filter '42|402' --message-length 100 --poll-interval 1 --number-lines 100
@@ -149,6 +150,7 @@ warn [2017-01-13 10:45:01.495 GMT] WARN wwd-pool.2 com.demandware.wwd.dr.DRBacku
 warn [2017-01-13 10:56:01.467 GMT] WARN JobThread|24209416|Export Analytics Configuration|ExportAnalytics
 warn [2017-01-13 11:15:01.474 GMT] WARN wwd-pool.2 com.demandware.wwd.dr.DRBackupMgr  system JOB 4eb780bd
 warn [2017-01-13 11:56:01.467 GMT] WARN JobThread|14022147|Export Analytics Configuration|ExportAnalytics
+⠙ Streaming [Ctrl-C to Cancel]
 ```
 
 ## Setup

@@ -7,15 +7,24 @@ const pickBy = require('lodash/pickBy');
 const map = require('lodash/map');
 const truncate = require('lodash/truncate');
 const compact = require('lodash/compact');
-const includes = require('lodash/includes');
+const ora = require('ora');
 const chalk = require('chalk');
 const log = require('../lib/log');
 const read = require('../lib/read');
 const find = require('../lib/find');
 
 module.exports = async ({webdav, request, options}) => {
+  const text = `Streaming [Ctrl-C to Cancel]`;
+  const spinner = ora(text).start();
+  const output = (fn) => {
+    spinner.stop();
+    fn();
+    spinner.text = text;
+    spinner.start();
+  };
+
   try {
-    log.info(`Streaming log files from ${webdav}`);
+    output(() => log.info(`Streaming log files from ${webdav}`));
     let files = await find('Logs', request);
 
     // only log files
@@ -35,13 +44,6 @@ module.exports = async ({webdav, request, options}) => {
       groups[name] = sortBy(files, file => new Date(file.getlastmodified)).reverse()[0];
     });
 
-    const logStream = new stream.Readable();
-    logStream._read = () => {};
-
-    logStream.on('data', message => {
-      log.plain(message, 'blue');
-    });
-
     // every 1 second tail from the environment
     const tail = async () => {
       debug('Doing it');
@@ -51,7 +53,7 @@ module.exports = async ({webdav, request, options}) => {
           debug(`Read ${displayname}`);
           return {body, name};
         } catch (err) {
-          log.error(err);
+          output(() => log.error(err));
         }
       });
 
@@ -61,13 +63,13 @@ module.exports = async ({webdav, request, options}) => {
         const lines = body.split('\n').slice(-options.numberLines);
 
         forEach(lines, line => {
-          if (line && !includes(logs[name], line)) {
+          if (line && !logs[name].includes(line)) {
             logs[name].push(line);
             if (!options.messageFilter || (options.messageFilter && new RegExp(options.messageFilter).test(line))) {
               if (options.messageLength) {
                 line = truncate(line.trim(), {length: options.messageLength, omission: ''});
               }
-              logStream.push(`${chalk.white(name)} ${line}`);
+              output(() => log.plain(`${chalk.white(name)} ${line}`, 'blue'))
             }
           }
         });
@@ -78,6 +80,6 @@ module.exports = async ({webdav, request, options}) => {
 
     tail();
   } catch (err) {
-    log.error(err);
+    output(() => log.error(err));
   }
 };
