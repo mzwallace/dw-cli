@@ -24,7 +24,7 @@ module.exports = async ({webdav, request, options}) => {
     // group by log type
     let groups = groupBy(files, ({displayname}) => displayname.split('-blade')[0]);
 
-    if (options.levelFilter.length) {
+    if (options.levelFilter.length > 0) {
       groups = pickBy(groups, (group, name) => options.levelFilter.includes(name));
     }
 
@@ -65,7 +65,7 @@ module.exports = async ({webdav, request, options}) => {
             logs[name].push(line);
             if (!options.messageFilter || (options.messageFilter && new RegExp(options.messageFilter).test(line))) {
               if (options.messageLength) {
-                line = truncate(line.trim(), {length: options.messageLength, separator: ''});
+                line = truncate(line.trim(), {length: options.messageLength, omission: ''});
               }
               logStream.push(`${chalk.white(name)} ${line}`);
             }
