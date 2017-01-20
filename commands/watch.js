@@ -33,8 +33,7 @@ module.exports = ({cartridges, codeVersion, webdav, request, silent = false}) =>
             message: src
           });
         }
-        spinner.text = `${src} changed`;
-        spinner.stopAndPersist();
+        spinner.stopAndPersist({text: `${src} changed`});
         spinner.text = text;
         spinner.start();
 
