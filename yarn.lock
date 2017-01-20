@@ -1565,9 +1565,9 @@ eslint-plugin-ava@^3.1.0:
     pkg-up "^1.0.0"
     req-all "^0.1.0"
 
-eslint-plugin-babel@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-babel/-/eslint-plugin-babel-4.0.0.tgz#a92114e2c493ac3034b030d7ecf96e174a76ef3f"
+eslint-plugin-babel@^4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-babel/-/eslint-plugin-babel-4.0.1.tgz#77de74dabd67a6bef3b16bf258f5804e971e7349"
 
 eslint-plugin-import@^2.0.0:
   version "2.2.0"
@@ -2921,9 +2921,9 @@ optionator@^0.8.2:
     type-check "~0.3.2"
     wordwrap "~1.0.0"
 
-ora@^0.4.1:
-  version "0.4.1"
-  resolved "https://registry.yarnpkg.com/ora/-/ora-0.4.1.tgz#e268187c8890295f7859ac535fd8ca2c0ff64de7"
+ora@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/ora/-/ora-1.1.0.tgz#69aaa4a209630e43b142c5f7ff41820da87e2faf"
   dependencies:
     chalk "^1.1.1"
     cli-cursor "^2.1.0"
