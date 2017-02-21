@@ -4,7 +4,6 @@ const unzip = require('../lib/unzip');
 const log = require('../lib/log');
 
 module.exports = async ({file, request}) => {
-
   log.info(`Extracting ${file}`);
   const spinner = ora();
 
