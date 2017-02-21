@@ -1,12 +1,9 @@
-const fs = require('fs');
 const ora = require('ora');
-const get = require('lodash/get');
 const notifier = require('node-notifier');
-const zip = require('../lib/zip');
 const unzip = require('../lib/unzip');
 const log = require('../lib/log');
 
-module.exports = async ({file, webdav, request}) => {
+module.exports = async ({file, request}) => {
 
   log.info(`Extracting ${file}`);
   const spinner = ora();
