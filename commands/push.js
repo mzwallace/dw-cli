@@ -35,7 +35,7 @@ module.exports = async ({cartridges, codeVersion, webdav, request}) => {
     spinner.succeed();
 
     spinner.start();
-    spinner.text = `Uploading ${dest}\\archive.zip`;
+    spinner.text = `Uploading ${dest}/archive.zip`;
     file = await write(file, dest, request);
     spinner.succeed();
 
