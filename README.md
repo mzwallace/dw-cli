@@ -41,7 +41,7 @@ user@computer:~/Sites/site$ dw push dev01
 [23:21:06] Pushing current-branch-name to dev01-region-brand.demandware.net
 ✔ Zipping 'cartridges'
 ✔ Creating remote folder /Cartridges/current-branch-name
-✔ Uploading archive.zip to current-branch-name
+✔ Uploading /Cartridges/current-branch-name/archive.zip
 ✔ Unzipping /Cartridges/current-branch-name/archive.zip
 ✔ Removing /Cartridges/current-branch-name/archive.zip
 [23:21:42] Success 30.142s
