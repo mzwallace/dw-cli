@@ -30,17 +30,24 @@ module.exports = async ({webdav, request, options}) => {
     files = files.filter(({displayname}) => displayname.includes('.log'));
 
     // group by log type
-    let groups = groupBy(files, ({displayname}) => displayname.split('-blade')[0]);
+    let groups = groupBy(
+      files,
+      ({displayname}) => displayname.split('-blade')[0]
+    );
 
     if (options.levelFilter.length > 0) {
-      groups = pickBy(groups, (group, name) => options.levelFilter.includes(name));
+      groups = pickBy(groups, (group, name) =>
+        options.levelFilter.includes(name));
     }
 
     const logs = [];
     // sort files by last modified, setup logs
     forEach(groups, (files, name) => {
       logs[name] = [];
-      groups[name] = sortBy(files, file => new Date(file.getlastmodified)).reverse()[0];
+      groups[name] = sortBy(
+        files,
+        file => new Date(file.getlastmodified)
+      ).reverse()[0];
     });
 
     // every 1 second tail from the environment
@@ -64,9 +71,16 @@ module.exports = async ({webdav, request, options}) => {
         forEach(lines, line => {
           if (line && !logs[name].includes(line)) {
             logs[name].push(line);
-            if (!options.messageFilter || (options.messageFilter && new RegExp(options.messageFilter).test(line))) {
+            if (
+              !options.messageFilter ||
+              (options.messageFilter &&
+                new RegExp(options.messageFilter).test(line))
+            ) {
               if (options.messageLength) {
-                line = truncate(line.trim(), {length: options.messageLength, omission: ''});
+                line = truncate(line.trim(), {
+                  length: options.messageLength,
+                  omission: ''
+                });
               }
               output(() => log.plain(`${chalk.white(name)} ${line}`, 'blue'));
             }
