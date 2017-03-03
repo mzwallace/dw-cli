@@ -54,9 +54,9 @@
   version "0.0.29"
   resolved "https://registry.yarnpkg.com/@types/debug/-/debug-0.0.29.tgz#a1e514adfbd92f03a224ba54d693111dbf1f3754"
 
-"@types/lodash@^4.14.52":
-  version "4.14.52"
-  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.52.tgz#de5c7ab14da1289733233c9b0ec6f9e377db90f5"
+"@types/lodash@^4.14.54":
+  version "4.14.54"
+  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.54.tgz#287dbbcd97d5da69c25ca99fb5afa81c4839b7fa"
 
 "@types/node-notifier@^0.0.28":
   version "0.0.28"
@@ -1332,9 +1332,9 @@ eslint-plugin-ava@^3.1.0:
     pkg-up "^1.0.0"
     req-all "^0.1.0"
 
-eslint-plugin-babel@^4.0.1:
-  version "4.0.1"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-babel/-/eslint-plugin-babel-4.0.1.tgz#77de74dabd67a6bef3b16bf258f5804e971e7349"
+eslint-plugin-babel@^4.1.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-babel/-/eslint-plugin-babel-4.1.0.tgz#837a74c092ad4d74f9fc74aed43f750906adc827"
 
 eslint-plugin-import@^2.0.0:
   version "2.2.0"
