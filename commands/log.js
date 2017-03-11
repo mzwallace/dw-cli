@@ -14,7 +14,8 @@ const read = require('../lib/read');
 const find = require('../lib/find');
 
 module.exports = async ({webdav, request, options}) => {
-  const text = `Streaming log files from ${webdav} [Ctrl-C to Cancel]`;
+  const verb = options.search ? 'Searching' : 'Streaming';
+  const text = `${verb} log files from ${webdav} [Ctrl-C to Cancel]`;
   const spinner = ora(text);
   const output = fn => {
     spinner.stop();
@@ -68,24 +69,77 @@ module.exports = async ({webdav, request, options}) => {
       process.exit();
     }
 
-    debug(keys(groups));
-
+    // setup logs
     const logs = [];
-    // sort files by last modified, setup logs
     forEach(groups, (files, name) => {
       logs[name] = [];
+    });
+
+    // sort groups by last modified first
+    forEach(groups, (files, name) => {
       groups[name] = sortBy(
         files,
         file => new Date(file.getlastmodified)
-      ).reverse()[0];
+      ).reverse();
     });
+
+    debug('yas leave me here');
+
+    // const search = async () => {
+    //   const promise_group = map(groups, async (files, name) => {
+    //     return map(files, (file) => {
+    //       let displayname = file.displayname;
+    //       try {
+    //         const response = await read(`Logs/${displayname}`, request);
+    //         return {response, name};
+    //       } catch (err) {
+    //         output(() => log.error(err));
+    //       }
+    //     });
+    //   });
+    //
+    //   forEach(promise_group, promises => {
+    //     const results = await Promise.all(promises);
+    //
+    //     forEach(compact(results), ({response, name}) => {
+    //       const lines = response.split('\n').slice(-options.numLines);
+    //
+    //       forEach(lines, line => {
+    //         if (line) {
+    //           if (options.filter && !new RegExp(options.filter).test(line)) {
+    //             return;
+    //           }
+    //           if (options.length > 0) {
+    //             line = truncate(line.trim(), {
+    //               length: options.length,
+    //               omission: ''
+    //             });
+    //           }
+    //           if (!options.noTimestamp) {
+    //             line = line.replace(/\[(.+)\sGMT\]/g, (exp, match) => {
+    //               const date = new Date(Date.parse(match + 'Z'));
+    //               return chalk.magenta(`[${date.toLocaleDateString()} ${date.toLocaleTimeString()}]`);
+    //             });
+    //           }
+    //           if (options.filter) {
+    //             line = line.replace(new RegExp(options.filter, 'g'), exp => {
+    //               return chalk.yellow(exp);
+    //             });
+    //           }
+    //           output(() => log.plain(`${chalk.white(name)} ${line}`, 'blue'));
+    //         }
+    //       });
+    //     });
+    //   });
+    // };
 
     // every 1 second tail from the environment
     const tail = async () => {
-      const promises = map(groups, async ({displayname}, name) => {
+      const promises = map(groups, async (files, name) => {
+        const displayname = files[0].displayname;
         try {
-          const body = await read(`Logs/${displayname}`, request);
-          return {body, name};
+          const response = await read(`Logs/${displayname}`, request);
+          return {response, name};
         } catch (err) {
           output(() => log.error(err));
         }
@@ -93,8 +147,8 @@ module.exports = async ({webdav, request, options}) => {
 
       const results = await Promise.all(promises);
 
-      forEach(compact(results), ({body, name}) => {
-        const lines = body.split('\n').slice(-options.numLines);
+      forEach(compact(results), ({response, name}) => {
+        const lines = response.split('\n').slice(-options.numLines);
 
         forEach(lines, line => {
           if (line && !logs[name].includes(line)) {
@@ -128,6 +182,7 @@ module.exports = async ({webdav, request, options}) => {
     };
 
     spinner.start();
+    // options.search ? search() : tail();
     tail();
   } catch (err) {
     output(() => log.error(err));
