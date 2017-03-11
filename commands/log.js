@@ -99,29 +99,27 @@ module.exports = async ({webdav, request, options}) => {
         forEach(lines, line => {
           if (line && !logs[name].includes(line)) {
             logs[name].push(line);
-            if (
-              !options.filter ||
-              (options.filter && new RegExp(options.filter).test(line))
-            ) {
-              if (options.length > 0) {
-                line = truncate(line.trim(), {
-                  length: options.length,
-                  omission: ''
-                });
-              }
-              if (options.timestamp) {
-                line = line.replace(/\[(.+)\sGMT\]/g, (exp, match) => {
-                  const date = new Date(Date.parse(match + 'Z'));
-                  return chalk.magenta(`[${date.toLocaleDateString()} ${date.toLocaleTimeString()}]`);
-                });
-              }
-              if (options.filter) {
-                line = line.replace(new RegExp(options.filter, 'g'), exp => {
-                  return chalk.yellow(exp);
-                });
-              }
-              output(() => log.plain(`${chalk.white(name)} ${line}`, 'blue'));
+            if (options.filter && !new RegExp(options.filter).test(line)) {
+              return;
             }
+            if (options.length > 0) {
+              line = truncate(line.trim(), {
+                length: options.length,
+                omission: ''
+              });
+            }
+            if (!options.noTimestamp) {
+              line = line.replace(/\[(.+)\sGMT\]/g, (exp, match) => {
+                const date = new Date(Date.parse(match + 'Z'));
+                return chalk.magenta(`[${date.toLocaleDateString()} ${date.toLocaleTimeString()}]`);
+              });
+            }
+            if (options.filter) {
+              line = line.replace(new RegExp(options.filter, 'g'), exp => {
+                return chalk.yellow(exp);
+              });
+            }
+            output(() => log.plain(`${chalk.white(name)} ${line}`, 'blue'));
           }
         });
       });
