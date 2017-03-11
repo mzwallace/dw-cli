@@ -100,13 +100,16 @@ user@computer:~/Sites/site$ dw log help
 dw log <instance>
 
 Options:
-  --help            Show help                                     [boolean]
-  --version         Show version number                           [boolean]
-  --poll-interval   Polling interval for log (Seconds)         [default: 2]
-  --number-lines    Number of lines to print on each tail   [default: null]
-  --level-filter    Error level to filter by                  [default: []]
-  --message-length  Length to truncate a log message        [default: null]
-  --message-filter  Filter a log message by regexp          [default: null]
+  --help           Show help                                            [boolean]
+  --version        Show version number                                  [boolean]
+  --poll-interval  Polling interval for log (seconds)                [default: 2]
+  --num-lines      Number of lines to print on each tail           [default: 100]
+  --include        Log levels to include                    [array] [default: []]
+  --exclude        Log levels to exclude                    [array] [default: []]
+  --list           Output a list of available log levels         [default: false]
+  --filter         Filter log messages by regexp                  [default: null]
+  --length         Length to truncate a log message               [default: null]
+  --no-timestamp   Stop converting timestamps to computer locale [default: false]
 
 user@computer:~/Sites/site$ dw log dev01
 [23:23:28] Streaming log files from dev01-region-brand.demandware.net
@@ -134,7 +137,7 @@ jobs [2016-12-31 04:23:01.597 GMT] Created Job configuration for domain [system]
 jobs [2016-12-31 04:23:01.598 GMT] Created Job configuration for Schedule [RealTimeQuotaAlert, 5243faf4c73317f2ac12e375df]
 ⠙ Streaming [Ctrl-C to Cancel]
 
-user@computer:~/Sites/site$ dw log dev01 --level-filter error,warn --message-filter '42|402' --message-length 100 --poll-interval 1 --number-lines 100
+user@computer:~/Sites/site$ dw log dev01 --include error,warn --filter '42|402' --length 100 --poll-interval 1 --num-lines 100
 [16:15:34] Streaming log files from dev01-region-brand.demandware.net
 error at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:423)
 error at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
