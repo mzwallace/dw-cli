@@ -4,6 +4,7 @@ const sortBy = require('lodash/sortBy');
 const forEach = require('lodash/forEach');
 const pickBy = require('lodash/pickBy');
 const map = require('lodash/map');
+const keys = require('lodash/keys');
 const truncate = require('lodash/truncate');
 const compact = require('lodash/compact');
 const ora = require('ora');
@@ -13,8 +14,8 @@ const read = require('../lib/read');
 const find = require('../lib/find');
 
 module.exports = async ({webdav, request, options}) => {
-  const text = `Streaming [Ctrl-C to Cancel]`;
-  const spinner = ora(text).start();
+  const text = `Streaming log files from ${webdav} [Ctrl-C to Cancel]`;
+  const spinner = ora(text);
   const output = fn => {
     spinner.stop();
     fn();
@@ -23,7 +24,7 @@ module.exports = async ({webdav, request, options}) => {
   };
 
   try {
-    output(() => log.info(`Streaming log files from ${webdav}`));
+    // all files
     let files = await find('Logs', request);
 
     // only log files
@@ -35,10 +36,39 @@ module.exports = async ({webdav, request, options}) => {
       ({displayname}) => displayname.split('-blade')[0]
     );
 
-    if (options.levelFilter.length > 0) {
-      groups = pickBy(groups, (group, name) =>
-        options.levelFilter.includes(name));
+    if (options.include.length > 0) {
+      groups = pickBy(
+        groups,
+        (group, name) => {
+          return options.include.filter(level => {
+            return new RegExp(level).test(name);
+          }).length > 0;
+        }
+      );
     }
+
+    if (options.exclude.length > 0) {
+      groups = pickBy(
+        groups,
+        (group, name) => {
+          return options.exclude.filter(level => {
+            return new RegExp(level).test(name);
+          }).length === 0;
+        }
+      );
+    }
+
+    if (options.list) {
+      spinner.stop();
+      log.info('Levels:');
+      forEach(keys(groups).sort(), group => {
+        log.plain(group);
+      });
+
+      process.exit();
+    }
+
+    debug(keys(groups));
 
     const logs = [];
     // sort files by last modified, setup logs
@@ -52,11 +82,9 @@ module.exports = async ({webdav, request, options}) => {
 
     // every 1 second tail from the environment
     const tail = async () => {
-      debug('Doing it');
       const promises = map(groups, async ({displayname}, name) => {
         try {
           const body = await read(`Logs/${displayname}`, request);
-          debug(`Read ${displayname}`);
           return {body, name};
         } catch (err) {
           output(() => log.error(err));
@@ -66,19 +94,18 @@ module.exports = async ({webdav, request, options}) => {
       const results = await Promise.all(promises);
 
       forEach(compact(results), ({body, name}) => {
-        const lines = body.split('\n').slice(-options.numberLines);
+        const lines = body.split('\n').slice(-options.numLines);
 
         forEach(lines, line => {
           if (line && !logs[name].includes(line)) {
             logs[name].push(line);
             if (
-              !options.messageFilter ||
-              (options.messageFilter &&
-                new RegExp(options.messageFilter).test(line))
+              !options.filter ||
+              (options.filter && new RegExp(options.filter).test(line))
             ) {
-              if (options.messageLength) {
+              if (options.length > 0) {
                 line = truncate(line.trim(), {
-                  length: options.messageLength,
+                  length: options.length,
                   omission: ''
                 });
               }
@@ -91,6 +118,7 @@ module.exports = async ({webdav, request, options}) => {
       setTimeout(tail, options.pollInterval * 1000);
     };
 
+    spinner.start();
     tail();
   } catch (err) {
     output(() => log.error(err));
