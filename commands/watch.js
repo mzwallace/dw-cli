@@ -9,7 +9,7 @@ const log = require('../lib/log');
 module.exports = ({cartridges, codeVersion, webdav, request, silent = false}) => {
   try {
     log.info(`Pushing ${codeVersion} changes to ${webdav}`);
-    const text = `Watching '${cartridges}' [Ctrl-C to Cancel]`;
+    const text = `Watching '${cartridges}' for ${webdav} [Ctrl-C to Cancel]`;
     const spinner = ora(text).start();
     const uploading = new Set();
 
