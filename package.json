@@ -12,6 +12,7 @@
   "scripts": {
     "test": "xo && ava",
     "postmerge": "bash bin/post-update-install",
+    "postinstall": "node node_modules/husky/bin/install",
     "precommit": "xo",
     "prepush": "xo"
   },
