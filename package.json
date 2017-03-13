@@ -71,7 +71,8 @@
     "rules": {
       "no-use-extend-native/no-use-extend-native": 0,
       "unicorn/no-process-exit": 0,
-      "import/no-dynamic-require": 0
+      "import/no-dynamic-require": 0,
+      "no-unused-expressions": 0
     }
   }
 }
