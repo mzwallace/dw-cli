@@ -82,14 +82,9 @@ module.exports = async ({webdav, request, options}) => {
 
     // every 1 second tail from the environment
     const tail = async () => {
-      const promises = map(groups, async ({displayname}, name) => {
-        try {
-          const body = await read(`Logs/${displayname}`, request);
-          return {body, name};
-        } catch (err) {
-          output(() => log.error(err));
-        }
-      });
+      const promises = map(groups, ({displayname}, name) =>
+        read(`Logs/${displayname}`, request).then(body => ({body, name}))
+      );
 
       const results = await Promise.all(promises);
 

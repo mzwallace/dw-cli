@@ -44,18 +44,18 @@
     "@types/chalk": "^0.4.31",
     "@types/chokidar": "^1.4.31",
     "@types/debug": "^0.0.29",
-    "@types/lodash": "^4.14.54",
+    "@types/lodash": "^4.14.55",
     "@types/node-notifier": "^0.0.28",
     "@types/ora": "^0.3.31",
-    "@types/xml2js": "^0.0.32",
+    "@types/xml2js": "^0.0.33",
     "@types/yargs": "^6.6.0",
     "ava": "^0.18.2",
-    "babel-eslint": "^7.1.1",
-    "eslint": "^3.17.1",
-    "eslint-config-xo": "0.17.0",
+    "babel-eslint": "^7.2.0",
+    "eslint": "^3.18.0",
+    "eslint-config-xo": "^0.18.1",
     "eslint-plugin-babel": "^4.1.1",
     "husky": "^0.13.2",
-    "xo": "0.17.1"
+    "xo": "^0.18.0"
   },
   "ava": {
     "files": [
@@ -71,7 +71,8 @@
     "rules": {
       "no-use-extend-native/no-use-extend-native": 0,
       "unicorn/no-process-exit": 0,
-      "import/no-dynamic-require": 0
+      "import/no-dynamic-require": 0,
+      "capitalized-comments": 0
     }
   }
 }
