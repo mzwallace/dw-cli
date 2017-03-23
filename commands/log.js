@@ -103,7 +103,7 @@ module.exports = async ({webdav, request, options}) => {
                 omission: ''
               });
             }
-            if (!options.noTimestamp) {
+            if (options.timestamp) {
               line = line.replace(/\[(.+)\sGMT\]/g, (exp, match) => {
                 const date = new Date(Date.parse(match + 'Z'));
                 return chalk.magenta(`[${date.toLocaleDateString()} ${date.toLocaleTimeString()}]`);
