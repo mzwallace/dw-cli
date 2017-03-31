@@ -135,15 +135,9 @@ module.exports = async ({webdav, request, options}) => {
 
     // every 1 second tail from the environment
     const tail = async () => {
-      const promises = map(groups, async (files, name) => {
-        const displayname = files[0].displayname;
-        try {
-          const response = await read(`Logs/${displayname}`, request);
-          return {response, name};
-        } catch (err) {
-          output(() => log.error(err));
-        }
-      });
+      const promises = map(groups, ({displayname}, name) =>
+        read(`Logs/${displayname}`, request).then(body => ({body, name}))
+      );
 
       const results = await Promise.all(promises);
 
@@ -162,7 +156,7 @@ module.exports = async ({webdav, request, options}) => {
                 omission: ''
               });
             }
-            if (!options.noTimestamp) {
+            if (options.timestamp) {
               line = line.replace(/\[(.+)\sGMT\]/g, (exp, match) => {
                 const date = new Date(Date.parse(match + 'Z'));
                 return chalk.magenta(`[${date.toLocaleDateString()} ${date.toLocaleTimeString()}]`);

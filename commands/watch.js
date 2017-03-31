@@ -6,12 +6,15 @@ const write = require('../lib/write');
 const mkdirp = require('../lib/mkdirp');
 const log = require('../lib/log');
 
-module.exports = ({cartridges, codeVersion, webdav, request, silent = false}) => {
+module.exports = options => {
+  const {cartridges, codeVersion, webdav, request, silent = false} = options;
+
   try {
     log.info(`Pushing ${codeVersion} changes to ${webdav}`);
-    const text = `Watching '${cartridges}' for ${webdav} [Ctrl-C to Cancel]`;
-    const spinner = ora(text).start();
+
     const uploading = new Set();
+    let spinner;
+    let text;
 
     const watcher = chokidar.watch('dir', {
       ignored: [/[/\\]\./, '**/node_modules/**'],
@@ -19,6 +22,11 @@ module.exports = ({cartridges, codeVersion, webdav, request, silent = false}) =>
       persistent: true,
       atomic: true
     });
+
+    if (options.spinner) {
+      text = `Watching '${cartridges}' for ${webdav} [Ctrl-C to Cancel]`;
+      spinner = ora(text).start();
+    }
 
     watcher.add(path.join(process.cwd(), cartridges));
 
@@ -33,9 +41,11 @@ module.exports = ({cartridges, codeVersion, webdav, request, silent = false}) =>
             message: src
           });
         }
-        spinner.stopAndPersist({text: `${src} changed`});
-        spinner.text = text;
-        spinner.start();
+        if (spinner) {
+          spinner.stopAndPersist({text: `${src} changed`});
+          spinner.text = text;
+          spinner.start();
+        }
 
         try {
           const dir = path.dirname(src).replace(path.normalize(cartridges), '');
@@ -48,15 +58,21 @@ module.exports = ({cartridges, codeVersion, webdav, request, silent = false}) =>
               message: dest
             });
           }
-          spinner.text = `${src} pushed to ${dest}`;
-          spinner.succeed();
+          if (spinner) {
+            spinner.text = `${src} pushed to ${dest}`;
+            spinner.succeed();
+          }
         } catch (err) {
-          spinner.text = err.message;
-          spinner.fail();
+          if (spinner) {
+            spinner.text = err.message;
+            spinner.fail();
+          }
         }
 
-        spinner.text = text;
-        spinner.start();
+        if (spinner) {
+          spinner.text = text;
+          spinner.start();
+        }
         uploading.delete(src);
       }
     };
