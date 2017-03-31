@@ -11,7 +11,10 @@ Commands:
   remove <instance> [code-version]    Remove code version from an instance
   watch <instance> [code-version]     Push changes to an instance
   clean <instance>                    Remove inactive code versions on instance
+  extract <instance> <file>           Extract a file on an instance
   log <instance>                      Stream log files from an instance
+  keygen <user> <crt> <key> <srl>     Generate a staging certificate for a stage
+                                      instance user account
 
 Options:
   --username, -u     Username for instance
@@ -21,8 +24,8 @@ Options:
   --api-version      Demandware API Version
   --client-id        Demandware API Client ID
   --client-password  Demandware API Client Password
-  --help             Show help                                         [boolean]
-  --version          Show version number                               [boolean]
+  --help             Show help                         [boolean]
+  --version          Show version number               [boolean]
 
 Examples:
   dw versions dev01        List code versions on dev01
