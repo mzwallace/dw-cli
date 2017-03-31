@@ -1,5 +1,5 @@
 # dw-cli
-A command line utility for Salesforce Commerce Cloud (Demandware) SIG and PIG development.
+A command line utility for Salesforce Commerce Cloud (Demandware) SIG and PIG development.  The goal of this package is to make working with development on the Salesforce Commerce Cloud platform a more pleasant and intuitive experience.
 ```
 Usage: dw <command> <instance> [options] --switches
 
@@ -157,9 +157,13 @@ warn [2017-01-13 11:15:01.474 GMT] WARN wwd-pool.2 com.demandware.wwd.dr.DRBacku
 warn [2017-01-13 11:56:01.467 GMT] WARN JobThread|14022147|Export Analytics Configuration|ExportAnalytics
 ⠙ Streaming [Ctrl-C to Cancel]
 ```
-## Setup
-Place a dw.json file in your project root directory or use `dw init`.
+## Installation
+#### Install via NPM
+```
+user@computer:~/Sites/site$ npm install -g dw-cli
+```
 #### The way config works
+Place a dw.json file in your project root directory or use `dw init`.
 * Regular file config comes first.
 * If instance config exists in the file it overrides regular config when using a particular instance in your command.
 * Command line arguments override the config file.
