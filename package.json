@@ -19,7 +19,7 @@
     "type": "git",
     "url": "git+https://github.com/mzwallace/dw-cli.git"
   },
-  "keywords": [],
+  "keywords": ["demandware", "dw-cli", "demandware cli", "demandware command-line interface", "salesforce commerce cloud"],
   "author": "",
   "license": "ISC",
   "bugs": {
