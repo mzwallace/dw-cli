@@ -4,7 +4,14 @@ const del = require('../lib/delete');
 const log = require('../lib/log');
 const api = require('../lib/api');
 
-module.exports = async ({clientId, clientPassword, hostname, apiVersion, webdav, request}) => {
+module.exports = async ({
+  clientId,
+  clientPassword,
+  hostname,
+  apiVersion,
+  webdav,
+  request
+}) => {
   log.info(`Cleaning up ${webdav}`);
   const spinner = ora();
 

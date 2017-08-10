@@ -2,7 +2,13 @@ const ora = require('ora');
 const api = require('../lib/api');
 const log = require('../lib/log');
 
-module.exports = async ({clientId, clientPassword, hostname, apiVersion, codeVersion}) => {
+module.exports = async ({
+  clientId,
+  clientPassword,
+  hostname,
+  apiVersion,
+  codeVersion
+}) => {
   log.info(`Activating ${codeVersion} on ${hostname}`);
   const spinner = ora().start();
 

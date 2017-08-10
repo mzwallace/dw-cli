@@ -1,11 +1,15 @@
 const shell = require('shelljs');
 const log = require('../lib/log');
 
-module.exports = function ({user, crt, key, srl}) {
-  log.info(`Generating a staging certificate for stage instance user account ${user}`);
+module.exports = function({user, crt, key, srl}) {
+  log.info(
+    `Generating a staging certificate for stage instance user account ${user}`
+  );
 
   if (!shell.which('openssl')) {
-    log.error('Missing openssl package, install openssl to continue (i.e. `brew install openssl`)');
+    log.error(
+      'Missing openssl package, install openssl to continue (i.e. `brew install openssl`)'
+    );
     process.exit();
   }
 

@@ -40,22 +40,20 @@ module.exports = async ({webdav, request, options}) => {
     if (options.include.length > 0) {
       groups = pickBy(
         groups,
-        (group, name) => {
-          return options.include.filter(level => {
+        (group, name) =>
+          options.include.filter(level => {
             return new RegExp(level).test(name);
-          }).length > 0;
-        }
+          }).length > 0
       );
     }
 
     if (options.exclude.length > 0) {
       groups = pickBy(
         groups,
-        (group, name) => {
-          return options.exclude.filter(level => {
+        (group, name) =>
+          options.exclude.filter(level => {
             return new RegExp(level).test(name);
-          }).length === 0;
-        }
+          }).length === 0
       );
     }
 
@@ -98,13 +96,13 @@ module.exports = async ({webdav, request, options}) => {
         });
       });
 
-      forEach(promiseGroups, async promises => {
+      for (const promises of promiseGroups) {
         const results = await Promise.all(promises);
 
-        forEach(compact(results), ({response, name}) => {
+        for (const {response, name} of compact(results)) {
           const lines = response.split('\n').slice(-options.numLines);
 
-          forEach(lines, line => {
+          for (let line of lines) {
             if (line) {
               if (options.filter && !new RegExp(options.filter).test(line)) {
                 return;
@@ -118,7 +116,9 @@ module.exports = async ({webdav, request, options}) => {
               if (!options.noTimestamp) {
                 line = line.replace(/\[(.+)\sGMT\]/g, (exp, match) => {
                   const date = new Date(Date.parse(match + 'Z'));
-                  return chalk.magenta(`[${date.toLocaleDateString()} ${date.toLocaleTimeString()}]`);
+                  return chalk.magenta(
+                    `[${date.toLocaleDateString()} ${date.toLocaleTimeString()}]`
+                  );
                 });
               }
               if (options.filter) {
@@ -128,9 +128,9 @@ module.exports = async ({webdav, request, options}) => {
               }
               output(() => log.plain(`${chalk.white(name)} ${line}`, 'blue'));
             }
-          });
-        });
-      });
+          }
+        }
+      }
     };
 
     // every 1 second tail from the environment
@@ -147,10 +147,10 @@ module.exports = async ({webdav, request, options}) => {
 
       const results = await Promise.all(promises);
 
-      forEach(compact(results), ({response, name}) => {
+      for (const {response, name} of compact(results)) {
         const lines = response.split('\n').slice(-options.numLines);
 
-        forEach(lines, line => {
+        for (let line of lines) {
           if (line && !logs[name].includes(line)) {
             logs[name].push(line);
             if (options.filter && !new RegExp(options.filter).test(line)) {
@@ -165,7 +165,9 @@ module.exports = async ({webdav, request, options}) => {
             if (!options.noTimestamp) {
               line = line.replace(/\[(.+)\sGMT\]/g, (exp, match) => {
                 const date = new Date(Date.parse(match + 'Z'));
-                return chalk.magenta(`[${date.toLocaleDateString()} ${date.toLocaleTimeString()}]`);
+                return chalk.magenta(
+                  `[${date.toLocaleDateString()} ${date.toLocaleTimeString()}]`
+                );
               });
             }
             if (options.filter) {
@@ -175,8 +177,8 @@ module.exports = async ({webdav, request, options}) => {
             }
             output(() => log.plain(`${chalk.white(name)} ${line}`, 'blue'));
           }
-        });
-      });
+        }
+      }
 
       setTimeout(tail, options.pollInterval * 1000);
     };
