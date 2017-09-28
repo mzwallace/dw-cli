@@ -194,7 +194,7 @@ Working on several sandboxes and a staging instance with two-factor auth?
   "clientId": "client-id-from-account-dashboard",
   "clientPassword": "client-password-from-account-dashboard",
 
-  "environments": {
+  "instances": {
     "dev02": {
       "password": "different-pass"
     },
