@@ -55,11 +55,11 @@ module.exports = options => {
           if (!silent) {
             notifier.notify({
               title: 'File Uploaded',
-              message: dest
+              message: `${path.basename(src)} => ${dest}`
             });
           }
           if (spinner) {
-            spinner.text = `${src} pushed to ${dest}`;
+            spinner.text = `${path.basename(src)} pushed to ${dest}`;
             spinner.succeed();
           }
         } catch (err) {
