@@ -41,9 +41,13 @@ module.exports = async ({cartridges, codeVersion, webdav, request}) => {
       file,
       dest,
       Object.assign({}, request, {
-        onProgress(precentage) {
-          const prettyPercent = chalk.yellow.bold(`${precentage}%`);
-          spinner.text = `Uploading ${dest}/archive.zip - ${prettyPercent}`;
+        onProgress({percent, size, uploaded}) {
+          const sizeInMegabytes = (size / 1000000.0).toFixed(2);
+          const uploadedInMegabytes = (uploaded / 1000000.0).toFixed(2);
+          const prettyPercent = chalk.yellow.bold(`${percent}%`);
+          const prettySize = chalk.cyan.bold(`${sizeInMegabytes}MB`);
+          const prettyUploaded = chalk.cyan.bold(`${uploadedInMegabytes}MB`);
+          spinner.text = `Uploading ${dest}/archive.zip - ${prettyUploaded} / ${prettySize} - ${prettyPercent}`;
         }
       })
     );
