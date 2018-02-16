@@ -1,5 +1,6 @@
 const fs = require('fs');
 const ora = require('ora');
+const chalk = require('chalk');
 const get = require('lodash/get');
 const notifier = require('node-notifier');
 const zip = require('../lib/zip');
@@ -36,7 +37,16 @@ module.exports = async ({cartridges, codeVersion, webdav, request}) => {
 
     spinner.start();
     spinner.text = `Uploading ${dest}/archive.zip`;
-    file = await write(file, dest, request);
+    file = await write(
+      file,
+      dest,
+      Object.assign({}, request, {
+        onProgress(precentage) {
+          const prettyPercent = chalk.yellow.bold(`${precentage}%`);
+          spinner.text = `Uploading ${dest}/archive.zip - ${prettyPercent}`;
+        }
+      })
+    );
     spinner.succeed();
 
     spinner.start();
