@@ -15,12 +15,14 @@ const find = require('../lib/find');
 
 module.exports = async ({webdav, request, options}) => {
   const verb = options.search ? 'Searching' : 'Streaming';
-  const text = `${verb} log files from ${webdav} [Ctrl-C to Cancel]`;
+  const text =
+    `${verb} log files from ${webdav} ` +
+    (verb == 'Searching' && options.filter ? `for '${options.filter}' ` : '') +
+    `[Ctrl-C to Cancel]`;
   const spinner = ora(text);
   const output = fn => {
     spinner.stop();
     fn();
-    spinner.text = text;
     spinner.start();
   };
 
@@ -74,7 +76,10 @@ module.exports = async ({webdav, request, options}) => {
 
     // sort groups by last modified
     forEach(groups, (files, name) => {
-      groups[name] = sortBy(files, file => new Date(file.getlastmodified));
+      groups[name] = sortBy(
+        files,
+        file => new Date(file.getlastmodified)
+      ).reverse();
     });
 
     debug('yas leave me here');
@@ -132,8 +137,12 @@ module.exports = async ({webdav, request, options}) => {
         }
       }
 
-      spinner.stop();
-      output(() => log.plain('Search complete'));
+      // spinner.stop();
+      spinner.text =
+        `Search of ${webdav} ` +
+        (options.filter ? `for '${options.filter}' ` : '') +
+        `complete`;
+      spinner.succeed();
       process.exit();
     };
 
