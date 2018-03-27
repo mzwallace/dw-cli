@@ -63,7 +63,6 @@ module.exports = async ({webdav, request, options}) => {
       forEach(keys(groups).sort(), group => {
         log.plain(group);
       });
-
       process.exit();
     }
 
@@ -73,12 +72,9 @@ module.exports = async ({webdav, request, options}) => {
       logs[name] = [];
     });
 
-    // sort groups by last modified first
+    // sort groups by last modified
     forEach(groups, (files, name) => {
-      groups[name] = sortBy(
-        files,
-        file => new Date(file.getlastmodified)
-      ).reverse();
+      groups[name] = sortBy(files, file => new Date(file.getlastmodified));
     });
 
     debug('yas leave me here');
@@ -104,15 +100,6 @@ module.exports = async ({webdav, request, options}) => {
 
           for (let line of lines) {
             if (line) {
-              if (options.filter && !new RegExp(options.filter).test(line)) {
-                return;
-              }
-              if (options.length > 0) {
-                line = truncate(line.trim(), {
-                  length: options.length,
-                  omission: ''
-                });
-              }
               if (!options.noTimestamp) {
                 line = line.replace(/\[(.+)\sGMT\]/g, (exp, match) => {
                   const date = new Date(Date.parse(match + 'Z'));
@@ -121,19 +108,35 @@ module.exports = async ({webdav, request, options}) => {
                   );
                 });
               }
+              // if there's a filter and it doesn't pass .,., the ignore line
+              if (options.filter && !new RegExp(options.filter).test(line)) {
+                continue;
+              }
+              // highlight the matching parts of the line
               if (options.filter) {
                 line = line.replace(new RegExp(options.filter, 'g'), exp => {
                   return chalk.yellow(exp);
                 });
               }
+
+              if (options.length > 0) {
+                line = truncate(line.trim(), {
+                  length: options.length,
+                  omission: ''
+                });
+              }
+
               output(() => log.plain(`${chalk.white(name)} ${line}`, 'blue'));
             }
           }
         }
       }
+
+      spinner.stop();
+      output(() => log.plain('Search complete'));
+      process.exit();
     };
 
-    // every 1 second tail from the environment
     const tail = async () => {
       const promises = map(groups, async (files, name) => {
         const displayname = files[0].displayname;
@@ -154,7 +157,7 @@ module.exports = async ({webdav, request, options}) => {
           if (line && !logs[name].includes(line)) {
             logs[name].push(line);
             if (options.filter && !new RegExp(options.filter).test(line)) {
-              return;
+              continue;
             }
             if (options.length > 0) {
               line = truncate(line.trim(), {
@@ -185,7 +188,6 @@ module.exports = async ({webdav, request, options}) => {
 
     spinner.start();
     options.search ? search() : tail();
-    tail();
   } catch (err) {
     output(() => log.error(err));
   }
