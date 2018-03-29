@@ -115,7 +115,8 @@ Options:
   --no-timestamp   Stop converting timestamps to computer locale [default: false]
   --search         Instead of a tail, this will execute a search [default: false]
                    on all log files (useful for Production)
-
+```
+```
 user@computer:~/Sites/site$ dw log dev01
 [23:23:28] Streaming log files from dev01-region-brand.demandware.net
 customerror [2016-12-30 18:49:49.212 GMT] ERROR PipelineCallServlet|12129246|Sites-Site|Product-HitTile|PipelineCall|Gl5mgZN_FjcBOi1siIw8AAPAMkRF7fycxl5GKt-wIdKVBUMYxGFRD1k-EtRw7gCSoVy0GgkT_Mw4Xju3W6a4Gg== custom.ProductImageSO.ds   Image doesn't exist: "default/images/hi-res/2111319/1.jpg". Product ID: "Black BE
@@ -141,7 +142,8 @@ sysevent [2016-12-31 04:22:03.486 GMT] Using '/remote/bbhd/bbhd_s08/sharedata/ca
 jobs [2016-12-31 04:23:01.597 GMT] Created Job configuration for domain [system]. Job type [1]. Job Configuration [, de4ba8565c1ee2d1998142d8bc]
 jobs [2016-12-31 04:23:01.598 GMT] Created Job configuration for Schedule [RealTimeQuotaAlert, 5243faf4c73317f2ac12e375df]
 ⠙ Streaming [Ctrl-C to Cancel]
-
+```
+```
 user@computer:~/Sites/site$ dw log dev01 --include error,warn --filter '42|402' --length 100 --poll-interval 1 --num-lines 100
 [16:15:34] Streaming log files from dev01-region-brand.demandware.net
 error at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:423)
@@ -161,7 +163,8 @@ warn [2017-01-13 10:56:01.467 GMT] WARN JobThread|24209416|Export Analytics Conf
 warn [2017-01-13 11:15:01.474 GMT] WARN wwd-pool.2 com.demandware.wwd.dr.DRBackupMgr  system JOB 4eb780bd
 warn [2017-01-13 11:56:01.467 GMT] WARN JobThread|14022147|Export Analytics Configuration|ExportAnalytics
 ⠴ Streaming log files from dev01-region-brand.demandware.net [Ctrl-C to Cancel]
-
+```
+```
 user@computer:~/Sites/site$ dw log dev01 --filter 'sailthru|email' --search
 ⠴ Searching log files from dev01-region-brand.demandware.net for 'sailthru|email' [Ctrl-C to Cancel]
 service-Sailthru_User_API [2018-3-25 14:27:35] ERROR PipelineCallServlet|400482723|Sites-Site|EmailSignup-EmailForm|PipelineCall|n_LJ-AsvYiGimwbRqrZXxOwz6bLew3cc1iRjwFwEZsGzYkD4Nrm95RDMkLAwH7fpqY3-sRa8_PWEXYXktoQDtQ== custom.service.sailthru.http.user.HEAD []  service=sailthru.http.user status=ERROR errorCode=400 errorMessage={"error":99,"errormsg":"User not found with email: test@example.com"}
@@ -171,7 +174,6 @@ service-Sailthru_User_API [2018-3-25 17:01:53] ERROR PipelineCallServlet|6760284
 service-Sailthru_User_API [2018-3-25 17:03:34] ERROR PipelineCallServlet|676028419|Sites-Site|EmailSignup-EmailForm|PipelineCall|etSBKa0l9L4lqCZoL5aVxWV_GPlm34ISH-534tLgk7o5on_Ov_qraWPMsgAbr9Qdh6_l-bQoLqYWDqHZP8cVOQ== custom.service.sailthru.http.user.HEAD []  service=sailthru.http.user status=ERROR errorCode=400 errorMessage={"error":99,"errormsg":"User not found with email: test@example.com"}
 service-Sailthru_User_API [2018-3-25 17:04:23] ERROR PipelineCallServlet|1923185397|Sites-Site|EmailSignup-EmailForm|PipelineCall|etSBKa0l9L4lqCZoL5aVxWV_GPlm34ISH-534tLgk7o5on_Ov_qraWPMsgAbr9Qdh6_l-bQoLqYWDqHZP8cVOQ== custom.service.sailthru.http.user.HEAD []  service=sailthru.http.user status=ERROR errorCode=400 errorMessage={"error":99,"errormsg":"User not found with email: test@example.com"}
 ✔ Search of prod.mzwallace.com for 'sailthru|email' complete
-
 ```
 ## Installation
 #### Install via NPM
