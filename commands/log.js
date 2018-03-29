@@ -114,12 +114,15 @@ module.exports = async ({webdav, request, options}) => {
                 });
               }
               // if there's a filter and it doesn't pass .,., the ignore line
-              if (options.filter && !new RegExp(options.filter).test(line)) {
+              if (
+                options.filter &&
+                !new RegExp(options.filter, 'ig').test(line)
+              ) {
                 continue;
               }
               // highlight the matching parts of the line
               if (options.filter) {
-                line = line.replace(new RegExp(options.filter, 'g'), exp => {
+                line = line.replace(new RegExp(options.filter, 'ig'), exp => {
                   return chalk.yellow(exp);
                 });
               }
