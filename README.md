@@ -173,7 +173,7 @@ service-Sailthru_User_API [2018-3-25 16:02:36] ERROR PipelineCallServlet|5020934
 service-Sailthru_User_API [2018-3-25 17:01:53] ERROR PipelineCallServlet|676028419|Sites-Site|EmailSignup-EmailForm|PipelineCall|etSBKa0l9L4lqCZoL5aVxWV_GPlm34ISH-534tLgk7o5on_Ov_qraWPMsgAbr9Qdh6_l-bQoLqYWDqHZP8cVOQ== custom.service.sailthru.http.user.HEAD []  service=sailthru.http.user status=ERROR errorCode=400 errorMessage={"error":99,"errormsg":"User not found with email: test@example.com"}
 service-Sailthru_User_API [2018-3-25 17:03:34] ERROR PipelineCallServlet|676028419|Sites-Site|EmailSignup-EmailForm|PipelineCall|etSBKa0l9L4lqCZoL5aVxWV_GPlm34ISH-534tLgk7o5on_Ov_qraWPMsgAbr9Qdh6_l-bQoLqYWDqHZP8cVOQ== custom.service.sailthru.http.user.HEAD []  service=sailthru.http.user status=ERROR errorCode=400 errorMessage={"error":99,"errormsg":"User not found with email: test@example.com"}
 service-Sailthru_User_API [2018-3-25 17:04:23] ERROR PipelineCallServlet|1923185397|Sites-Site|EmailSignup-EmailForm|PipelineCall|etSBKa0l9L4lqCZoL5aVxWV_GPlm34ISH-534tLgk7o5on_Ov_qraWPMsgAbr9Qdh6_l-bQoLqYWDqHZP8cVOQ== custom.service.sailthru.http.user.HEAD []  service=sailthru.http.user status=ERROR errorCode=400 errorMessage={"error":99,"errormsg":"User not found with email: test@example.com"}
-✔ Search of prod.mzwallace.com for 'sailthru|email' complete
+✔ Search of dev01-region-brand.demandware.net for 'sailthru|email' complete
 ```
 ## Installation
 #### Install via NPM
