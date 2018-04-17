@@ -2,6 +2,7 @@ const path = require('path');
 const chokidar = require('chokidar');
 const ora = require('ora');
 const notifier = require('node-notifier');
+const pRetry = require('p-retry');
 const write = require('../lib/write');
 const mkdirp = require('../lib/mkdirp');
 const log = require('../lib/log');
@@ -50,8 +51,10 @@ module.exports = options => {
         try {
           const dir = path.dirname(src).replace(path.normalize(cartridges), '');
           const dest = path.join('/', 'Cartridges', codeVersion, dir);
-          await mkdirp(dest, request);
-          await write(src, dest, request);
+          const tryToMkdir = () => mkdirp(dest, request);
+          const tryToWrite = () => write(src, dest, request);
+          await pRetry(tryToMkdir, {retries: 5});
+          await pRetry(tryToWrite, {retries: 5});
           if (!silent) {
             notifier.notify({
               title: 'File Uploaded',
