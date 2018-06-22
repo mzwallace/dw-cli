@@ -1,5 +1,7 @@
 # dw-cli
-A command line utility for Salesforce Commerce Cloud (Demandware) SIG and PIG development.  The goal of this package is to make working with development on the Salesforce Commerce Cloud platform a more pleasant and intuitive experience.
+A command line utility to help make your development experience on the Salesforce Commerce Cloud (Demandware) platform a more straight forward, intuitive, and productive experience.  The goal of this cli tool is to help you avoid Eclipse and the Business Manager and keep you focused in the IDE of your choice (atom, vscode, sublime, etc).
+
+Straight from the command line, you can push code directly to any configured instance, activate any code version, trigger a watch proces to push files in real-time, stream logs (with an excellent number of filtering options), and much more.
 ```
 Usage: dw <command> <instance> [options] --switches
 
