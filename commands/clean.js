@@ -1,5 +1,4 @@
 const ora = require('ora');
-const Promise = require('bluebird');
 const del = require('../lib/delete');
 const log = require('../lib/log');
 const api = require('../lib/api');

@@ -189,57 +189,70 @@ Place a dw.json file in your project root directory or use `dw init`.
 * Command line arguments override the config file.
 #### Sandbox Dev Example
 Working on a single sandbox and your cartidges are in a 'cartridges' folder in the project root?
-```
+```json
 {
-  "hostname": "-region-brand.demandware.net",
-  "username": "default-user",
-  "password": "default-pass",
-  "cartridges": "cartridges",
-  "apiVersion": 'v16_6',
-  "clientId": "client-id-from-account-dashboard",
-  "clientPassword": "client-password-from-account-dashboard",
+  "cli": {
+    "username": "default-user",
+    "password": "default-pass",
+    "cartridges": "cartridges",
+    "apiVersion": "v16_6",
+    "clientId": "client-id-from-account-dashboard",
+    "clientPassword": "client-password-from-account-dashboard",
+    "instances": {
+      "staging": {
+        "hostname": "stage-region-brand.demandware.net"
+      }
+    }
+  }
 }
 ```
 #### Another Example
 Working on several sandboxes and a staging instance with two-factor auth?
-```
+```json
 {
-  "hostname": "-region-brand.demandware.net",
-  "username": "default-user",
-  "password": "default-pass",
-  "apiVersion": 'v16_6',
-  "clientId": "client-id-from-account-dashboard",
-  "clientPassword": "client-password-from-account-dashboard",
+  "cli": {
+    "username": "default-user",
+    "password": "default-pass",
+    "apiVersion": "v16_6",
+    "clientId": "client-id-from-account-dashboard",
+    "clientPassword": "client-password-from-account-dashboard",
 
-  "instances": {
-    "dev02": {
-      "password": "different-pass"
-    },
+    "instances": {
+      "dev02": {
+        "hostname": "dev02-region-brand.demandware.net",
+        "password": "different-pass"
+      },
 
-    "staging": {
-      "hostname": "stage.hostname.com",
-      "webdav": "cert.staging.us.brand.demandware.net",
-      "key": "./user.key",
-      "cert": "./user.pem",
-      "ca": "./staging.cert"
+      "staging": {
+        "hostname": "stage.hostname.com",
+        "webdav": "cert.staging.us.brand.demandware.net",
+        "key": "./user.key",
+        "cert": "./user.pem",
+        "ca": "./staging.cert"
+      }
     }
   }
 }
 ```
 #### All Possible Config Options
-```
+```json
 {
-  "hostname": "-region-brand.demandware.net",
-  "username": "default-user",
-  "password": "default-pass",
-  "cartridges": "cartridges-root-folder",
-  "apiVersion": "v16_6",
-  "clientId": "client-id-from-account-dashboard",
-  "clientPassword": "client-password-from-account-dashboard",
-  "webdav": "cert.staging.region.brand.demandware.net",
-  "key": "./user.key",
-  "cert": "./user.pem",
-  "ca": "./staging.cert"
+  "cli": {
+    "hostname": "stage-region-brand.demandware.net",
+    "username": "default-user",
+    "password": "default-pass",
+    "cartridges": "cartridges-root-folder",
+    "apiVersion": "v16_6",
+    "clientId": "client-id-from-account-dashboard",
+    "clientPassword": "client-password-from-account-dashboard",
+    "webdav": "cert.staging.region.brand.demandware.net",
+    "key": "./user.key",
+    "cert": "./user.pem",
+    "ca": "./staging.cert",
+    "instances": {
+      "staging": {}
+    }
+  }
 }
 ```
 #### Sandbox Instances
@@ -251,7 +264,7 @@ If two-factor auth is configured on staging, the special hostname required for w
 #### Versions and Activate commands
 To get access to 'versions' and 'activate', you will need to setup your Open Commerce API Settings (Global, not Site) on each instance.  A Client ID and Client Password can be created in the Account Center (account.demandware.com).
 
-```
+```json
 {
   "_v":"16.6",
   "clients":
