@@ -1,5 +1,6 @@
 node_modules
 dw.json
+dw-cli.json
 test/data/*
 npm-debug.log
 .vscode

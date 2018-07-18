@@ -1,0 +1,20 @@
+{
+  "username": "default-user",
+  "password": "default-pass",
+
+  "cartridges": "cartridges-root-folder",
+  "apiVersion": "v16_6",
+
+  "clientId": "client-id-from-account-dashboard",
+  "clientPassword": "client-password-from-account-dashboard",
+
+  "instances": {
+    "staging": {
+      "hostname": "stage.hostname.com",
+      "webdav": "cert.staging.region.brand.demandware.net",
+      "key": "./user.key",
+      "cert": "./user.pem",
+      "ca": "./staging.cert"
+    }
+  }
+}
