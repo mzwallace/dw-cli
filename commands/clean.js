@@ -1,5 +1,4 @@
 const ora = require('ora');
-const Bluebird = require('bluebird');
 const del = require('../lib/delete');
 const log = require('../lib/log');
 const api = require('../lib/api');
@@ -28,7 +27,8 @@ module.exports = async ({
       log.plain('-------------------');
       spinner.text = 'Removing';
       spinner.start();
-      await Bluebird.map(data, async version => {
+      for (const key of Object.keys(data)) {
+        const version = data[key];
         if (!version.active) {
           await del(`/Cartridges/${version.id}`, request);
           spinner.text = `Removed ${version.id}`;
@@ -36,7 +36,7 @@ module.exports = async ({
           spinner.text = 'Removing';
           spinner.start();
         }
-      });
+      }
       spinner.stop();
       log.plain('-------------------');
     }
