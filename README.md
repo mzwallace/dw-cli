@@ -6,7 +6,7 @@ Straight from the command line, you can push code directly to any configured ins
 Usage: dw <command> <instance> [options] --switches
 
 Commands:
-  init                                Create a dw.json file
+  init                                Create a dw-cli.json file
   versions <instance>                 List code versions on an instance
   activate <instance> [code-version]  Activate code version on an instance
   push <instance> [code-version]      Push code version to an instance
@@ -183,36 +183,40 @@ service-Sailthru_User_API [2018-3-25 17:04:23] ERROR PipelineCallServlet|1923185
 user@computer:~/Sites/site$ npm install -g dw-cli
 ```
 #### The way config works
-Place a dw.json file in your project root directory or use `dw init`.
+Place a dw-cli.json file in your project root directory or use `dw init`.
 * Regular file config comes first.
 * If instance config exists in the file it overrides regular config when using a particular instance in your command.
 * Command line arguments override the config file.
 #### Sandbox Dev Example
 Working on a single sandbox and your cartidges are in a 'cartridges' folder in the project root?
-```
+```json
 {
-  "hostname": "-region-brand.demandware.net",
   "username": "default-user",
   "password": "default-pass",
   "cartridges": "cartridges",
-  "apiVersion": 'v16_6',
+  "apiVersion": "v16_6",
   "clientId": "client-id-from-account-dashboard",
   "clientPassword": "client-password-from-account-dashboard",
+  "instances": {
+    "staging": {
+      "hostname": "stage.hostname.com"
+    }
+  }
 }
 ```
 #### Another Example
 Working on several sandboxes and a staging instance with two-factor auth?
-```
+```json
 {
-  "hostname": "-region-brand.demandware.net",
   "username": "default-user",
   "password": "default-pass",
-  "apiVersion": 'v16_6',
+  "apiVersion": "v16_6",
   "clientId": "client-id-from-account-dashboard",
   "clientPassword": "client-password-from-account-dashboard",
 
   "instances": {
     "dev02": {
+      "hostname": "dev02-region-brand.demandware.net",
       "password": "different-pass"
     },
 
@@ -227,9 +231,8 @@ Working on several sandboxes and a staging instance with two-factor auth?
 }
 ```
 #### All Possible Config Options
-```
+```json
 {
-  "hostname": "-region-brand.demandware.net",
   "username": "default-user",
   "password": "default-pass",
   "cartridges": "cartridges-root-folder",
@@ -239,7 +242,12 @@ Working on several sandboxes and a staging instance with two-factor auth?
   "webdav": "cert.staging.region.brand.demandware.net",
   "key": "./user.key",
   "cert": "./user.pem",
-  "ca": "./staging.cert"
+  "ca": "./staging.cert",
+  "instances": {
+    "staging": {
+      "hostname": "stage.hostname.com"
+    }
+  }
 }
 ```
 #### Sandbox Instances
@@ -251,7 +259,7 @@ If two-factor auth is configured on staging, the special hostname required for w
 #### Versions and Activate commands
 To get access to 'versions' and 'activate', you will need to setup your Open Commerce API Settings (Global, not Site) on each instance.  A Client ID and Client Password can be created in the Account Center (account.demandware.com).
 
-```
+```json
 {
   "_v":"16.6",
   "clients":

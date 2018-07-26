@@ -1,20 +1,17 @@
 const path = require('path');
-const fs = require('fs');
-const Promise = require('bluebird');
+const fs = require('fs-extra');
 const log = require('../lib/log');
-
-const fsAsync = Promise.promisifyAll(fs);
 
 module.exports = async () => {
   try {
-    await fsAsync.statAsync(path.join(process.cwd(), 'dw.json'));
-    log.error(`'dw.json' already exists`);
+    await fs.stat(path.join(process.cwd(), 'dw-cli.json'));
+    log.error(`'dw-cli.json' already exists`);
   } catch (err) {
-    const template = await fsAsync.readFileAsync(
-      path.join(__dirname, '../dw.json.example'),
+    const template = await fs.readFile(
+      path.join(__dirname, '../dw-cli.json.example'),
       'utf8'
     );
-    await fsAsync.writeFileAsync('dw.json', template.trim(), 'utf8');
-    log.success(`'dw.json' created`);
+    await fs.writeFile('dw-cli.json', template.trim(), 'utf8');
+    log.success(`'dw-cli.json' created`);
   }
 };
