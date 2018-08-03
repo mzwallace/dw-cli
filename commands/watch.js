@@ -1,6 +1,7 @@
 const path = require('path');
 const chokidar = require('chokidar');
 const ora = require('ora');
+const debounce = require('lodash/debounce');
 const notifier = require('node-notifier');
 const pRetry = require('p-retry');
 const write = require('../lib/write');
@@ -13,6 +14,7 @@ module.exports = options => {
   try {
     log.info(`Pushing ${codeVersion} changes to ${webdav}`);
 
+    const debouncedNotify = debounce(args => notifier.notify(args), 150);
     const uploading = new Set();
     let spinner;
     let text;
@@ -37,7 +39,7 @@ module.exports = options => {
       if (!uploading.has(src)) {
         uploading.add(src);
         if (!silent) {
-          notifier.notify({
+          debouncedNotify({
             title: 'File Changed',
             message: src
           });
@@ -56,7 +58,7 @@ module.exports = options => {
           await pRetry(tryToMkdir, {retries: 5});
           await pRetry(tryToWrite, {retries: 5});
           if (!silent) {
-            notifier.notify({
+            debouncedNotify({
               title: 'File Uploaded',
               message: `${path.basename(src)} => ${dest}`
             });
