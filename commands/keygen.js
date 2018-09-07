@@ -22,11 +22,11 @@ module.exports = function({user, crt, key, srl}) {
 
   const userKeyCommand = `openssl req -new -newkey rsa:2048 -nodes -out ${user}.req -keyout ${user}.key -subj "/C=CO/ST=State/L=Local/O=Demandware/OU=Technology/CN=${user}"`;
   log.info(userKeyCommand);
-  execSync(userKeyCommand, {stdio: ['pipe', 'pipe', 'pipe'], encoding: 'utf8'});
+  execSync(userKeyCommand, {encoding: 'utf8'});
 
   const signCommand = `openssl x509 -CA '${crt}' -CAkey '${key}' -CAserial '${srl}' -req -in ${user}.req -out ${user}.pem -days 365`;
   log.info(signCommand);
-  execSync(signCommand, {stdio: ['pipe', 'pipe', 'pipe'], encoding: 'utf8'});
+  execSync(signCommand, {encoding: 'utf8'});
 
   log.success('Files generated.');
 };
