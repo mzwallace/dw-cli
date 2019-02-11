@@ -6,10 +6,6 @@ check_run() {
 	echo "$changed_files" | grep --quiet "$1" && eval "$2"
 }
 
-if hash yarn 2>/dev/null; then
-  check_run yarn.lock "yarn"
-else
-  check_run package.json "npm install"
-fi
+check_run package.json "npm install"
 
 exit 0
