@@ -257,8 +257,8 @@ For sandbox instances, I try to keep all of mine consistent as far as usernames 
 For staging, if you are using a custom hostname, you can fill that into 'hostname'.
 ##### Two-factor Auth and WebDAV
 If two-factor auth is configured on staging, the special hostname required for webdav can be filled into 'webdav' as well as key, cert, and ca — these are all generated using the staging cert given to you from support.  The process of creating the user key and pem from the staging cert is outlined in the support documentation.
-#### Versions and Activate commands
-To get access to 'versions' and 'activate', you will need to setup your Open Commerce API Settings (Global, not Site) on each instance.  A Client ID and Client Password can be created in the Account Center (account.demandware.com).
+#### Versions, Activate, and Job commands
+To get access to 'versions', 'activate', and 'job', you will need to setup your Open Commerce API Settings (Global, not Site) on each instance.  A Client ID and Client Password can be created in the Account Center (account.demandware.com).
 
 ```json
 {
