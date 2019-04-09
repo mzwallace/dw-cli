@@ -262,7 +262,7 @@ To get access to 'versions' and 'activate', you will need to setup your Open Com
 
 ```json
 {
-  "_v":"16.6",
+  "_v":"19.3",
   "clients":
   [
     {
@@ -278,6 +278,18 @@ To get access to 'versions' and 'activate', you will need to setup your Open Com
         {
           "resource_id":"/code_versions/*",
           "methods":["get", "patch", "put"],
+          "read_attributes":"(**)",
+          "write_attributes":"(**)"
+        },
+        {
+          "resource_id":"/jobs/*/executions",
+          "methods":["post"],
+          "read_attributes":"(**)",
+          "write_attributes":"(**)"
+        },
+        {
+          "resource_id":"/jobs/*/executions/*",
+          "methods":["get"],
           "read_attributes":"(**)",
           "write_attributes":"(**)"
         }
