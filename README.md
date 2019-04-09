@@ -12,6 +12,7 @@ Commands:
   push <instance> [code-version]      Push code version to an instance
   remove <instance> [code-version]    Remove code version from an instance
   watch <instance> [code-version]     Push changes to an instance
+  job <instance> <job-id>             Run a job on an instance
   clean <instance>                    Remove inactive code versions on instance
   extract <instance> <file>           Extract a file on an instance
   log <instance>                      Stream log files from an instance
