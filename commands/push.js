@@ -1,3 +1,4 @@
+/* eslint-disable require-atomic-updates */
 const fs = require('fs-extra');
 const path = require('path');
 const ora = require('ora');

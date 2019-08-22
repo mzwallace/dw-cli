@@ -1,3 +1,4 @@
+/* eslint-disable require-atomic-updates */
 const path = require('path');
 const chokidar = require('chokidar');
 const ora = require('ora');
@@ -5,6 +6,7 @@ const debounce = require('lodash/debounce');
 const notifier = require('node-notifier');
 const pRetry = require('p-retry');
 const write = require('../lib/write');
+const del = require('../lib/delete');
 const mkdirp = require('../lib/mkdirp');
 const log = require('../lib/log');
 
@@ -16,6 +18,7 @@ module.exports = options => {
 
     const debouncedNotify = debounce(args => notifier.notify(args), 150);
     const uploading = new Set();
+    const removing = new Set();
     let spinner;
     let text;
 
@@ -82,8 +85,58 @@ module.exports = options => {
       }
     };
 
+    const remove = async file => {
+      const src = path.relative(process.cwd(), file);
+      const dir = path.dirname(src).replace(path.normalize(cartridges), '');
+      const dest = path.join('/', 'Cartridges', codeVersion, dir);
+      const url = path.join('/', dest, path.basename(src));
+
+      if (!removing.has(src)) {
+        removing.add(src);
+        if (!silent) {
+          debouncedNotify({
+            title: 'Local file removed',
+            message: src
+          });
+        }
+        if (spinner) {
+          spinner.stopAndPersist({text: `${src} removed locally`});
+          spinner.text = text;
+          spinner.start();
+        }
+
+        try {
+          await del(url, request);
+          // const tryToRemove = () => del(url, request);
+          // await pRetry(tryToRemove, {retries: 5});
+          if (!silent) {
+            debouncedNotify({
+              title: 'Remote file removed',
+              message: url
+            });
+          }
+          if (spinner) {
+            spinner.text = `${path.basename(src)} removed from ${dest}`;
+            spinner.succeed();
+          }
+        } catch (err) {
+          if (spinner) {
+            spinner.text = `Couldn't remove ${url}: ${err.message}`;
+            spinner.fail();
+          }
+        }
+
+        if (spinner) {
+          spinner.text = text;
+          spinner.start();
+        }
+        uploading.delete(src);
+      }
+    };
+
     watcher.on('change', upload);
     watcher.on('add', upload);
+    watcher.on('unlink', remove);
   } catch (err) {
     log.error(err);
   }
