@@ -39,6 +39,11 @@ module.exports = async options => {
       spinner.succeed();
 
       spinner.start();
+      spinner.text = `Removing remote folder ${dest}`;
+      await del(dest, request);
+      spinner.succeed();
+
+      spinner.start();
       spinner.text = `Creating remote folder ${dest}`;
       await mkdir(dest, request);
       spinner.succeed();
