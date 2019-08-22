@@ -130,7 +130,7 @@ module.exports = options => {
           spinner.text = text;
           spinner.start();
         }
-        uploading.delete(src);
+        removing.delete(src);
       }
     };
 
