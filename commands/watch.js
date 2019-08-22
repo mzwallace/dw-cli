@@ -37,7 +37,9 @@ module.exports = options => {
     watcher.add(path.join(process.cwd(), cartridges));
 
     const upload = async file => {
-      const src = path.relative(process.cwd(), file);
+      const src = path.relative(process.cwd(), file); // Keep the same as in remove
+      const dir = path.dirname(src).replace(path.normalize(cartridges), '');
+      const dest = path.join('/', 'Cartridges', codeVersion, dir);
 
       if (!uploading.has(src)) {
         uploading.add(src);
@@ -54,8 +56,6 @@ module.exports = options => {
         }
 
         try {
-          const dir = path.dirname(src).replace(path.normalize(cartridges), '');
-          const dest = path.join('/', 'Cartridges', codeVersion, dir);
           const tryToMkdir = () => mkdirp(dest, request);
           const tryToWrite = () => write(src, dest, request);
           await pRetry(tryToMkdir, {retries: 5});
@@ -86,12 +86,12 @@ module.exports = options => {
     };
 
     const remove = async file => {
-      const src = path.relative(process.cwd(), file);
+      const src = path.relative(process.cwd(), file); // Keep the same as in upload
       const dir = path.dirname(src).replace(path.normalize(cartridges), '');
       const dest = path.join('/', 'Cartridges', codeVersion, dir);
       const url = path.join('/', dest, path.basename(src));
 
-      if (!removing.has(src)) {
+      if (!removing.has(src) && !uploading.has(src)) {
         removing.add(src);
         if (!silent) {
           debouncedNotify({
