@@ -13,6 +13,7 @@ const unzip = require('../lib/unzip');
 const write = require('../lib/write');
 const mkdir = require('../lib/mkdir');
 const mkdirp = require('../lib/mkdirp');
+const move = require('../lib/move');
 const del = require('../lib/delete');
 const log = require('../lib/log');
 
@@ -28,6 +29,7 @@ module.exports = async options => {
   log.info(`Pushing ${codeVersion} to ${webdav}`);
   const spinner = ora();
   const dest = `/Cartridges/${codeVersion}`;
+  const temp = `/Cartridges/temp`;
 
   try {
     let file;
@@ -39,8 +41,8 @@ module.exports = async options => {
       spinner.succeed();
 
       spinner.start();
-      spinner.text = `Removing remote folder ${dest}`;
-      await del(dest, request);
+      spinner.text = `Creating temporary remote folder ${temp}`;
+      await mkdir(temp, request);
       spinner.succeed();
 
       spinner.start();
@@ -49,10 +51,10 @@ module.exports = async options => {
       spinner.succeed();
 
       spinner.start();
-      spinner.text = `Uploading ${dest}/archive.zip`;
+      spinner.text = `Uploading ${temp}/archive.zip`;
       file = await write(
         file,
-        dest,
+        temp,
         Object.assign({}, request, {
           onProgress({percent, size, uploaded}) {
             const sizeInMegabytes = (size / 1000000.0).toFixed(2);
@@ -60,7 +62,7 @@ module.exports = async options => {
             const prettyPercent = chalk.yellow.bold(`${percent}%`);
             const prettySize = chalk.cyan.bold(`${sizeInMegabytes}MB`);
             const prettyUploaded = chalk.cyan.bold(`${uploadedInMegabytes}MB`);
-            spinner.text = `Uploading ${dest}/archive.zip - ${prettyUploaded} / ${prettySize} - ${prettyPercent}`;
+            spinner.text = `Uploading ${temp}/archive.zip - ${prettyUploaded} / ${prettySize} - ${prettyPercent}`;
           }
         })
       );
@@ -75,6 +77,25 @@ module.exports = async options => {
       spinner.text = `Removing ${file}`;
       await del(file, request);
       spinner.succeed();
+
+      spinner.start();
+      spinner.text = `Renaming ${dest} => ${dest}_old`;
+      await move(dest, `${dest}_old`, request);
+      spinner.succeed();
+
+      spinner.start();
+      spinner.text = `Renaming ${temp} => ${dest}`;
+      await move(temp, dest, request);
+      spinner.succeed();
+
+      try {
+        spinner.start();
+        spinner.text = `Removing temporary remote folder ${dest}_old`;
+        await del(`${dest}_old`, request).then(() =>
+          del(`${dest}_old`, request)
+        ); // Sometimes it doesn't delete, so I'm doing it twice... there must be a better way...
+        spinner.succeed();
+      } catch (error) {}
     } else {
       spinner.start();
       spinner.text = 'Uploading files individually';
