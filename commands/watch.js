@@ -136,7 +136,7 @@ module.exports = options => {
 
     watcher.on('change', upload);
     watcher.on('add', upload);
-    watcher.on('unlink', remove);
+    if (options.remove) watcher.on('unlink', remove);
   } catch (err) {
     log.error(err);
   }
