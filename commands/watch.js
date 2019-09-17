@@ -11,7 +11,7 @@ const mkdirp = require('../lib/mkdirp');
 const log = require('../lib/log');
 
 module.exports = options => {
-  const {cartridges, codeVersion, webdav, request, silent = false} = options;
+  const {cartridges, codeVersion, webdav, request} = options;
 
   try {
     log.info(`Pushing ${codeVersion} changes to ${webdav}`);
@@ -43,7 +43,7 @@ module.exports = options => {
 
       if (!uploading.has(src)) {
         uploading.add(src);
-        if (!silent) {
+        if (!options.silent) {
           debouncedNotify({
             title: 'File Changed',
             message: src
@@ -60,7 +60,7 @@ module.exports = options => {
           const tryToWrite = () => write(src, dest, request);
           await pRetry(tryToMkdir, {retries: 5});
           await pRetry(tryToWrite, {retries: 5});
-          if (!silent) {
+          if (!options.silent) {
             debouncedNotify({
               title: 'File Uploaded',
               message: `${path.basename(src)} => ${dest}`
@@ -93,7 +93,7 @@ module.exports = options => {
 
       if (!removing.has(src) && !uploading.has(src)) {
         removing.add(src);
-        if (!silent) {
+        if (!options.silent) {
           debouncedNotify({
             title: 'Local file removed',
             message: src
@@ -109,7 +109,7 @@ module.exports = options => {
           await del(url, request);
           // const tryToRemove = () => del(url, request);
           // await pRetry(tryToRemove, {retries: 5});
-          if (!silent) {
+          if (!options.silent) {
             debouncedNotify({
               title: 'Remote file removed',
               message: url
