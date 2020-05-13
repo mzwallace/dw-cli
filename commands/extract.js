@@ -16,10 +16,10 @@ module.exports = async ({file, request}) => {
     log.success('Success');
     notifier.notify({
       title: 'Push',
-      message: 'Success'
+      message: 'Success',
     });
-  } catch (err) {
+  } catch (error) {
     spinner.fail();
-    log.error(err);
+    log.error(error);
   }
 };

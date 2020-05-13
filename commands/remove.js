@@ -12,8 +12,8 @@ module.exports = async ({codeVersion, webdav, request}) => {
     await del(`/Cartridges/${codeVersion}`, request);
     spinner.succeed();
     log.success('Success');
-  } catch (err) {
+  } catch (error) {
     spinner.fail();
-    log.error(err);
+    log.error(error);
   }
 };
