@@ -1,7 +1,7 @@
 const log = require('../lib/log');
 const {execSync} = require('child_process');
 
-module.exports = function({user, crt, key, srl}) {
+module.exports = function ({user, crt, key, srl}) {
   log.info(
     `Generating a staging certificate for stage instance user account ${user}`
   );
@@ -9,7 +9,7 @@ module.exports = function({user, crt, key, srl}) {
   if (
     !execSync('which openssl', {
       stdio: ['pipe', 'pipe', 'ignore'],
-      encoding: 'utf8'
+      encoding: 'utf8',
     })
       .split('\n')
       .join('')

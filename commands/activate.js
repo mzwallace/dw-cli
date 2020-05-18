@@ -7,7 +7,7 @@ module.exports = async ({
   clientPassword,
   hostname,
   apiVersion,
-  codeVersion
+  codeVersion,
 }) => {
   log.info(`Activating ${codeVersion} on ${hostname}`);
   const spinner = ora().start();
@@ -20,8 +20,8 @@ module.exports = async ({
     await api({clientId, clientPassword, method, endpoint, body});
     spinner.succeed();
     log.success('Success');
-  } catch (err) {
+  } catch (error) {
     spinner.fail();
-    log.error(err);
+    log.error(error);
   }
 };

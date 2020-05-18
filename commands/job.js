@@ -7,7 +7,7 @@ module.exports = async ({
   clientPassword,
   hostname,
   apiVersion,
-  jobId
+  jobId,
 }) => {
   log.info(`Running job ${jobId} on ${hostname}`);
   const spinner = ora().start();
@@ -19,7 +19,7 @@ module.exports = async ({
       clientPassword,
       method: 'post',
       endpoint,
-      contentType: 'application/json; charset=UTF-8'
+      contentType: 'application/json; charset=UTF-8',
     });
 
     do {
@@ -28,15 +28,15 @@ module.exports = async ({
         clientPassword,
         method: 'get',
         endpoint: `${endpoint}/${id}`,
-        contentType: 'application/json; charset=UTF-8'
+        contentType: 'application/json; charset=UTF-8',
       });
       spinner.text = `Job Status: ${status}`;
-    } while (['PENDING', 'RUNNING'].indexOf(status) !== -1);
+    } while (['PENDING', 'RUNNING'].includes(status));
 
     status == 'OK' ? spinner.succeed() : spinner.fail();
     log.success('Success');
-  } catch (err) {
+  } catch (error) {
     spinner.fail();
-    log.error(err);
+    log.error(error);
   }
 };

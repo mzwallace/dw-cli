@@ -17,19 +17,19 @@ const del = require('../lib/delete');
 const log = require('../lib/log');
 const find = require('../lib/find');
 
-module.exports = async options => {
+module.exports = async (options) => {
   const {cartridges, codeVersion, webdav, request} = options;
 
   try {
     fs.accessSync(cartridges);
-  } catch (err) {
+  } catch {
     log.error(`'${cartridges}' is not a valid folder`);
     process.exit(1);
   }
 
   log.info(`Pushing ${codeVersion} to ${webdav}`);
   const spinner = ora();
-  const dest = `/Cartridges/${codeVersion}`;
+  const destination = `/Cartridges/${codeVersion}`;
 
   try {
     let zipped;
@@ -41,38 +41,42 @@ module.exports = async options => {
       spinner.succeed();
 
       spinner.start();
-      spinner.text = `Creating remote folder ${dest}`;
-      await mkdir(dest, request);
+      spinner.text = `Creating remote folder ${destination}`;
+      await mkdir(destination, request);
       spinner.succeed();
 
       spinner.start();
-      spinner.text = `Cleaning remote folder ${dest}`;
-      let files = (await find(dest, request))
-        .map(file => file.displayname)
-        .filter(file => file !== codeVersion);
-      await Promise.all(files.map(file => del(path.join(dest, file), request)));
-      files = (await find(dest, request))
-        .map(file => file.displayname)
-        .filter(file => file !== codeVersion);
+      spinner.text = `Cleaning remote folder ${destination}`;
+      let files = (await find(destination, request))
+        .map((file) => file.displayname)
+        .filter((file) => file !== codeVersion);
       await Promise.all(
-        files.map(file => del(path.join(dest, file), request).catch(() => {}))
+        files.map((file) => del(path.join(destination, file), request))
+      );
+      files = (await find(destination, request))
+        .map((file) => file.displayname)
+        .filter((file) => file !== codeVersion);
+      await Promise.all(
+        files.map((file) =>
+          del(path.join(destination, file), request).catch(() => {})
+        )
       ); // Sometimes it doesn't delete, so I'm doing it twice... there must be a better way...
       spinner.succeed();
 
       spinner.start();
-      spinner.text = `Uploading ${dest}/archive.zip`;
+      spinner.text = `Uploading ${destination}/archive.zip`;
       zipped = await write(
         zipped,
-        dest,
+        destination,
         Object.assign({}, request, {
           onProgress({percent, size, uploaded}) {
-            const sizeInMegabytes = (size / 1000000.0).toFixed(2);
-            const uploadedInMegabytes = (uploaded / 1000000.0).toFixed(2);
+            const sizeInMegabytes = (size / 1000000).toFixed(2);
+            const uploadedInMegabytes = (uploaded / 1000000).toFixed(2);
             const prettyPercent = chalk.yellow.bold(`${percent}%`);
             const prettySize = chalk.cyan.bold(`${sizeInMegabytes}MB`);
             const prettyUploaded = chalk.cyan.bold(`${uploadedInMegabytes}MB`);
-            spinner.text = `Uploading ${dest}/archive.zip - ${prettyUploaded} / ${prettySize} - ${prettyPercent}`;
-          }
+            spinner.text = `Uploading ${destination}/archive.zip - ${prettyUploaded} / ${prettySize} - ${prettyPercent}`;
+          },
         })
       );
       spinner.succeed();
@@ -91,47 +95,54 @@ module.exports = async options => {
       spinner.text = 'Uploading files individually';
       const queue = new TaskQueue(Bluebird, 800);
       const files = await globby(path.join(cartridges, '**'), {
-        onlyFiles: true
+        onlyFiles: true,
       });
-      const promises = files.map(
-        queue.wrap(async (file, i) => {
+      let uploaded = 0;
+      const upload = async (file) => {
+        try {
+          const source = path.relative(process.cwd(), file);
+          const directory = path
+            .dirname(source)
+            .replace(path.normalize(cartridges), '');
+          const destination_ = path.join(
+            '/',
+            'Cartridges',
+            codeVersion,
+            directory
+          );
+          const filename = path.basename(source);
           try {
-            const src = path.relative(process.cwd(), file);
-            const dir = path
-              .dirname(src)
-              .replace(path.normalize(cartridges), '');
-            const dest = path.join('/', 'Cartridges', codeVersion, dir);
-            const filename = path.basename(src);
+            await mkdirp(destination_, request);
+            await write(source, destination_, request);
+          } catch {
             try {
-              await mkdirp(dest, request);
-              await write(src, dest, request);
-            } catch (err) {
-              try {
-                await mkdirp(dest, request);
-                await write(src, dest, request);
-              } catch (err) {
-                await mkdirp(dest, request);
-                await write(src, dest, request);
-              }
+              await mkdirp(destination_, request);
+              await write(source, destination_, request);
+            } catch {
+              await mkdirp(destination_, request);
+              await write(source, destination_, request);
             }
-            spinner.text = `${i}/${files.length} ${filename} uploaded`;
-          } catch (err) {
-            spinner.text = err.message;
-            spinner.fail();
           }
-        })
-      );
-      await Bluebird.all(promises);
+          spinner.text = `${uploaded}/${files.length} ${filename} uploaded`;
+          uploaded++;
+        } catch (error) {
+          spinner.text = error.message;
+          spinner.fail();
+        }
+      };
+
+      // eslint-disable-next-line unicorn/no-fn-reference-in-iterator
+      await Bluebird.map(files, queue.wrap(upload));
       spinner.succeed();
     }
 
     log.success('Success');
     notifier.notify({
       title: 'Push',
-      message: 'Success'
+      message: 'Success',
     });
-  } catch (err) {
+  } catch (error) {
     spinner.fail();
-    log.error(err);
+    log.error(error);
   }
 };

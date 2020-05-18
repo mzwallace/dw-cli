@@ -20,7 +20,7 @@ module.exports = async ({webdav, request, options}) => {
     (verb == 'Searching' && options.filter ? `for '${options.filter}' ` : '') +
     `[Ctrl-C to Cancel]`;
   const spinner = ora(text);
-  const output = fn => {
+  const output = (fn) => {
     spinner.stop();
     fn();
     spinner.start();
@@ -43,7 +43,7 @@ module.exports = async ({webdav, request, options}) => {
       groups = pickBy(
         groups,
         (group, name) =>
-          options.include.filter(level => {
+          options.include.filter((level) => {
             return new RegExp(level).test(name);
           }).length > 0
       );
@@ -53,7 +53,7 @@ module.exports = async ({webdav, request, options}) => {
       groups = pickBy(
         groups,
         (group, name) =>
-          options.exclude.filter(level => {
+          options.exclude.filter((level) => {
             return new RegExp(level).test(name);
           }).length === 0
       );
@@ -62,7 +62,7 @@ module.exports = async ({webdav, request, options}) => {
     if (options.list) {
       spinner.stop();
       log.info('Levels:');
-      forEach(keys(groups).sort(), group => {
+      forEach(keys(groups).sort(), (group) => {
         log.plain(group);
       });
       process.exit();
@@ -78,7 +78,7 @@ module.exports = async ({webdav, request, options}) => {
     forEach(groups, (files, name) => {
       groups[name] = sortBy(
         files,
-        file => new Date(file.getlastmodified)
+        (file) => new Date(file.getlastmodified)
       ).reverse();
     });
 
@@ -86,13 +86,13 @@ module.exports = async ({webdav, request, options}) => {
 
     const search = async () => {
       const promiseGroups = map(groups, (files, name) => {
-        return map(files, async file => {
+        return map(files, async (file) => {
           const displayname = file.displayname;
           try {
             const response = await read(`Logs/${displayname}`, request);
             return {response, name};
-          } catch (err) {
-            output(() => log.error(err));
+          } catch (error) {
+            output(() => log.error(error));
           }
         });
       });
@@ -106,7 +106,7 @@ module.exports = async ({webdav, request, options}) => {
           for (let line of lines) {
             if (line) {
               if (!options.noTimestamp) {
-                line = line.replace(/\[(.+)\sGMT\]/g, (exp, match) => {
+                line = line.replace(/\[(.+)\sGMT]/g, (exp, match) => {
                   const date = new Date(Date.parse(match + 'Z'));
                   return chalk.magenta(
                     `[${date.toLocaleDateString()} ${date.toLocaleTimeString()}]`
@@ -122,7 +122,7 @@ module.exports = async ({webdav, request, options}) => {
               }
               // highlight the matching parts of the line
               if (options.filter) {
-                line = line.replace(new RegExp(options.filter, 'ig'), exp => {
+                line = line.replace(new RegExp(options.filter, 'ig'), (exp) => {
                   return chalk.yellow(exp);
                 });
               }
@@ -130,7 +130,7 @@ module.exports = async ({webdav, request, options}) => {
               if (options.length > 0) {
                 line = truncate(line.trim(), {
                   length: options.length,
-                  omission: ''
+                  omission: '',
                 });
               }
 
@@ -155,8 +155,8 @@ module.exports = async ({webdav, request, options}) => {
         try {
           const response = await read(`Logs/${displayname}`, request);
           return {response, name};
-        } catch (err) {
-          output(() => log.error(err));
+        } catch (error) {
+          output(() => log.error(error));
         }
       });
 
@@ -174,11 +174,11 @@ module.exports = async ({webdav, request, options}) => {
             if (options.length > 0) {
               line = truncate(line.trim(), {
                 length: options.length,
-                omission: ''
+                omission: '',
               });
             }
             if (!options.noTimestamp) {
-              line = line.replace(/\[(.+)\sGMT\]/g, (exp, match) => {
+              line = line.replace(/\[(.+)\sGMT]/g, (exp, match) => {
                 const date = new Date(Date.parse(match + 'Z'));
                 return chalk.magenta(
                   `[${date.toLocaleDateString()} ${date.toLocaleTimeString()}]`
@@ -186,7 +186,7 @@ module.exports = async ({webdav, request, options}) => {
               });
             }
             if (options.filter) {
-              line = line.replace(new RegExp(options.filter, 'g'), exp => {
+              line = line.replace(new RegExp(options.filter, 'g'), (exp) => {
                 return chalk.yellow(exp);
               });
             }
@@ -200,7 +200,7 @@ module.exports = async ({webdav, request, options}) => {
 
     spinner.start();
     options.search ? search() : tail();
-  } catch (err) {
-    output(() => log.error(err));
+  } catch (error) {
+    output(() => log.error(error));
   }
 };

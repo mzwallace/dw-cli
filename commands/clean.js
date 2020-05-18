@@ -9,7 +9,7 @@ module.exports = async ({
   hostname,
   apiVersion,
   webdav,
-  request
+  request,
 }) => {
   log.info(`Cleaning up ${webdav}`);
   const spinner = ora();
@@ -41,8 +41,8 @@ module.exports = async ({
       log.plain('-------------------');
     }
     log.success('Success');
-  } catch (err) {
+  } catch (error) {
     spinner.fail();
-    log.error(err);
+    log.error(error);
   }
 };

@@ -13,7 +13,7 @@ module.exports = async ({clientId, clientPassword, hostname, apiVersion}) => {
     const {data} = await api({clientId, clientPassword, method, endpoint});
     spinner.succeed();
     log.plain('-------------------');
-    data.forEach(version => {
+    data.forEach((version) => {
       spinner.start();
       spinner.text = version.id;
       if (version.active) {
@@ -24,8 +24,8 @@ module.exports = async ({clientId, clientPassword, hostname, apiVersion}) => {
     });
     log.plain('-------------------');
     log.success('Success');
-  } catch (err) {
+  } catch (error) {
     spinner.fail();
-    log.error(err);
+    log.error(error);
   }
 };
