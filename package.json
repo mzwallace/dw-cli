@@ -48,6 +48,7 @@
     "chokidar": "3.4.0",
     "cwait": "1.1.2",
     "debug": "4.1.1",
+    "dotenv": "8.2.0",
     "follow-redirects": "1.11.0",
     "fs-extra": "9.0.0",
     "globby": "11.0.0",
