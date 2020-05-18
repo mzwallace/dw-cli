@@ -97,40 +97,42 @@ module.exports = async (options) => {
       const files = await globby(path.join(cartridges, '**'), {
         onlyFiles: true,
       });
-      const promises = files.map((element) =>
-        queue.wrap(async (file, i) => {
+      let uploaded = 0;
+      const upload = async (file) => {
+        try {
+          const source = path.relative(process.cwd(), file);
+          const directory = path
+            .dirname(source)
+            .replace(path.normalize(cartridges), '');
+          const destination_ = path.join(
+            '/',
+            'Cartridges',
+            codeVersion,
+            directory
+          );
+          const filename = path.basename(source);
           try {
-            const source = path.relative(process.cwd(), file);
-            const directory = path
-              .dirname(source)
-              .replace(path.normalize(cartridges), '');
-            const destination_ = path.join(
-              '/',
-              'Cartridges',
-              codeVersion,
-              directory
-            );
-            const filename = path.basename(source);
+            await mkdirp(destination_, request);
+            await write(source, destination_, request);
+          } catch {
             try {
               await mkdirp(destination_, request);
               await write(source, destination_, request);
             } catch {
-              try {
-                await mkdirp(destination_, request);
-                await write(source, destination_, request);
-              } catch {
-                await mkdirp(destination_, request);
-                await write(source, destination_, request);
-              }
+              await mkdirp(destination_, request);
+              await write(source, destination_, request);
             }
-            spinner.text = `${i}/${files.length} ${filename} uploaded`;
-          } catch (error) {
-            spinner.text = error.message;
-            spinner.fail();
           }
-        })(element)
-      );
-      await Bluebird.all(promises);
+          spinner.text = `${uploaded}/${files.length} ${filename} uploaded`;
+          uploaded++;
+        } catch (error) {
+          spinner.text = error.message;
+          spinner.fail();
+        }
+      };
+
+      // eslint-disable-next-line unicorn/no-fn-reference-in-iterator
+      await Bluebird.map(files, queue.wrap(upload));
       spinner.succeed();
     }
 
