@@ -135,9 +135,9 @@ try {
   debug(`Executing ${command}`);
 
   if (command === 'init') {
-    require(path.join(__dirname, `../commands/init.js`))();
+    require(path.join(__dirname, `./commands/init.js`))();
   } else {
-    require(path.join(__dirname, `../commands/${command}.js`))(argv);
+    require(path.join(__dirname, `./commands/${command}.js`))(argv);
   }
 } catch (error) {
   if (error.code === 'MODULE_NOT_FOUND') {
