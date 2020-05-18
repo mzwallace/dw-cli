@@ -2,9 +2,9 @@
   "name": "dw-cli",
   "version": "2.2.0",
   "description": "",
-  "main": "./lib/cli.js",
+  "main": "./cli.js",
   "bin": {
-    "dw": "./lib/cli.js"
+    "dw": "./cli.js"
   },
   "engines": {
     "node": ">=11.0.0"

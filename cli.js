@@ -3,60 +3,19 @@
 'use strict';
 
 require('dotenv').config();
+const yargs = require('yargs');
 const debug = require('debug')('cli');
 const path = require('path');
 const fs = require('fs');
 const https = require('https');
 const chalk = require('chalk');
-const codeVersion = require('./branch')();
+const codeVersion = require('./lib/branch')();
 
 const jsonPath = path.join(process.cwd(), 'dw-cli.json');
 
-const argv = require('yargs')
+const argv = yargs
   .env('DW')
-  .middleware((argv) => {
-    const instance = argv.instances ? argv.instances[argv.instance] : {};
-
-    // Required for API commands (versions, job)
-    argv.username =
-      process.env.DW_USERNAME || instance.username || argv.username;
-    argv.password =
-      process.env.DW_PASSWORD || instance.password || argv.password;
-    argv.hostname =
-      process.env.DW_HOSTNAME || instance.hostname || argv.hostname;
-    argv.apiVersion =
-      process.env.DW_API_VERSION || instance.apiVersion || argv.apiVersion;
-    argv.clientId =
-      process.env.DW_CLIENT_ID || instance.clientId || argv.clientId;
-    argv.clientPassword =
-      process.env.DW_CLIENT_PASSWORD ||
-      instance.clientPassword ||
-      argv.clientPassword;
-
-    // Required for WebDAV commands (push, watch, clean)
-    argv.webdav = process.env.DW_WEBDAV || instance.webdav || argv.webdav;
-    argv.key = process.env.DW_KEY || instance.key || argv.key;
-    argv.cert = process.env.DW_CERT || instance.cert || argv.cert;
-    argv.ca = process.env.DW_CA || instance.ca || argv.ca;
-
-    // If webdav isn't provided, fallback to hostname
-    argv.webdav = argv.webdav || argv.hostname;
-
-    argv.request = {
-      baseURL: `https://${argv.webdav}/on/demandware.servlet/webdav/Sites/`,
-      auth: {
-        username: argv.username,
-        password: argv.password,
-      },
-      httpsAgent: new https.Agent({
-        key: argv.key ? fs.readFileSync(argv.key) : undefined,
-        cert: argv.cert ? fs.readFileSync(argv.cert) : undefined,
-        ca: argv.ca ? fs.readFileSync(argv.ca) : undefined,
-        pfx: argv.p12 ? fs.readFileSync(argv.p12) : undefined,
-        passphrase: argv.passphrase ? argv.passphrase : undefined,
-      }),
-    };
-  })
+  .middleware(configure)
   .usage('Usage: $0 <command> <instance> [options] --switches')
   .command('init', 'Create a dw-cli.json file')
   .command('versions <instance>', 'List code versions on an instance')
@@ -188,4 +147,52 @@ try {
   } else {
     throw error;
   }
+}
+
+/**
+ * Configure argv and fallback options
+ *
+ * @type {import('yargs').MiddlewareFunction}
+ */
+function configure(argv) {
+  const instance = argv.instances ? argv.instances[String(argv.instance)] : {};
+
+  // Required for API commands (versions, job)
+  argv.username = process.env.DW_USERNAME || instance.username || argv.username;
+  argv.password = process.env.DW_PASSWORD || instance.password || argv.password;
+  argv.hostname = process.env.DW_HOSTNAME || instance.hostname || argv.hostname;
+  argv.apiVersion =
+    process.env.DW_API_VERSION || instance.apiVersion || argv.apiVersion;
+  argv.clientId =
+    process.env.DW_CLIENT_ID || instance.clientId || argv.clientId;
+  argv.clientPassword =
+    process.env.DW_CLIENT_PASSWORD ||
+    instance.clientPassword ||
+    argv.clientPassword;
+
+  // Required for WebDAV commands (push, watch, clean)
+
+  argv.webdav =
+    process.env.DW_WEBDAV || instance.webdav || argv.webdav || argv.hostname;
+
+  argv.key = process.env.DW_KEY || instance.key || argv.key;
+
+  argv.cert = process.env.DW_CERT || instance.cert || argv.cert;
+
+  argv.ca = process.env.DW_CA || instance.ca || argv.ca;
+
+  argv.request = {
+    baseURL: `https://${argv.webdav}/on/demandware.servlet/webdav/Sites/`,
+    auth: {
+      username: argv.username,
+      password: argv.password,
+    },
+    httpsAgent: new https.Agent({
+      key: argv.key ? fs.readFileSync(String(argv.key)) : undefined,
+      cert: argv.cert ? fs.readFileSync(String(argv.cert)) : undefined,
+      ca: argv.ca ? fs.readFileSync(String(argv.ca)) : undefined,
+      pfx: argv.p12 ? fs.readFileSync(String(argv.p12)) : undefined,
+      passphrase: argv.passphrase ? String(argv.passphrase) : undefined,
+    }),
+  };
 }
