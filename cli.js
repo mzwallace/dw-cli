@@ -94,10 +94,10 @@ const argv = yargs
         'Instead of a tail, this will execute a search on all log files (useful for Production)',
       default: false,
     },
-    'no-timestamp': {
-      alias: 'options.noTimestamp',
+    timestamp: {
+      alias: 'options.timestamp',
       describe: 'Stop converting timestamps to computer locale',
-      default: false,
+      default: true,
     },
   })
   .command(

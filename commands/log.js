@@ -105,7 +105,7 @@ module.exports = async ({webdav, request, options}) => {
 
           for (let line of lines) {
             if (line) {
-              if (!options.noTimestamp) {
+              if (options.timestamp) {
                 line = line.replace(/\[(.+)\sGMT]/g, (exp, match) => {
                   const date = new Date(Date.parse(match + 'Z'));
                   return chalk.magenta(
@@ -177,7 +177,7 @@ module.exports = async ({webdav, request, options}) => {
                 omission: '',
               });
             }
-            if (!options.noTimestamp) {
+            if (options.timestamp) {
               line = line.replace(/\[(.+)\sGMT]/g, (exp, match) => {
                 const date = new Date(Date.parse(match + 'Z'));
                 return chalk.magenta(
