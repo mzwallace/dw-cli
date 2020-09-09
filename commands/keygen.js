@@ -1,7 +1,7 @@
 const log = require('../lib/log');
 const {execSync} = require('child_process');
 
-module.exports = function ({user, crt, key, srl}) {
+module.exports = function ({user, crt, key, srl, days}) {
   log.info(
     `Generating a staging certificate for stage instance user account ${user}`
   );
@@ -24,7 +24,7 @@ module.exports = function ({user, crt, key, srl}) {
   log.info(userKeyCommand);
   execSync(userKeyCommand, {encoding: 'utf8'});
 
-  const signCommand = `openssl x509 -CA '${crt}' -CAkey '${key}' -CAserial '${srl}' -req -in ${user}.req -out ${user}.pem -days 365`;
+  const signCommand = `openssl x509 -CA '${crt}' -CAkey '${key}' -CAserial '${srl}' -req -in ${user}.req -out ${user}.pem -days ${days}`;
   log.info(signCommand);
   execSync(signCommand, {encoding: 'utf8'});
 
