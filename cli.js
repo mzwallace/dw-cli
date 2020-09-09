@@ -102,7 +102,14 @@ const argv = yargs
   })
   .command(
     'keygen <user> <crt> <key> <srl>',
-    'Generate a staging certificate for a stage instance user account'
+    'Generate a staging certificate for a stage instance user account',
+    {
+      days: {
+        alias: 'options.days',
+        describe: 'Number of days until the certificate expires',
+        default: 365,
+      },
+    }
   )
   .example('$0 versions dev01', 'List code versions on dev01')
   .example('$0 activate dev01', `Activate branch name as code version on dev01`)
