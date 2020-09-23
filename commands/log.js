@@ -39,6 +39,15 @@ module.exports = async ({webdav, request, options}) => {
       ({displayname}) => displayname.split('-blade')[0]
     );
 
+    if (options.list) {
+      spinner.stop();
+      log.info('Levels:');
+      forEach(keys(groups).sort(), (group) => {
+        log.plain(group);
+      });
+      process.exit();
+    }
+
     if (options.include.length > 0) {
       groups = pickBy(
         groups,
@@ -57,15 +66,6 @@ module.exports = async ({webdav, request, options}) => {
             return new RegExp(level).test(name);
           }).length === 0
       );
-    }
-
-    if (options.list) {
-      spinner.stop();
-      log.info('Levels:');
-      forEach(keys(groups).sort(), (group) => {
-        log.plain(group);
-      });
-      process.exit();
     }
 
     // setup logs
@@ -101,7 +101,9 @@ module.exports = async ({webdav, request, options}) => {
         const results = await Promise.all(promises);
 
         for (const {response, name} of compact(results)) {
-          const lines = response.split('\n').slice(-options.numLines);
+          let lines = response.split('\n');
+          lines.pop(); // last line is empty
+          if (options.numLines) lines = lines.slice(-options.numLines);
 
           for (let line of lines) {
             if (line) {
@@ -163,7 +165,9 @@ module.exports = async ({webdav, request, options}) => {
       const results = await Promise.all(promises);
 
       for (const {response, name} of compact(results)) {
-        const lines = response.split('\n').slice(-options.numLines);
+        let lines = response.split('\n');
+        lines.pop(); // last line is empty
+        if (options.numLines) lines = lines.slice(-options.numLines);
 
         for (let line of lines) {
           if (line && !logs[name].includes(line)) {

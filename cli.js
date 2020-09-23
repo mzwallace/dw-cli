@@ -29,7 +29,8 @@ const argv = yargs
     {
       zip: {
         alias: 'options.zip',
-        describe: 'Upload as a zip',
+        describe:
+          'Upload as zip file, use --no-zip to upload as individual files',
         default: true,
       },
     }
@@ -40,12 +41,23 @@ const argv = yargs
   )
   .command('watch <instance> [code-version]', 'Push changes to an instance', {
     spinner: {
-      describe: 'Show the watch spinner',
+      alias: 'options.spinner',
+      describe: 'Show the watch spinner, use --no-spinner to hide',
       type: 'boolean',
       default: true,
     },
-    silent: {describe: 'Show notifications', type: 'boolean', default: false},
-    remove: {describe: 'Remove deleted files', type: 'boolean'},
+    silent: {
+      alias: 'options.silent',
+      describe: 'Hide file upload notifications',
+      type: 'boolean',
+      default: false,
+    },
+    remove: {
+      alias: 'options.remove',
+      describe: 'Remove locally deleted files from the remote filesystem',
+      type: 'boolean',
+      default: false,
+    },
   })
   .command('job <instance> <job-id>', 'Run a job on an instance')
   .command('clean <instance>', 'Remove inactive code versions on instance')
@@ -75,7 +87,8 @@ const argv = yargs
     },
     list: {
       alias: 'options.list',
-      describe: 'Output a list of available log levels',
+      describe: 'Output a list of log types found on the remote filesystem',
+      type: 'boolean',
       default: false,
     },
     filter: {
@@ -92,11 +105,14 @@ const argv = yargs
       alias: 'options.search',
       describe:
         'Instead of a tail, this will execute a search on all log files (useful for Production)',
+      type: 'boolean',
       default: false,
     },
     timestamp: {
       alias: 'options.timestamp',
-      describe: 'Stop converting timestamps to computer locale',
+      describe:
+        'Convert the timestamp in each log message to your local computer timezone, use --no-timestamp to disable',
+      type: 'boolean',
       default: true,
     },
   })
@@ -129,9 +145,7 @@ const argv = yargs
   .option('code-version', {alias: 'v', default: codeVersion})
   .option('client-id', {describe: 'Demandware API Client ID'})
   .option('client-password', {describe: 'Demandware API Client Password'})
-  .config({
-    extends: fs.existsSync(jsonPath) ? jsonPath : {},
-  })
+  .config({extends: fs.existsSync(jsonPath) ? jsonPath : {}})
   .demand(1)
   .help()
   .version().argv;

@@ -32,12 +32,10 @@ module.exports = async (options) => {
   const destination = `/Cartridges/${codeVersion}`;
 
   try {
-    let zipped;
-
     if (options.zip) {
       spinner.start();
       spinner.text = `Zipping '${cartridges}'`;
-      zipped = await zip(cartridges, get(process, 'env.TMPDIR', '.'));
+      let zipped = await zip(cartridges, get(process, 'env.TMPDIR', '.'));
       spinner.succeed();
 
       spinner.start();
