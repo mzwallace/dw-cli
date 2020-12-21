@@ -54,7 +54,7 @@
     "globby": "11.0.1",
     "got": "11.6.1",
     "lodash": "4.17.20",
-    "node-notifier": "8.0.0",
+    "node-notifier": "8.0.1",
     "ora": "5.1.0",
     "p-retry": "4.2.0",
     "xml2js": "0.4.23",
