@@ -202,6 +202,10 @@ function configure(argv) {
 
   argv.ca = process.env.DW_CA || instance.ca || argv.ca;
 
+  argv.p12 = process.env.DW_P12 || instance.p12 || argv.p12;
+
+  argv.passphrase = process.env.DW_PASSPHRASE || instance.passphrase || argv.passphrase;
+
   argv.request = {
     baseURL: `https://${argv.webdav}/on/demandware.servlet/webdav/Sites/`,
     auth: {
