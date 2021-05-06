@@ -1,16 +1,20 @@
-const ora = require('ora');
-const del = require('../lib/delete');
-const log = require('../lib/log');
-const api = require('../lib/api');
+import ora from 'ora';
+import del from '../lib/delete.js';
+import log from '../lib/log.js';
+import api from '../lib/api.js';
 
-module.exports = async ({
-  clientId,
-  clientPassword,
-  hostname,
-  apiVersion,
-  webdav,
-  request,
-}) => {
+/**
+ * @param {import('../index.js').DWArgv} argv
+ */
+export default async (argv) => {
+  const {
+    clientId,
+    clientPassword,
+    hostname,
+    apiVersion,
+    webdav,
+    request,
+  } = argv;
   log.info(`Cleaning up ${webdav}`);
   const spinner = ora();
 

@@ -1,14 +1,9 @@
-const ora = require('ora');
-const api = require('../lib/api');
-const log = require('../lib/log');
+import ora from 'ora';
+import api from '../lib/api.js';
+import log from '../lib/log.js';
 
-module.exports = async ({
-  clientId,
-  clientPassword,
-  hostname,
-  apiVersion,
-  jobId,
-}) => {
+export default async (argv) => {
+  const {clientId, clientPassword, hostname, apiVersion, jobId} = argv;
   log.info(`Running job ${jobId} on ${hostname}`);
   const spinner = ora().start();
 

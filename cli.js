@@ -1,132 +1,167 @@
 #!/usr/bin/env node
 
-'use strict';
-
-require('dotenv').config();
-const yargs = require('yargs');
-const debug = require('debug')('cli');
-const path = require('path');
-const fs = require('fs');
-const https = require('https');
-const chalk = require('chalk');
-const codeVersion = require('./lib/branch')();
+import 'dotenv/config';
+import yargs from 'yargs';
+import {hideBin} from 'yargs/helpers';
+import debug from 'debug';
+import path from 'node:path';
+import fs from 'node:fs';
+import https from 'node:https';
+import codeVersion from './lib/branch.js';
+import {commands} from './commands/index.js';
+debug('cli');
 
 const jsonPath = path.join(process.cwd(), 'dw-cli.json');
 
-const argv = yargs
+yargs(hideBin(process.argv))
   .env('DW')
   .middleware(configure)
   .usage('Usage: $0 <command> <instance> [options] --switches')
-  .command('init', 'Create a dw-cli.json file')
-  .command('versions <instance>', 'List code versions on an instance')
-  .command(
-    'activate <instance> [code-version]',
-    'Activate code version on an instance'
-  )
-  .command(
-    'push <instance> [code-version]',
-    'Push code version to an instance',
-    {
+  .command({
+    command: 'init',
+    describe: 'Create a dw-cli.json file',
+    handler: commands.init,
+  })
+  .command({
+    command: 'versions <instance>',
+    describe: 'List code versions on an instance',
+    handler: commands.versions,
+  })
+  .command({
+    command: 'activate <instance> [code-version]',
+    describe: 'Activate code version on an instance',
+    handler: commands.activate,
+  })
+  .command({
+    command: 'push <instance> [code-version]',
+    describe: 'Push code version to an instance',
+    builder: {
       zip: {
         alias: 'options.zip',
         describe:
           'Upload as zip file, use --no-zip to upload as individual files',
         default: true,
       },
-    }
-  )
-  .command(
-    'remove <instance> [code-version]',
-    'Remove code version from an instance'
-  )
-  .command('watch <instance> [code-version]', 'Push changes to an instance', {
-    spinner: {
-      alias: 'options.spinner',
-      describe: 'Show the watch spinner, use --no-spinner to hide',
-      type: 'boolean',
-      default: true,
     },
-    silent: {
-      alias: 'options.silent',
-      describe: 'Hide file upload notifications',
-      type: 'boolean',
-      default: false,
-    },
-    remove: {
-      alias: 'options.remove',
-      describe: 'Remove locally deleted files from the remote filesystem',
-      type: 'boolean',
-      default: false,
-    },
+    handler: commands.push,
   })
-  .command('job <instance> <job-id>', 'Run a job on an instance')
-  .command('clean <instance>', 'Remove inactive code versions on instance')
-  .command('extract <instance> <file>', 'Extract a file on an instance')
-  .command('log <instance>', 'Stream log files from an instance', {
-    'poll-interval': {
-      alias: 'options.pollInterval',
-      describe: 'Polling interval for log (seconds)',
-      default: 2,
-    },
-    'num-lines': {
-      alias: 'options.numLines',
-      describe: 'Number of lines to print on each tail',
-      default: 100,
-    },
-    include: {
-      alias: 'options.include',
-      describe: 'Log levels to include',
-      type: 'array',
-      default: [],
-    },
-    exclude: {
-      alias: 'options.exclude',
-      describe: 'Log levels to exclude',
-      type: 'array',
-      default: [],
-    },
-    list: {
-      alias: 'options.list',
-      describe: 'Output a list of log types found on the remote filesystem',
-      type: 'boolean',
-      default: false,
-    },
-    filter: {
-      alias: 'options.filter',
-      describe: 'Filter log messages by regexp',
-      default: undefined,
-    },
-    length: {
-      alias: 'options.length',
-      describe: 'Length to truncate a log message',
-      default: undefined,
-    },
-    search: {
-      alias: 'options.search',
-      describe:
-        'Instead of a tail, this will execute a search on all log files (useful for Production)',
-      type: 'boolean',
-      default: false,
-    },
-    timestamp: {
-      alias: 'options.timestamp',
-      describe:
-        'Convert the timestamp in each log message to your local computer timezone, use --no-timestamp to disable',
-      type: 'boolean',
-      default: true,
-    },
+  .command({
+    command: 'remove <instance> [code-version]',
+    describe: 'Remove code version from an instance',
+    handler: commands.remove,
   })
-  .command(
-    'keygen <user> <crt> <key> <srl>',
-    'Generate a staging certificate for a stage instance user account',
-    {
+  .command({
+    command: 'watch <instance> [code-version]',
+    describe: 'Push changes to an instance',
+    builder: {
+      spinner: {
+        alias: 'options.spinner',
+        describe: 'Show the watch spinner, use --no-spinner to hide',
+        type: 'boolean',
+        default: true,
+      },
+      silent: {
+        alias: 'options.silent',
+        describe: 'Hide file upload notifications',
+        type: 'boolean',
+        default: false,
+      },
+      remove: {
+        alias: 'options.remove',
+        describe: 'Remove locally deleted files from the remote filesystem',
+        type: 'boolean',
+        default: false,
+      },
+    },
+    handler: commands.watch,
+  })
+  .command({
+    command: 'job <instance> <job-id>',
+    describe: 'Run a job on an instance',
+    handler: commands.job,
+  })
+  .command({
+    command: 'clean <instance>',
+    describe: 'Remove inactive code versions on instance',
+    handler: commands.clean,
+  })
+  .command({
+    command: 'extract <instance> <file>',
+    describe: 'Extract a file on an instance',
+    handler: commands.extract,
+  })
+  .command({
+    command: 'log <instance>',
+    describe: 'Stream log files from an instance',
+    builder: {
+      'poll-interval': {
+        alias: 'options.pollInterval',
+        describe: 'Polling interval for log (seconds)',
+        default: 2,
+      },
+      'num-lines': {
+        alias: 'options.numLines',
+        describe: 'Number of lines to print on each tail',
+        default: 100,
+      },
+      include: {
+        alias: 'options.include',
+        describe: 'Log levels to include',
+        type: 'array',
+        default: [],
+      },
+      exclude: {
+        alias: 'options.exclude',
+        describe: 'Log levels to exclude',
+        type: 'array',
+        default: [],
+      },
+      list: {
+        alias: 'options.list',
+        describe: 'Output a list of log types found on the remote filesystem',
+        type: 'boolean',
+        default: false,
+      },
+      filter: {
+        alias: 'options.filter',
+        describe: 'Filter log messages by regexp',
+        default: undefined,
+      },
+      length: {
+        alias: 'options.length',
+        describe: 'Length to truncate a log message',
+        default: undefined,
+      },
+      search: {
+        alias: 'options.search',
+        describe:
+          'Instead of a tail, this will execute a search on all log files (useful for Production)',
+        type: 'boolean',
+        default: false,
+      },
+      timestamp: {
+        alias: 'options.timestamp',
+        describe:
+          'Convert the timestamp in each log message to your local computer timezone, use --no-timestamp to disable',
+        type: 'boolean',
+        default: true,
+      },
+    },
+    handler: commands.log,
+  })
+  .command({
+    command: 'keygen <user> <crt> <key> <srl>',
+    describe:
+      'Generate a staging certificate for a stage instance user account',
+    builder: {
       days: {
         alias: 'options.days',
         describe: 'Number of days until the certificate expires',
         default: 365,
       },
-    }
-  )
+    },
+    handler: commands.keygen,
+  })
   .example('$0 versions dev01', 'List code versions on dev01')
   .example('$0 activate dev01', `Activate branch name as code version on dev01`)
   .example('$0 push dev01 version1', 'Push version1 to dev01')
@@ -142,33 +177,13 @@ const argv = yargs
   .option('hostname', {alias: 'h', describe: 'Hostname for instance'})
   .option('cartridges', {alias: 'c', describe: 'Path to cartridges'})
   .option('api-version', {describe: 'Demandware API Version'})
-  .option('code-version', {alias: 'v', default: codeVersion})
+  .option('code-version', {alias: 'v', default: codeVersion()})
   .option('client-id', {describe: 'Demandware API Client ID'})
   .option('client-password', {describe: 'Demandware API Client Password'})
   .config({extends: fs.existsSync(jsonPath) ? jsonPath : {}})
-  .demand(1)
+  .demandCommand(1)
   .help()
   .version().argv;
-
-const command = argv._[0];
-
-try {
-  debug(`Executing ${command}`);
-
-  if (command === 'init') {
-    require(path.join(__dirname, `commands/init.js`))();
-  } else {
-    require(path.join(__dirname, `commands/${command}.js`))(argv);
-  }
-} catch (error) {
-  if (error.code === 'MODULE_NOT_FOUND') {
-    console.log(error.message);
-    console.log(chalk.red(`\nThe command '${command}' is not valid.\n`));
-    console.log(`Use '${argv.$0} help' for a list of commands.\n`);
-  } else {
-    throw error;
-  }
-}
 
 /**
  * Configure argv and fallback options
@@ -176,7 +191,9 @@ try {
  * @type {import('yargs').MiddlewareFunction}
  */
 function configure(argv) {
-  const instance = argv.instances ? argv.instances[String(argv.instance)] : {};
+  const instance = argv.instances
+    ? argv.instances[String(process.argv.slice(3)[0])]
+    : {};
 
   // Required for API commands (versions, job)
   argv.username = process.env.DW_USERNAME || instance.username || argv.username;
@@ -204,7 +221,8 @@ function configure(argv) {
 
   argv.p12 = process.env.DW_P12 || instance.p12 || argv.p12;
 
-  argv.passphrase = process.env.DW_PASSPHRASE || instance.passphrase || argv.passphrase;
+  argv.passphrase =
+    process.env.DW_PASSPHRASE || instance.passphrase || argv.passphrase;
 
   argv.request = {
     baseURL: `https://${argv.webdav}/on/demandware.servlet/webdav/Sites/`,

@@ -1,8 +1,9 @@
-const ora = require('ora');
-const del = require('../lib/delete');
-const log = require('../lib/log');
+import ora from 'ora';
+import del from '../lib/delete.js';
+import log from '../lib/log.js';
 
-module.exports = async ({codeVersion, webdav, request}) => {
+export default async (argv) => {
+  const {codeVersion, webdav, request} = argv;
   log.info(`Removing ${codeVersion} from ${webdav}`);
   const spinner = ora();
 

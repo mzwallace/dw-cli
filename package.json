@@ -2,12 +2,13 @@
   "name": "dw-cli",
   "version": "2.6.0",
   "description": "",
-  "main": "./cli.js",
+  "exports": "./cli.js",
+  "type": "module",
   "bin": {
     "dw": "cli.js"
   },
   "engines": {
-    "node": ">=11.0.0"
+    "node": ">=12.17"
   },
   "scripts": {
     "test": "eslint ."
@@ -48,26 +49,28 @@
     "chokidar": "3.5.1",
     "cwait": "1.1.2",
     "debug": "4.3.1",
-    "dotenv": "8.2.0",
-    "follow-redirects": "1.13.3",
-    "fs-extra": "9.1.0",
+    "dotenv": "9.0.0",
+    "follow-redirects": "1.14.0",
+    "fs-extra": "10.0.0",
     "globby": "11.0.3",
     "got": "11.8.2",
     "lodash": "4.17.21",
+    "lodash-es": "4.17.21",
     "node-notifier": "9.0.1",
     "ora": "5.4.0",
     "p-retry": "4.5.0",
     "xml2js": "0.4.23",
-    "yargs": "16.2.0"
+    "yargs": "17.0.1"
   },
   "devDependencies": {
     "babel-eslint": "10.1.0",
-    "eslint": "7.24.0",
-    "eslint-config-prettier": "8.2.0",
+    "eslint": "7.25.0",
+    "eslint-config-prettier": "8.3.0",
     "eslint-plugin-import": "2.22.1",
     "eslint-plugin-prettier": "3.4.0",
-    "eslint-plugin-unicorn": "30.0.0",
+    "eslint-plugin-unicorn": "31.0.0",
     "husky": "4.3.0",
+    "is-core-module": "2.3.0",
     "lint-staged": "10.5.4",
     "prettier": "2.2.1"
   },
@@ -76,9 +79,7 @@
     "extends": [
       "eslint:recommended",
       "plugin:unicorn/recommended",
-      "plugin:prettier/recommended",
-      "plugin:import/errors",
-      "plugin:import/warnings"
+      "plugin:prettier/recommended"
     ],
     "env": {
       "es6": true,

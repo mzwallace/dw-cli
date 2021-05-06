@@ -1,17 +1,20 @@
 /* eslint-disable require-atomic-updates */
-const path = require('path');
-const chokidar = require('chokidar');
-const ora = require('ora');
-const debounce = require('lodash/debounce');
-const notifier = require('node-notifier');
-const pRetry = require('p-retry');
-const write = require('../lib/write');
-const del = require('../lib/delete');
-const mkdirp = require('../lib/mkdirp');
-const log = require('../lib/log');
+import path from 'node:path';
+import chokidar from 'chokidar';
+import ora from 'ora';
+import {debounce} from 'lodash-es';
+import notifier from 'node-notifier';
+import pRetry from 'p-retry';
+import write from '../lib/write.js';
+import del from '../lib/delete.js';
+import mkdirp from '../lib/mkdirp.js';
+import log from '../lib/log.js';
 
-module.exports = (options) => {
-  const {cartridges, codeVersion, webdav, request} = options;
+/**
+ * @param {import('../index.js').DWArgv} argv
+ */
+export default (argv) => {
+  const {cartridges, codeVersion, webdav, request, silent} = argv;
 
   try {
     log.info(`Pushing ${codeVersion} changes to ${webdav}`);
@@ -32,7 +35,7 @@ module.exports = (options) => {
       atomic: true,
     });
 
-    if (options.spinner) {
+    if (argv.spinner) {
       text = `Watching '${cartridges}' for ${webdav} [Ctrl-C to Cancel]`;
       spinner = ora(text).start();
     }
@@ -48,7 +51,7 @@ module.exports = (options) => {
 
       if (!uploading.has(source)) {
         uploading.add(source);
-        if (!options.silent) {
+        if (!silent) {
           debouncedNotify({
             title: 'File Changed',
             message: source,
@@ -65,7 +68,7 @@ module.exports = (options) => {
           const tryToWrite = () => write(source, destination, request);
           await pRetry(tryToMkdir, {retries: 5});
           await pRetry(tryToWrite, {retries: 5});
-          if (!options.silent) {
+          if (!silent) {
             debouncedNotify({
               title: 'File Uploaded',
               message: `${path.basename(source)} => ${destination}`,
@@ -100,7 +103,7 @@ module.exports = (options) => {
 
       if (!removing.has(source) && !uploading.has(source)) {
         removing.add(source);
-        if (!options.silent) {
+        if (!silent) {
           debouncedNotify({
             title: 'Local file removed',
             message: source,
@@ -116,7 +119,7 @@ module.exports = (options) => {
           await del(url, request);
           // const tryToRemove = () => del(url, request);
           // await pRetry(tryToRemove, {retries: 5});
-          if (!options.silent) {
+          if (!silent) {
             debouncedNotify({
               title: 'Remote file removed',
               message: url,
@@ -145,7 +148,7 @@ module.exports = (options) => {
 
     watcher.on('change', upload);
     watcher.on('add', upload);
-    if (options.remove) watcher.on('unlink', remove);
+    if (argv.remove) watcher.on('unlink', remove);
   } catch (error) {
     log.error(error);
   }

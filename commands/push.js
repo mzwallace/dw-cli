@@ -1,23 +1,23 @@
 /* eslint-disable require-atomic-updates */
-const fs = require('fs-extra');
-const path = require('path');
-const ora = require('ora');
-const chalk = require('chalk');
-const globby = require('globby');
-const Bluebird = require('bluebird');
-const get = require('lodash/get');
-const notifier = require('node-notifier');
-const TaskQueue = require('cwait').TaskQueue;
-const zip = require('../lib/zip');
-const unzip = require('../lib/unzip');
-const write = require('../lib/write');
-const mkdir = require('../lib/mkdir');
-const mkdirp = require('../lib/mkdirp');
-const del = require('../lib/delete');
-const log = require('../lib/log');
-const find = require('../lib/find');
+import fs from 'fs-extra';
+import path from 'node:path';
+import ora from 'ora';
+import chalk from 'chalk';
+import globby from 'globby';
+import Bluebird from 'bluebird';
+import {get} from 'lodash-es';
+import notifier from 'node-notifier';
+import {TaskQueue} from 'cwait';
+import zip from '../lib/zip.js';
+import unzip from '../lib/unzip.js';
+import write from '../lib/write.js';
+import mkdir from '../lib/mkdir.js';
+import mkdirp from '../lib/mkdirp.js';
+import del from '../lib/delete.js';
+import log from '../lib/log.js';
+import find from '../lib/find.js';
 
-module.exports = async (options) => {
+export default async (options) => {
   const {cartridges, codeVersion, webdav, request} = options;
 
   try {

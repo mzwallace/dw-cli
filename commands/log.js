@@ -1,28 +1,33 @@
-const debug = require('debug')('log');
-const groupBy = require('lodash/groupBy');
-const sortBy = require('lodash/sortBy');
-const forEach = require('lodash/forEach');
-const pickBy = require('lodash/pickBy');
-const map = require('lodash/map');
-const keys = require('lodash/keys');
-const truncate = require('lodash/truncate');
-const compact = require('lodash/compact');
-const ora = require('ora');
-const chalk = require('chalk');
-const log = require('../lib/log');
-const read = require('../lib/read');
-const find = require('../lib/find');
+import debug from 'debug';
+import {
+  groupBy,
+  sortBy,
+  forEach,
+  pickBy,
+  map,
+  keys,
+  truncate,
+  compact,
+} from 'lodash-es';
+import ora from 'ora';
+import chalk from 'chalk';
+import log from '../lib/log.js';
+import read from '../lib/read.js';
+import find from '../lib/find.js';
 
-module.exports = async ({webdav, request, options}) => {
+debug('log');
+
+export default async (argv) => {
+  const {webdav, request, options} = argv;
   const verb = options.search ? 'Searching' : 'Streaming';
   const text =
     `${verb} log files from ${webdav} ` +
     (verb == 'Searching' && options.filter ? `for '${options.filter}' ` : '') +
     `[Ctrl-C to Cancel]`;
   const spinner = ora(text);
-  const output = (fn) => {
+  const output = (function_) => {
     spinner.stop();
-    fn();
+    function_();
     spinner.start();
   };
 

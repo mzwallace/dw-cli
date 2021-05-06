@@ -1,7 +1,8 @@
-const log = require('../lib/log');
-const {execSync} = require('child_process');
+import log from '../lib/log.js';
+import {execSync} from 'node:child_process';
 
-module.exports = function ({user, crt, key, srl, days}) {
+export default function (argv) {
+  const {user, crt, key, srl, days} = argv;
   log.info(
     `Generating a staging certificate for stage instance user account ${user}`
   );
@@ -29,4 +30,4 @@ module.exports = function ({user, crt, key, srl, days}) {
   execSync(signCommand, {encoding: 'utf8'});
 
   log.success('Files generated.');
-};
+}
