@@ -4,10 +4,8 @@ import path from 'node:path';
 import ora from 'ora';
 import chalk from 'chalk';
 import globby from 'globby';
-import Bluebird from 'bluebird';
 import {get} from 'lodash-es';
 import notifier from 'node-notifier';
-import {TaskQueue} from 'cwait';
 import zip from '../lib/zip.js';
 import unzip from '../lib/unzip.js';
 import write from '../lib/write.js';
@@ -68,8 +66,8 @@ export default async (options) => {
         destination,
         Object.assign({}, request, {
           onProgress({percent, size, uploaded}) {
-            const sizeInMegabytes = (size / 1000000).toFixed(2);
-            const uploadedInMegabytes = (uploaded / 1000000).toFixed(2);
+            const sizeInMegabytes = (size / 1_000_000).toFixed(2);
+            const uploadedInMegabytes = (uploaded / 1_000_000).toFixed(2);
             const prettyPercent = chalk.yellow.bold(`${percent}%`);
             const prettySize = chalk.cyan.bold(`${sizeInMegabytes}MB`);
             const prettyUploaded = chalk.cyan.bold(`${uploadedInMegabytes}MB`);
@@ -91,7 +89,6 @@ export default async (options) => {
     } else {
       spinner.start();
       spinner.text = 'Uploading files individually';
-      const queue = new TaskQueue(Bluebird, 800);
       const files = await globby(path.join(cartridges, '**'), {
         onlyFiles: true,
       });
@@ -129,8 +126,9 @@ export default async (options) => {
         }
       };
 
-      // eslint-disable-next-line unicorn/no-fn-reference-in-iterator
-      await Bluebird.map(files, queue.wrap(upload));
+      for (const file of files) {
+        upload(file);
+      }
       spinner.succeed();
     }
 

@@ -47,7 +47,7 @@ export default (argv) => {
       const directory = path
         .dirname(source)
         .replace(path.normalize(cartridges), '');
-      const destination = path.join('/', 'Cartridges', codeVersion, directory);
+      const destination = path.join('Cartridges', codeVersion, directory);
 
       if (!uploading.has(source)) {
         uploading.add(source);
@@ -64,10 +64,8 @@ export default (argv) => {
         }
 
         try {
-          const tryToMkdir = () => mkdirp(destination, request);
-          const tryToWrite = () => write(source, destination, request);
-          await pRetry(tryToMkdir, {retries: 5});
-          await pRetry(tryToWrite, {retries: 5});
+          await pRetry(() => mkdirp(destination, request), {retries: 5});
+          await pRetry(() => write(source, destination, request), {retries: 5});
           if (!silent) {
             debouncedNotify({
               title: 'File Uploaded',
@@ -79,6 +77,7 @@ export default (argv) => {
             spinner.succeed();
           }
         } catch (error) {
+          console.log(error);
           if (spinner) {
             spinner.text = error.message;
             spinner.fail();

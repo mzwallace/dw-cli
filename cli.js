@@ -225,17 +225,17 @@ function configure(argv) {
     process.env.DW_PASSPHRASE || instance.passphrase || argv.passphrase;
 
   argv.request = {
-    baseURL: `https://${argv.webdav}/on/demandware.servlet/webdav/Sites/`,
-    auth: {
-      username: argv.username,
-      password: argv.password,
+    prefixUrl: `https://${argv.webdav}/on/demandware.servlet/webdav/Sites`,
+    username: argv.username,
+    password: argv.password,
+    agent: {
+      https: new https.Agent({
+        key: argv.key ? fs.readFileSync(String(argv.key)) : undefined,
+        cert: argv.cert ? fs.readFileSync(String(argv.cert)) : undefined,
+        ca: argv.ca ? fs.readFileSync(String(argv.ca)) : undefined,
+        pfx: argv.p12 ? fs.readFileSync(String(argv.p12)) : undefined,
+        passphrase: argv.passphrase ? String(argv.passphrase) : undefined,
+      }),
     },
-    httpsAgent: new https.Agent({
-      key: argv.key ? fs.readFileSync(String(argv.key)) : undefined,
-      cert: argv.cert ? fs.readFileSync(String(argv.cert)) : undefined,
-      ca: argv.ca ? fs.readFileSync(String(argv.ca)) : undefined,
-      pfx: argv.p12 ? fs.readFileSync(String(argv.p12)) : undefined,
-      passphrase: argv.passphrase ? String(argv.passphrase) : undefined,
-    }),
   };
 }
