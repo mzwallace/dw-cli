@@ -97,8 +97,8 @@ export default (argv) => {
       const directory = path
         .dirname(source)
         .replace(path.normalize(cartridges), '');
-      const destination = path.join('/', 'Cartridges', codeVersion, directory);
-      const url = path.join('/', destination, path.basename(source));
+      const destination = path.join('Cartridges', codeVersion, directory);
+      const url = path.join(destination, path.basename(source));
 
       if (!removing.has(source) && !uploading.has(source)) {
         removing.add(source);

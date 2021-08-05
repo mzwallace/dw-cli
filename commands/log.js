@@ -54,12 +54,10 @@ export default async (argv) => {
     }
 
     if (options.include.length > 0) {
-      groups = pickBy(
-        groups,
-        (group, name) =>
-          options.include.filter((level) => {
-            return new RegExp(level).test(name);
-          }).length > 0
+      groups = pickBy(groups, (group, name) =>
+        options.include.some((level) => {
+          return new RegExp(level).test(name);
+        })
       );
     }
 

@@ -3,7 +3,7 @@ import fs from 'fs-extra';
 import path from 'node:path';
 import ora from 'ora';
 import chalk from 'chalk';
-import globby from 'globby';
+import {globby} from 'globby';
 import {get} from 'lodash-es';
 import notifier from 'node-notifier';
 import zip from '../lib/zip.js';
@@ -27,7 +27,7 @@ export default async (options) => {
 
   log.info(`Pushing ${codeVersion} to ${webdav}`);
   const spinner = ora();
-  const destination = `/Cartridges/${codeVersion}`;
+  const destination = `Cartridges/${codeVersion}`;
 
   try {
     if (options.zip) {
@@ -61,20 +61,16 @@ export default async (options) => {
 
       spinner.start();
       spinner.text = `Uploading ${destination}/archive.zip`;
-      zipped = await write(
-        zipped,
-        destination,
-        Object.assign({}, request, {
-          onProgress({percent, size, uploaded}) {
-            const sizeInMegabytes = (size / 1_000_000).toFixed(2);
-            const uploadedInMegabytes = (uploaded / 1_000_000).toFixed(2);
-            const prettyPercent = chalk.yellow.bold(`${percent}%`);
-            const prettySize = chalk.cyan.bold(`${sizeInMegabytes}MB`);
-            const prettyUploaded = chalk.cyan.bold(`${uploadedInMegabytes}MB`);
-            spinner.text = `Uploading ${destination}/archive.zip - ${prettyUploaded} / ${prettySize} - ${prettyPercent}`;
-          },
-        })
-      );
+      zipped = await write(zipped, destination, request, {
+        onProgress({percent, total, transferred}) {
+          const sizeInMegabytes = (total / 1_000_000).toFixed(2);
+          const uploadedInMegabytes = (transferred / 1_000_000).toFixed(2);
+          const prettyPercent = chalk.yellow.bold(`${percent}%`);
+          const prettySize = chalk.cyan.bold(`${sizeInMegabytes}MB`);
+          const prettyUploaded = chalk.cyan.bold(`${uploadedInMegabytes}MB`);
+          spinner.text = `Uploading ${destination}/archive.zip - ${prettyUploaded} / ${prettySize} - ${prettyPercent}`;
+        },
+      });
       spinner.succeed();
 
       spinner.start();
@@ -99,12 +95,7 @@ export default async (options) => {
           const directory = path
             .dirname(source)
             .replace(path.normalize(cartridges), '');
-          const destination_ = path.join(
-            '/',
-            'Cartridges',
-            codeVersion,
-            directory
-          );
+          const destination_ = path.join('Cartridges', codeVersion, directory);
           const filename = path.basename(source);
           try {
             await mkdirp(destination_, request);

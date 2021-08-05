@@ -7,14 +7,8 @@ import api from '../lib/api.js';
  * @param {import('../index.js').DWArgv} argv
  */
 export default async (argv) => {
-  const {
-    clientId,
-    clientPassword,
-    hostname,
-    apiVersion,
-    webdav,
-    request,
-  } = argv;
+  const {clientId, clientPassword, hostname, apiVersion, webdav, request} =
+    argv;
   log.info(`Cleaning up ${webdav}`);
   const spinner = ora();
 

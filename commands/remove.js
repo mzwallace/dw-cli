@@ -10,7 +10,7 @@ export default async (argv) => {
   try {
     spinner.start();
     spinner.text = `Removing`;
-    await del(`/Cartridges/${codeVersion}`, request);
+    await del(`Cartridges/${codeVersion}`, request);
     spinner.succeed();
     log.success('Success');
   } catch (error) {
