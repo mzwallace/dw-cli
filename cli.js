@@ -176,7 +176,7 @@ try {
  * @type {import('yargs').MiddlewareFunction}
  */
 function configure(argv) {
-  const instance = argv.instances ? argv.instances[String(argv.instance)] : {};
+  const instance = argv.instances && typeof argv.instances[String(argv.instance)] !== 'undefined' ? argv.instances[String(argv.instance)] : {};
 
   // Required for API commands (versions, job)
   argv.username = process.env.DW_USERNAME || instance.username || argv.username;
