@@ -15,7 +15,7 @@ export default async (argv) => {
     const method = 'GET';
     const endpoint = `https://${hostname}/s/-/dw/data/${apiVersion}/code_versions`;
     await api({ clientId, clientPassword, method, endpoint });
-    const data = await api({ clientId, clientPassword, method, endpoint });
+    const { data } = await api({ clientId, clientPassword, method, endpoint });
     // spinner.succeed();
     log.plain('-------------------');
     for (const version of data) {
