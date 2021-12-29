@@ -1,8 +1,12 @@
-const path = require('path');
-const fs = require('fs-extra');
-const log = require('../lib/log');
+import path from 'node:path';
+import fs from 'fs-extra';
+import { fileURLToPath } from 'node:url';
+import log from '../lib/log.js';
 
-module.exports = async () => {
+// @ts-ignore
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+export default async () => {
   try {
     await fs.stat(path.join(process.cwd(), 'dw-cli.json'));
     log.error(`'dw-cli.json' already exists`);

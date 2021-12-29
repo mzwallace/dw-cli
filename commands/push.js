@@ -1,24 +1,22 @@
 /* eslint-disable require-atomic-updates */
-const fs = require('fs-extra');
-const path = require('path');
-const ora = require('ora');
-const chalk = require('chalk');
-const globby = require('globby');
-const Bluebird = require('bluebird');
-const get = require('lodash/get');
-const notifier = require('node-notifier');
-const TaskQueue = require('cwait').TaskQueue;
-const zip = require('../lib/zip');
-const unzip = require('../lib/unzip');
-const write = require('../lib/write');
-const mkdir = require('../lib/mkdir');
-const mkdirp = require('../lib/mkdirp');
-const del = require('../lib/delete');
-const log = require('../lib/log');
-const find = require('../lib/find');
+import fs from 'fs-extra';
+import path from 'node:path';
+import ora from 'ora';
+import chalk from 'chalk';
+import { globby } from 'globby';
+import { get } from 'lodash-es';
+import notifier from 'node-notifier';
+import zip from '../lib/zip.js';
+import unzip from '../lib/unzip.js';
+import write from '../lib/write.js';
+import mkdir from '../lib/mkdir.js';
+import mkdirp from '../lib/mkdirp.js';
+import del from '../lib/delete.js';
+import log from '../lib/log.js';
+import find from '../lib/find.js';
 
-module.exports = async (options) => {
-  const {cartridges, codeVersion, webdav, request} = options;
+export default async (options) => {
+  const { cartridges, codeVersion, webdav, request } = options;
 
   try {
     fs.accessSync(cartridges);
@@ -29,7 +27,7 @@ module.exports = async (options) => {
 
   log.info(`Pushing ${codeVersion} to ${webdav}`);
   const spinner = ora();
-  const destination = `/Cartridges/${codeVersion}`;
+  const destination = `Cartridges/${codeVersion}`;
 
   try {
     if (options.zip) {
@@ -45,13 +43,15 @@ module.exports = async (options) => {
 
       spinner.start();
       spinner.text = `Cleaning remote folder ${destination}`;
-      let files = (await find(destination, request))
+      let files = await find(destination, request);
+      files = files
         .map((file) => file.displayname)
         .filter((file) => file !== codeVersion);
       await Promise.all(
         files.map((file) => del(path.join(destination, file), request))
       );
-      files = (await find(destination, request))
+      files = await find(destination, request);
+      files = files
         .map((file) => file.displayname)
         .filter((file) => file !== codeVersion);
       await Promise.all(
@@ -63,20 +63,16 @@ module.exports = async (options) => {
 
       spinner.start();
       spinner.text = `Uploading ${destination}/archive.zip`;
-      zipped = await write(
-        zipped,
-        destination,
-        Object.assign({}, request, {
-          onProgress({percent, size, uploaded}) {
-            const sizeInMegabytes = (size / 1000000).toFixed(2);
-            const uploadedInMegabytes = (uploaded / 1000000).toFixed(2);
-            const prettyPercent = chalk.yellow.bold(`${percent}%`);
-            const prettySize = chalk.cyan.bold(`${sizeInMegabytes}MB`);
-            const prettyUploaded = chalk.cyan.bold(`${uploadedInMegabytes}MB`);
-            spinner.text = `Uploading ${destination}/archive.zip - ${prettyUploaded} / ${prettySize} - ${prettyPercent}`;
-          },
-        })
-      );
+      zipped = await write(zipped, destination, request, {
+        onProgress({ percent, total, transferred }) {
+          const sizeInMegabytes = (total / 1_000_000).toFixed(2);
+          const uploadedInMegabytes = (transferred / 1_000_000).toFixed(2);
+          const prettyPercent = chalk.yellow.bold(`${percent}%`);
+          const prettySize = chalk.cyan.bold(`${sizeInMegabytes}MB`);
+          const prettyUploaded = chalk.cyan.bold(`${uploadedInMegabytes}MB`);
+          spinner.text = `Uploading ${destination}/archive.zip - ${prettyUploaded} / ${prettySize} - ${prettyPercent}`;
+        },
+      });
       spinner.succeed();
 
       spinner.start();
@@ -91,7 +87,6 @@ module.exports = async (options) => {
     } else {
       spinner.start();
       spinner.text = 'Uploading files individually';
-      const queue = new TaskQueue(Bluebird, 800);
       const files = await globby(path.join(cartridges, '**'), {
         onlyFiles: true,
       });
@@ -102,12 +97,7 @@ module.exports = async (options) => {
           const directory = path
             .dirname(source)
             .replace(path.normalize(cartridges), '');
-          const destination_ = path.join(
-            '/',
-            'Cartridges',
-            codeVersion,
-            directory
-          );
+          const destination_ = path.join('Cartridges', codeVersion, directory);
           const filename = path.basename(source);
           try {
             await mkdirp(destination_, request);
@@ -129,8 +119,9 @@ module.exports = async (options) => {
         }
       };
 
-      // eslint-disable-next-line unicorn/no-fn-reference-in-iterator
-      await Bluebird.map(files, queue.wrap(upload));
+      for (const file of files) {
+        upload(file);
+      }
       spinner.succeed();
     }
 

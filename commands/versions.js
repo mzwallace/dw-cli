@@ -1,19 +1,24 @@
-const ora = require('ora');
-const api = require('../lib/api');
-const log = require('../lib/log');
+import ora from 'ora';
+import api from '../lib/api.js';
+import log from '../lib/log.js';
 
-module.exports = async ({clientId, clientPassword, hostname, apiVersion}) => {
+/**
+ * @param {import('../index.js').DWArgv} argv
+ */
+export default async (argv) => {
+  const { clientId, clientPassword, hostname, apiVersion } = argv;
   log.info(`Reading code versions on ${hostname}`);
   const spinner = ora().start();
 
   try {
     spinner.text = 'Reading';
-    const method = 'get';
+    const method = 'GET';
     const endpoint = `https://${hostname}/s/-/dw/data/${apiVersion}/code_versions`;
-    const {data} = await api({clientId, clientPassword, method, endpoint});
-    spinner.succeed();
+    await api({ clientId, clientPassword, method, endpoint });
+    const data = await api({ clientId, clientPassword, method, endpoint });
+    // spinner.succeed();
     log.plain('-------------------');
-    data.forEach((version) => {
+    for (const version of data) {
       spinner.start();
       spinner.text = version.id;
       if (version.active) {
@@ -21,7 +26,7 @@ module.exports = async ({clientId, clientPassword, hostname, apiVersion}) => {
       } else {
         spinner.fail();
       }
-    });
+    }
     log.plain('-------------------');
     log.success('Success');
   } catch (error) {

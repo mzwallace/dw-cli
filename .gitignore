@@ -5,3 +5,4 @@ test/data/*
 npm-debug.log
 .vscode
 jsconfig.json
+.history/

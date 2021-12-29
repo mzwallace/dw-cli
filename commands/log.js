@@ -1,28 +1,33 @@
-const debug = require('debug')('log');
-const groupBy = require('lodash/groupBy');
-const sortBy = require('lodash/sortBy');
-const forEach = require('lodash/forEach');
-const pickBy = require('lodash/pickBy');
-const map = require('lodash/map');
-const keys = require('lodash/keys');
-const truncate = require('lodash/truncate');
-const compact = require('lodash/compact');
-const ora = require('ora');
-const chalk = require('chalk');
-const log = require('../lib/log');
-const read = require('../lib/read');
-const find = require('../lib/find');
+import debug from 'debug';
+import {
+  groupBy,
+  sortBy,
+  forEach,
+  pickBy,
+  map,
+  keys,
+  truncate,
+  compact,
+} from 'lodash-es';
+import ora from 'ora';
+import chalk from 'chalk';
+import log from '../lib/log.js';
+import read from '../lib/read.js';
+import find from '../lib/find.js';
 
-module.exports = async ({webdav, request, options}) => {
+debug('log');
+
+export default async (argv) => {
+  const { webdav, request, options } = argv;
   const verb = options.search ? 'Searching' : 'Streaming';
   const text =
     `${verb} log files from ${webdav} ` +
     (verb == 'Searching' && options.filter ? `for '${options.filter}' ` : '') +
     `[Ctrl-C to Cancel]`;
   const spinner = ora(text);
-  const output = (fn) => {
+  const output = (function_) => {
     spinner.stop();
-    fn();
+    function_();
     spinner.start();
   };
 
@@ -31,12 +36,12 @@ module.exports = async ({webdav, request, options}) => {
     let files = await find('Logs', request);
 
     // only log files
-    files = files.filter(({displayname}) => displayname.includes('.log'));
+    files = files.filter(({ displayname }) => displayname.includes('.log'));
 
     // group by log type
     let groups = groupBy(
       files,
-      ({displayname}) => displayname.split('-blade')[0]
+      ({ displayname }) => displayname.split('-blade')[0]
     );
 
     if (options.list) {
@@ -49,12 +54,10 @@ module.exports = async ({webdav, request, options}) => {
     }
 
     if (options.include.length > 0) {
-      groups = pickBy(
-        groups,
-        (group, name) =>
-          options.include.filter((level) => {
-            return new RegExp(level).test(name);
-          }).length > 0
+      groups = pickBy(groups, (group, name) =>
+        options.include.some((level) => {
+          return new RegExp(level).test(name);
+        })
       );
     }
 
@@ -90,7 +93,7 @@ module.exports = async ({webdav, request, options}) => {
           const displayname = file.displayname;
           try {
             const response = await read(`Logs/${displayname}`, request);
-            return {response, name};
+            return { response, name };
           } catch (error) {
             output(() => log.error(error));
           }
@@ -100,7 +103,7 @@ module.exports = async ({webdav, request, options}) => {
       for (const promises of promiseGroups) {
         const results = await Promise.all(promises);
 
-        for (const {response, name} of compact(results)) {
+        for (const { response, name } of compact(results)) {
           let lines = response.split('\n');
           lines.pop(); // last line is empty
           if (options.numLines) lines = lines.slice(-options.numLines);
@@ -156,7 +159,7 @@ module.exports = async ({webdav, request, options}) => {
         const displayname = files[0].displayname;
         try {
           const response = await read(`Logs/${displayname}`, request);
-          return {response, name};
+          return { response, name };
         } catch (error) {
           output(() => log.error(error));
         }
@@ -164,7 +167,7 @@ module.exports = async ({webdav, request, options}) => {
 
       const results = await Promise.all(promises);
 
-      for (const {response, name} of compact(results)) {
+      for (const { response, name } of compact(results)) {
         let lines = response.split('\n');
         lines.pop(); // last line is empty
         if (options.numLines) lines = lines.slice(-options.numLines);

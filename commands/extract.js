@@ -1,9 +1,10 @@
-const ora = require('ora');
-const notifier = require('node-notifier');
-const unzip = require('../lib/unzip');
-const log = require('../lib/log');
+import ora from 'ora';
+import notifier from 'node-notifier';
+import unzip from '../lib/unzip.js';
+import log from '../lib/log.js';
 
-module.exports = async ({file, request}) => {
+export default async (argv) => {
+  const { file, request } = argv;
   log.info(`Extracting ${file}`);
   const spinner = ora();
 
