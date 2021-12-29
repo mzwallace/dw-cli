@@ -7,7 +7,7 @@ import api from '../lib/api.js';
  * @param {import('../index.js').DWArgv} argv
  */
 export default async (argv) => {
-  const {clientId, clientPassword, hostname, apiVersion, webdav, request} =
+  const { clientId, clientPassword, hostname, apiVersion, webdav, request } =
     argv;
   log.info(`Cleaning up ${webdav}`);
   const spinner = ora();
@@ -16,7 +16,7 @@ export default async (argv) => {
     spinner.text = 'Reading';
     const method = 'get';
     const endpoint = `https://${hostname}/s/-/dw/data/${apiVersion}/code_versions`;
-    const {data} = await api({clientId, clientPassword, method, endpoint});
+    const { data } = await api({ clientId, clientPassword, method, endpoint });
     if (data.length === 1) {
       spinner.text = `Already clean`;
       spinner.succeed();

@@ -2,13 +2,13 @@
 
 import 'dotenv/config';
 import yargs from 'yargs';
-import {hideBin} from 'yargs/helpers';
+import { hideBin } from 'yargs/helpers';
 import debug from 'debug';
 import path from 'node:path';
 import fs from 'node:fs';
 import https from 'node:https';
 import codeVersion from './lib/branch.js';
-import {commands} from './commands/index.js';
+import { commands } from './commands/index.js';
 debug('cli');
 
 const jsonPath = path.join(process.cwd(), 'dw-cli.json');
@@ -104,42 +104,42 @@ yargs(hideBin(process.argv))
         describe: 'Number of lines to print on each tail',
         default: 100,
       },
-      include: {
+      'include': {
         alias: 'options.include',
         describe: 'Log levels to include',
         type: 'array',
         default: [],
       },
-      exclude: {
+      'exclude': {
         alias: 'options.exclude',
         describe: 'Log levels to exclude',
         type: 'array',
         default: [],
       },
-      list: {
+      'list': {
         alias: 'options.list',
         describe: 'Output a list of log types found on the remote filesystem',
         type: 'boolean',
         default: false,
       },
-      filter: {
+      'filter': {
         alias: 'options.filter',
         describe: 'Filter log messages by regexp',
         default: undefined,
       },
-      length: {
+      'length': {
         alias: 'options.length',
         describe: 'Length to truncate a log message',
         default: undefined,
       },
-      search: {
+      'search': {
         alias: 'options.search',
         describe:
           'Instead of a tail, this will execute a search on all log files (useful for Production)',
         type: 'boolean',
         default: false,
       },
-      timestamp: {
+      'timestamp': {
         alias: 'options.timestamp',
         describe:
           'Convert the timestamp in each log message to your local computer timezone, use --no-timestamp to disable',
@@ -172,15 +172,15 @@ yargs(hideBin(process.argv))
   )
   .example('$0 clean dev01', 'Remove all inactive code versions on dev01')
   .example('$0 log dev01', 'Stream log files from the dev01')
-  .option('username', {describe: 'Username for instance'})
-  .option('password', {alias: 'p', describe: 'Password for instance'})
-  .option('hostname', {alias: 'h', describe: 'Hostname for instance'})
-  .option('cartridges', {alias: 'c', describe: 'Path to cartridges'})
-  .option('api-version', {describe: 'Demandware API Version'})
-  .option('code-version', {alias: 'v', default: codeVersion()})
-  .option('client-id', {describe: 'Demandware API Client ID'})
-  .option('client-password', {describe: 'Demandware API Client Password'})
-  .config({extends: fs.existsSync(jsonPath) ? jsonPath : {}})
+  .option('username', { describe: 'Username for instance' })
+  .option('password', { alias: 'p', describe: 'Password for instance' })
+  .option('hostname', { alias: 'h', describe: 'Hostname for instance' })
+  .option('cartridges', { alias: 'c', describe: 'Path to cartridges' })
+  .option('api-version', { describe: 'Demandware API Version' })
+  .option('code-version', { alias: 'v', default: codeVersion() })
+  .option('client-id', { describe: 'Demandware API Client ID' })
+  .option('client-password', { describe: 'Demandware API Client Password' })
+  .config({ extends: fs.existsSync(jsonPath) ? jsonPath : {} })
   .demandCommand(1)
   .help()
   .version().argv;
@@ -191,9 +191,11 @@ yargs(hideBin(process.argv))
  * @type {import('yargs').MiddlewareFunction}
  */
 function configure(argv) {
-  const instance = argv.instances
-    ? argv.instances[String(process.argv.slice(3)[0])]
-    : {};
+  const instance =
+    argv.instances &&
+    typeof argv.instances[String(argv.instance)] !== 'undefined'
+      ? argv.instances[String(argv.instance)]
+      : {};
 
   // Required for API commands (versions, job)
   argv.username = process.env.DW_USERNAME || instance.username || argv.username;

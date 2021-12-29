@@ -2,7 +2,7 @@
 import path from 'node:path';
 import chokidar from 'chokidar';
 import ora from 'ora';
-import {debounce} from 'lodash-es';
+import { debounce } from 'lodash-es';
 import notifier from 'node-notifier';
 import pRetry from 'p-retry';
 import write from '../lib/write.js';
@@ -14,7 +14,7 @@ import log from '../lib/log.js';
  * @param {import('../index.js').DWArgv} argv
  */
 export default (argv) => {
-  const {cartridges, codeVersion, webdav, request, silent} = argv;
+  const { cartridges, codeVersion, webdav, request, silent } = argv;
 
   try {
     log.info(`Pushing ${codeVersion} changes to ${webdav}`);
@@ -58,14 +58,16 @@ export default (argv) => {
           });
         }
         if (spinner) {
-          spinner.stopAndPersist({text: `${source} changed`});
+          spinner.stopAndPersist({ text: `${source} changed` });
           spinner.text = text;
           spinner.start();
         }
 
         try {
-          await pRetry(() => mkdirp(destination, request), {retries: 5});
-          await pRetry(() => write(source, destination, request), {retries: 5});
+          await pRetry(() => mkdirp(destination, request), { retries: 5 });
+          await pRetry(() => write(source, destination, request), {
+            retries: 5,
+          });
           if (!silent) {
             debouncedNotify({
               title: 'File Uploaded',
@@ -109,7 +111,7 @@ export default (argv) => {
           });
         }
         if (spinner) {
-          spinner.stopAndPersist({text: `${source} removed locally`});
+          spinner.stopAndPersist({ text: `${source} removed locally` });
           spinner.text = text;
           spinner.start();
         }

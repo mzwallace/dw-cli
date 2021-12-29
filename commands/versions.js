@@ -6,7 +6,7 @@ import log from '../lib/log.js';
  * @param {import('../index.js').DWArgv} argv
  */
 export default async (argv) => {
-  const {clientId, clientPassword, hostname, apiVersion} = argv;
+  const { clientId, clientPassword, hostname, apiVersion } = argv;
   log.info(`Reading code versions on ${hostname}`);
   const spinner = ora().start();
 
@@ -14,8 +14,8 @@ export default async (argv) => {
     spinner.text = 'Reading';
     const method = 'GET';
     const endpoint = `https://${hostname}/s/-/dw/data/${apiVersion}/code_versions`;
-    await api({clientId, clientPassword, method, endpoint});
-    const data = await api({clientId, clientPassword, method, endpoint});
+    await api({ clientId, clientPassword, method, endpoint });
+    const data = await api({ clientId, clientPassword, method, endpoint });
     // spinner.succeed();
     log.plain('-------------------');
     for (const version of data) {

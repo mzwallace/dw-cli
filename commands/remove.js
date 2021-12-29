@@ -3,7 +3,7 @@ import del from '../lib/delete.js';
 import log from '../lib/log.js';
 
 export default async (argv) => {
-  const {codeVersion, webdav, request} = argv;
+  const { codeVersion, webdav, request } = argv;
   log.info(`Removing ${codeVersion} from ${webdav}`);
   const spinner = ora();
 

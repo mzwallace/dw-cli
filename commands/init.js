@@ -1,6 +1,6 @@
 import path from 'node:path';
 import fs from 'fs-extra';
-import {fileURLToPath} from 'node:url';
+import { fileURLToPath } from 'node:url';
 import log from '../lib/log.js';
 
 // @ts-ignore

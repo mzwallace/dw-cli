@@ -3,8 +3,8 @@ import fs from 'fs-extra';
 import path from 'node:path';
 import ora from 'ora';
 import chalk from 'chalk';
-import {globby} from 'globby';
-import {get} from 'lodash-es';
+import { globby } from 'globby';
+import { get } from 'lodash-es';
 import notifier from 'node-notifier';
 import zip from '../lib/zip.js';
 import unzip from '../lib/unzip.js';
@@ -16,7 +16,7 @@ import log from '../lib/log.js';
 import find from '../lib/find.js';
 
 export default async (options) => {
-  const {cartridges, codeVersion, webdav, request} = options;
+  const { cartridges, codeVersion, webdav, request } = options;
 
   try {
     fs.accessSync(cartridges);
@@ -43,13 +43,15 @@ export default async (options) => {
 
       spinner.start();
       spinner.text = `Cleaning remote folder ${destination}`;
-      let files = (await find(destination, request))
+      let files = await find(destination, request);
+      files = files
         .map((file) => file.displayname)
         .filter((file) => file !== codeVersion);
       await Promise.all(
         files.map((file) => del(path.join(destination, file), request))
       );
-      files = (await find(destination, request))
+      files = await find(destination, request);
+      files = files
         .map((file) => file.displayname)
         .filter((file) => file !== codeVersion);
       await Promise.all(
@@ -62,7 +64,7 @@ export default async (options) => {
       spinner.start();
       spinner.text = `Uploading ${destination}/archive.zip`;
       zipped = await write(zipped, destination, request, {
-        onProgress({percent, total, transferred}) {
+        onProgress({ percent, total, transferred }) {
           const sizeInMegabytes = (total / 1_000_000).toFixed(2);
           const uploadedInMegabytes = (transferred / 1_000_000).toFixed(2);
           const prettyPercent = chalk.yellow.bold(`${percent}%`);

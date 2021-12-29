@@ -18,7 +18,7 @@ import find from '../lib/find.js';
 debug('log');
 
 export default async (argv) => {
-  const {webdav, request, options} = argv;
+  const { webdav, request, options } = argv;
   const verb = options.search ? 'Searching' : 'Streaming';
   const text =
     `${verb} log files from ${webdav} ` +
@@ -36,12 +36,12 @@ export default async (argv) => {
     let files = await find('Logs', request);
 
     // only log files
-    files = files.filter(({displayname}) => displayname.includes('.log'));
+    files = files.filter(({ displayname }) => displayname.includes('.log'));
 
     // group by log type
     let groups = groupBy(
       files,
-      ({displayname}) => displayname.split('-blade')[0]
+      ({ displayname }) => displayname.split('-blade')[0]
     );
 
     if (options.list) {
@@ -93,7 +93,7 @@ export default async (argv) => {
           const displayname = file.displayname;
           try {
             const response = await read(`Logs/${displayname}`, request);
-            return {response, name};
+            return { response, name };
           } catch (error) {
             output(() => log.error(error));
           }
@@ -103,7 +103,7 @@ export default async (argv) => {
       for (const promises of promiseGroups) {
         const results = await Promise.all(promises);
 
-        for (const {response, name} of compact(results)) {
+        for (const { response, name } of compact(results)) {
           let lines = response.split('\n');
           lines.pop(); // last line is empty
           if (options.numLines) lines = lines.slice(-options.numLines);
@@ -159,7 +159,7 @@ export default async (argv) => {
         const displayname = files[0].displayname;
         try {
           const response = await read(`Logs/${displayname}`, request);
-          return {response, name};
+          return { response, name };
         } catch (error) {
           output(() => log.error(error));
         }
@@ -167,7 +167,7 @@ export default async (argv) => {
 
       const results = await Promise.all(promises);
 
-      for (const {response, name} of compact(results)) {
+      for (const { response, name } of compact(results)) {
         let lines = response.split('\n');
         lines.pop(); // last line is empty
         if (options.numLines) lines = lines.slice(-options.numLines);

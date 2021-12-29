@@ -4,7 +4,7 @@ import unzip from '../lib/unzip.js';
 import log from '../lib/log.js';
 
 export default async (argv) => {
-  const {file, request} = argv;
+  const { file, request } = argv;
   log.info(`Extracting ${file}`);
   const spinner = ora();
 
