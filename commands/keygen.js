@@ -21,7 +21,7 @@ export default function (argv) {
     process.exit();
   }
 
-  const userKeyCommand = `openssl req -new -newkey rsa:2048 -nodes -out ${user}.req -keyout ${user}.key -subj "/C=CO/ST=State/L=Local/O=Demandware/OU=Technology/CN=${user}"`;
+  const userKeyCommand = `openssl req -new -sha256 -newkey rsa:2048 -nodes -out ${user}.req -keyout ${user}.key -subj "/C=CO/ST=State/L=Local/O=Demandware/OU=Technology/CN=${user}"`;
   log.info(userKeyCommand);
   execSync(userKeyCommand, { encoding: 'utf8' });
 
