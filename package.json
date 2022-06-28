@@ -11,8 +11,7 @@
     "node": "^12.20.0 || ^14.13.1 || >=16.0.0"
   },
   "scripts": {
-    "test": "eslint .",
-    "prepare": "husky install"
+    "test": "eslint ."
   },
   "lint-staged": {
     "*.js": [
@@ -62,7 +61,6 @@
     "eslint-plugin-import": "2.26.0",
     "eslint-plugin-prettier": "4.1.0",
     "eslint-plugin-unicorn": "42.0.0",
-    "husky": "8.0.1",
     "is-core-module": "2.9.0",
     "lint-staged": "13.0.3",
     "prettier": "2.7.1"
